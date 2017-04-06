@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context 
+           http://www.springframework.org/schema/context/spring-context-3.0.xsd
+           http://www.springframework.org/schema/aop 
+		   http://www.springframework.org/schema/aop/spring-aop-2.5.xsd 
+		   http://www.springframework.org/schema/tx 
+		   http://www.springframework.org/schema/tx/spring-tx-2.5.xsd ">
+           
+           
+	<!-- 注册数据库的链接信息 -->
+	<context:property-placeholder location="classpath:config/jdbc.properties" />
+	<!-- 开启注解模式 -->
+	<context:annotation-config />
+	<!-- 设置需要进行Spring注解扫描的类包 -->
+	<context:component-scan base-package="com.p2b" />	
+	
+	
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"	destroy-method="close">
+		<property name="driverClass" value="${jdbc.driverClass}"></property>
+		<property name="jdbcUrl" value="${jdbc.url}"></property>
+		<property name="user" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+		<property name="initialPoolSize" value="2"></property>
+		<property name="minPoolSize" value="2"></property>
+		<property name="maxPoolSize" value="30"></property>
+		<property name="maxIdleTime" value="60"></property>
+		<property name="acquireIncrement" value="5"></property>
+		<property name="acquireRetryAttempts" value="20"></property>
+		<property name="breakAfterAcquireFailure" value="true"></property>
+		<property name="maxStatements" value="0"></property>
+		<property name="testConnectionOnCheckout" value="false"></property>
+	</bean>
+	
+	
+	
+	
+	<!-- 配置myBatis的sqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:config/mybatis_config.xml" />
+		<property name="typeAliasesPackage" value="com.my.pojo"></property>
+	</bean>
+	<!-- 配置myBatis的transactionManager 注意：用Spring来管理mybatis的事务 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+	<!-- 定义拦截器，用来指定事务属性，级别，和异常处理 -->
+	<bean id="transactionInterceptor"
+		class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<!-- 事务拦截器bean需要依赖注入一个事务管理器 -->
+		<property name="transactionManager" ref="transactionManager"></property>
+		<!-- 定义事务传播属性 -->
+		<property name="transactionAttributes">
+			<props>
+<!--				 PROPAGATION_SUPPORTS: 如果已经存在事务,则加入事务;如果没有事务,则以非事务的方式执行; PROPAGATION_MANDATORY: -->
+<!--					使用当前事务, 如果没有, 则抛出异常; PROPAGATION_REQUIRED: 新建事务,如果当前有事务, 则挂起; P ROPAGATION_NOT_SUPPORTED:以非事务的方式执行, -->
+<!--					如果当前有事务, 则挂起; PROPAGATION_NEVER:以非事务的方式执行, 如果当前有事务,则抛出异常;-->
+<!--					PROPAGATION_NESTED如果当前存在事务，则在嵌套事务内执行。如果当前没有事务，则进行与PROPAGATION_REQUIRED-->
+<!--					 +/-Exception</prop> + 表示异常出现时事物提交 - 表示异常出现时事务回滚  -->
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="find*">PROPAGATION_SUPPORTS,readOnly</prop>
+				<prop key="read*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="del*"> PROPAGATION_SUPPORTS,-Exception</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="save*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="add*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="insert*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="*">PROPAGATION_NESTED,-Exception</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- 用来定义那些类需要采用事物管理 spring 事物的动态代理类 BeanNameAutoProxyCreator 根据类名自动代理，接受表达式 -->
+	<bean id="BeanProxy"
+		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="beanNames">
+			<!-- 此处列表加入action类 bean name -->
+			<!-- 对类名以action结尾的类进行代理 -->
+			<value>*Service</value>
+		</property>
+		<!-- 下面定义BeanNBameAutoProxyCreator所需的事务拦截器 -->
+		<!-- 对代理类进行加载拦截器 -->
+		<property name="interceptorNames">
+			<list>
+				<value>transactionInterceptor</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 定时任务 -->
+	<!-- import resource="spring-quarz.xml"/ -->
+	<!-- action层 -->
+	<import resource="spring-views.xml" />
+	<!-- service层 -->
+	<import resource="spring-service.xml" />
+	<!-- dao层 -->
+	<import resource="spring-dao.xml" />
+</beans>
