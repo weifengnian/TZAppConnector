@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+	"http://XingJiabatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<properties>
+		<property name="dialect" value="sqlserver" />
+	</properties>
+	<settings>
+		<setting name="useColumnLabel" value="true" />
+		<setting name="autoMappingBehavior" value="FULL" />
+	</settings>
+
+	<mappers>
+	
+		<!-- 用户信息(企业OR个人) -->
+		<mapper resource="com/tuzhi/app/mapper/AppUserInfoDaoMapper.xml" />
+		
+		<!-- 系统消息 -->
+		<mapper resource="com/tuzhi/app/mapper/SystemMessagerDaoMapper.xml" />
+		
+	</mappers>
+	
+</configuration>

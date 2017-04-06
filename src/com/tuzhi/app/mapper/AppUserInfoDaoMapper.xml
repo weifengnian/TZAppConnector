@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AppUserInfoDaoMapper">
+	<resultMap type="com.tuzhi.app.entity.AppUserInfo" id="userInfo"/>
+	<resultMap type="com.tuzhi.app.entity.AppEnterprisesInfo" id="enterprisesInfo"/>
+	<!--查询：通过用户ID返回一个用户对象  -->
+	
+	<!-- 查询个人用户 -->
+	<select id="getAppUser" parameterType="map" resultMap="userInfo">
+		select u.* from app_user_info u where 1=1
+  		   <if test="phone !=null and phone != ''">
+			  and u.mobile_phone = #{phone}
+		   </if>
+		   <if test="user_id !=null and user_id != ''">
+			  and u.id = #{user_id}
+		   </if>
+	</select>
+	
+	<!-- 新增个人用户 -->
+  	<insert id="addAppUser" parameterType="map" >
+		insert into app_user_info(mobile_phone,password,token,create_time)
+		values(#{phone},#{password},#{token},#{create_time})
+  	</insert>
+  	
+  	<!-- 新增个人用户 擅长领域关联表-->
+  	<insert id="addAppUserField" parameterType="map" >
+		insert into app_user_field(field_id,user_id)
+		values(#{good_field},#{user_id})
+  	</insert>
+  	
+  	<!-- 新增个人用户用户证书关联表-->
+  	<insert id="addAppUserCertificate" parameterType="map" >
+		insert into app_user_certificate(certificate_id,user_id)
+		values(#{qualification_certificate},#{user_id})
+  	</insert>
+  	    
+  	<!-- 修改个人用户 -->
+  	<update id="updateAppUser" parameterType="map">
+		update app_user_info set
+		  <if test="user_name !=null and user_name !='' ">
+              name=#{user_name},
+          </if> 
+<!-- 		  <if test="card !=null and card !='' "> -->
+<!--               card_id=#{card}, -->
+<!--           </if> -->
+		  <if test="sex !=null and sex !='' ">
+              sex=#{sex},
+          </if>
+		  <if test="graduation_time !=null and graduation_time !='' ">
+              graduation_time=#{graduation_time},
+          </if>
+<!-- 		  <if test="order_address !=null and order_address !='' "> -->
+<!--               address_id=#{order_address}, -->
+<!--           </if> -->
+		  <if test="card_id !=null and card_id !='' ">
+              card_img=#{card_id},
+          </if>
+		  <if test="password !=null and password !='' ">
+              password=#{password},
+          </if>
+		  <if test="logo_url !=null and logo_url !='' ">
+              local_url=#{logo_url},
+          </if>
+			update_time=getdate()
+			
+		where 1=1
+          <if test=" user_id !='' ">
+             and id=#{user_id} 
+          </if>
+  	</update>
+  	
+  	
+    <!-- 企业 -->
+  	<!-- 查询企业用户 -->
+	<select id="getEnterprises" parameterType="map" resultMap="enterprisesInfo">
+		select e.* from app_enterprises_info e where 1=1
+  		   <if test="phone !=null and phone != ''">
+			  and e.mobile_phone = #{phone}
+		   </if>
+		   <if test="e_id !=null and e_id != ''">
+			  and e.id = #{e_id}
+		   </if>
+		   <if test="user_id !=null and user_id != ''">
+			  and e.id = #{user_id}
+		   </if>
+	</select>
+	
+	<!-- 新增企业用户 -->
+  	<insert id="addEnterprises" parameterType="map" >
+		insert into app_enterprises_info(mobile_phone,password,token,create_time)
+		values(#{phone},#{password},#{token},#{create_time})
+  	</insert>
+	
+	<!-- 修改企业用户信息 -->
+  	<update id="updateEnterprises" parameterType="map">
+		update app_enterprises_info set
+		  <if test="e_name !=null and e_name !='' ">
+              name=#{e_name},
+          </if> 
+		  <if test="business_code !=null and business_code !='' ">
+              business_code=#{business_code},
+          </if>
+		  <if test="business_img !=null and business_img !='' ">
+              business_url=#{business_img},
+          </if>
+          <if test="password !=null and password !='' ">
+              password=#{password},
+          </if>
+			update_time=getdate()
+			
+		where 1=1 
+		  <if test="e_id !=null and e_id !='' ">
+             and id=#{e_id} 
+          </if>
+          <if test="user_id !=null and user_id !='' ">
+             and id=#{user_id} 
+          </if>
+  	</update>
+  	
+  	
+  	<!-- 添加请求日志 -->
+  	<insert id="insertAppLog" parameterType="map" >
+<!--   	insert into app_log(url,result_code,req_content,resp_content,token,result_msg,record_time)values(#{url},#{result_code},#{req_content},#{resp_content},#{token},#{result_msg},#{record_time}) -->
+		insert into app_log(
+		  <if test="url !=null and url !='' ">
+             url,
+          </if>
+		  <if test="u_id !=null and u_id !='' ">
+             u_id,
+          </if>
+		  <if test="type !=null and type !='' ">
+             type,
+          </if>
+		  <if test="version !=null and version !='' ">
+             version,
+          </if>
+		  <if test="result_code !=null and result_code !='' ">
+             result_code,
+          </if>
+		  <if test="req_content !=null and req_content !='' ">
+             req_content,
+          </if>
+		  <if test="resp_content !=null and resp_content !='' ">
+             resp_content,
+          </if>
+          <if test="token !=null and token !='' ">
+             token,
+          </if>
+          <if test="result_msg !=null and result_msg !='' ">
+             result_msg,
+          </if>
+		    record_time
+		)values(
+		  <if test="url !=null and url !='' ">
+             #{url},
+          </if>
+		  <if test="u_id !=null and u_id !='' ">
+             #{u_id},
+          </if>
+		  <if test="type !=null and type !='' ">
+             #{type},
+          </if>
+		  <if test="version !=null and version !='' ">
+             #{version},
+          </if>
+		  <if test="result_code !=null and result_code !='' ">
+             #{result_code},
+          </if>
+		  <if test="req_content !=null and req_content !='' ">
+             #{req_content},
+          </if>
+		  <if test="resp_content !=null and resp_content !='' ">
+             #{resp_content},
+          </if>
+		  <if test="token !=null and token !='' ">
+             #{token},
+          </if>
+          <if test="result_msg !=null and result_msg !='' ">
+             #{result_msg},
+          </if>
+		     getdate()
+		  )   
+  	</insert>
+  	
+		
+</mapper>
