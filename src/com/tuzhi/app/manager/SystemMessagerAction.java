@@ -27,7 +27,7 @@ public class SystemMessagerAction extends HttpServlet {
 	
     private static final long serialVersionUID = 1L;
 	
-	//日志
+	//日志  
 	private final static Logger log = LoggerFactory.getLogger(SystemMessagerAction.class);
 	
 	private ISystemMessagerService systemMessagerService;
