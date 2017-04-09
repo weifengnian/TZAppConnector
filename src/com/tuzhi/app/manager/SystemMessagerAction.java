@@ -117,14 +117,14 @@ public class SystemMessagerAction extends HttpServlet {
 			String retMsg = "成功";
 		
 			//验证参数     type=1指用户、type=2指企业
-			List<AppMessage> listMessage = new ArrayList<AppMessage>();
+			List<AppMessage> lm = new ArrayList<AppMessage>();
 			if(StringUtil.isBlank(map.get("type")) || StringUtil.isBlank(map.get("user_id"))){
 				status = "15";
 				retMsg = "必要参数缺失";
 			}else{
 				//消息列表
-				listMessage = systemMessagerService.getMessage(map);
-				if(listMessage.size()<=0){
+				lm = systemMessagerService.getMessage(map);
+				if(lm.size()<=0){
 					status = "13";
 					retMsg = "消息列表获取失败";
 				}
@@ -133,15 +133,14 @@ public class SystemMessagerAction extends HttpServlet {
 			List<Map<String,Object>> listMap = new ArrayList<Map<String,Object>>();
 			
 			int num = 0;
-			if(listMessage.size()==0){
+			if(lm.size()==0){
 				num = -1;
 			}
-			for (int i = num; i < listMessage.size(); i++) {
-				log.info("------status:"+status+"-------retMsg:"+retMsg);
+			for (int i = num; i < lm.size(); i++) {
 				Map<String,Object> map3 = new HashMap<String,Object>();
-				map3.put("msg_id", listMessage.size()==0?"":listMessage.get(i).getId());
-				map3.put("title", listMessage.size()==0?"":listMessage.get(i).getTitle());
-				map3.put("date", listMessage.size()==0?"":listMessage.get(i).getSendtime());
+				map3.put("msg_id", lm.size()==0?"":lm.get(i).getId()==0?"":lm.get(i).getId());
+				map3.put("title", lm.size()==0?"":lm.get(i).getTitle()==null?"":lm.get(i).getTitle());
+				map3.put("date", lm.size()==0?"":lm.get(i).getSendtime()==null?"":lm.get(i).getSendtime());
 				
 				Map<String,Object> map2 = new HashMap<String,Object>();
 				map2.put("list", map3);
@@ -201,25 +200,24 @@ public class SystemMessagerAction extends HttpServlet {
 			String retMsg = "成功";
 			
 			//验证参数     type=1指用户、type=2指企业
-			List<AppMessage> listMessage = null;
+			List<AppMessage> lm = null;
 			if(StringUtil.isBlank(map.get("msg_id"))){
 				status = "15";
 				retMsg = "必要参数缺失";
 			}else{
 				//消息列表
-				listMessage = systemMessagerService.getMessage(map);
-				if(listMessage == null){
+				lm = systemMessagerService.getMessage(map);
+				if(lm == null){
 					status = "14";
 					retMsg = "消息详情获取失败";
 				}
 			}
 				
-			log.info("------status:"+status+"-------retMsg:"+retMsg);
 			Map<String,Object> map2 = new HashMap<String,Object>();
-			map2.put("msg_id", listMessage==null?"":listMessage.get(0).getId());
-			map2.put("title", listMessage==null?"":listMessage.get(0).getTitle());
-			map2.put("content", listMessage==null?"":listMessage.get(0).getContent());
-//			map2.put("date", listMessage==null?"":listMessage.get(0).getSendtime());
+			map2.put("msg_id", lm==null?"":lm.get(0).getId()==0?"":lm.get(0).getId());
+			map2.put("title", lm==null?"":lm.get(0).getTitle()==null?"":lm.get(0).getTitle());
+			map2.put("content", lm==null?"":lm.get(0).getContent()==null?"":lm.get(0).getContent());
+//			map2.put("date", lm==null?"":lm.get(0).getSendtime()==null?"":lm.get(0).getSendtime());
 			map2.put("file_path", "");
 			
 			Map<String,Object> map1 = new HashMap<String,Object>();

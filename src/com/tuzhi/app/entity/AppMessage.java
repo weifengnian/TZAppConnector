@@ -1,11 +1,10 @@
 package com.tuzhi.app.entity;
 
-import java.util.Date;
 
 public class AppMessage {
 	
 	private int id; //
-	private Date sendtime; //发送时间
+	private String sendtime; //发送时间
 	private int sender_id; //发送者
 	private String content; //内容
 	private String title; //标题
@@ -16,10 +15,10 @@ public class AppMessage {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public Date getSendtime() {
+	public String getSendtime() {
 		return sendtime;
 	}
-	public void setSendtime(Date sendtime) {
+	public void setSendtime(String sendtime) {
 		this.sendtime = sendtime;
 	}
 	public int getSender_id() {

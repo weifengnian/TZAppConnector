@@ -1,6 +1,5 @@
 package com.tuzhi.app.entity;
 
-import java.util.Date;
 
 public class AppCertificate {
 	
@@ -10,8 +9,8 @@ public class AppCertificate {
 	private String local_url; //本地地址
 	private String level; //证书等级
 	private int is_auth; //是否审核	0:未提交	1:已审核通过   10:审核中	-1:审核未通过
-	private Date create_time; //创建时间
-	private Date auth_time; //审核时间
+	private String create_time; //创建时间
+	private String auth_time; //审核时间
 	
 	
 	public int getId() {
@@ -50,16 +49,16 @@ public class AppCertificate {
 	public void setIs_auth(int is_auth) {
 		this.is_auth = is_auth;
 	}
-	public Date getCreate_time() {
+	public String getCreate_time() {
 		return create_time;
 	}
-	public void setCreate_time(Date create_time) {
+	public void setCreate_time(String create_time) {
 		this.create_time = create_time;
 	}
-	public Date getAuth_time() {
+	public String getAuth_time() {
 		return auth_time;
 	}
-	public void setAuth_time(Date auth_time) {
+	public void setAuth_time(String auth_time) {
 		this.auth_time = auth_time;
 	}
 }

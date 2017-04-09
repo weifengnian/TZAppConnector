@@ -53,6 +53,13 @@ public interface IAppUserInfoDao {
 	public Integer addEnterprises(Map<String,String> map);
 	
 	/**
+	 * 删除用户领域信息
+	 * @param map
+	 * @return
+	 */
+	public Integer deleteUserField(Map<String,String> map);
+	
+	/**
 	 * 新增个人用户 擅长领域关联表
 	 * @param map
 	 * @return
@@ -60,11 +67,39 @@ public interface IAppUserInfoDao {
 	public Integer addAppUserField(Map<String,String> map);
 	
 	/**
-	 * 新增个人用户用户证书关联表
+	 * 删除用户资质证书
 	 * @param map
 	 * @return
 	 */
-	public Integer addAppUserCertificate(Map<String,String> map);
+	public Integer deleteCertificate(Map<String,String> map);
+	
+	/**
+	 * 删除用户与证书关联表
+	 * @param map
+	 * @return
+	 */
+	public Integer deleteUserCertificate(Map<String,String> map);
+	
+	/**
+	 * 添加证书
+	 * @param map
+	 * @return
+	 */
+	public Integer addCertificate(Map<String,String> map);
+	
+	/**
+	 * 获取证书id
+	 * @param map
+	 * @return
+	 */
+	public AppCertificate getAppCertificate(Map<String,String> map);
+	
+	/**
+	 * 新增用户证书关联表
+	 * @param map
+	 * @return
+	 */
+	public Integer addUserCertificate(Map<String,String> map);
 	
 	/**
 	 * 修改（完善）用户信息

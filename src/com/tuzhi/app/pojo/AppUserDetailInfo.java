@@ -1,7 +1,5 @@
 package com.tuzhi.app.pojo;
 
-import java.util.Date;
-
 public class AppUserDetailInfo {
 	
 	private int id; //
@@ -12,16 +10,16 @@ public class AppUserDetailInfo {
 	private String local_url; //本地地址
 	private String mobile_phone; //手机
 	private int sex; //性别	1:男	2:女
-	private Date create_time; //创建时间
-	private Date update_time; //修改时间
+	private String create_time; //创建时间
+	private String update_time; //修改时间
 	private int integral; //积分
 	private int card_id; //关联身份证
-	private Date graduation_time; //毕业时间
+	private String graduation_time; //毕业时间
 	private String address_id; //所在地址
 	private String token; //令牌
 	private int level_id; //关联等级
 	private int is_auth; //是否实名认证	0:未提交	1:已认证	10:认证中/待实名	-1:认证未通过(人工)	-2:认证未通过(机器)
-	private Date auth_create_time; //认证时间
+	private String auth_create_time; //认证时间
 	private double money; //帐号金额
 	private int status; //状态	-1:黑名单	1:正常
 
@@ -96,17 +94,11 @@ public class AppUserDetailInfo {
 	public void setSex(int sex) {
 		this.sex = sex;
 	}
-	public Date getCreate_time() {
+	public String getCreate_time() {
 		return create_time;
 	}
-	public void setCreate_time(Date create_time) {
+	public void setCreate_time(String create_time) {
 		this.create_time = create_time;
-	}
-	public Date getUpdate_time() {
-		return update_time;
-	}
-	public void setUpdate_time(Date update_time) {
-		this.update_time = update_time;
 	}
 	public int getIntegral() {
 		return integral;
@@ -119,12 +111,6 @@ public class AppUserDetailInfo {
 	}
 	public void setCard_id(int card_id) {
 		this.card_id = card_id;
-	}
-	public Date getGraduation_time() {
-		return graduation_time;
-	}
-	public void setGraduation_time(Date graduation_time) {
-		this.graduation_time = graduation_time;
 	}
 	public String getAddress_id() {
 		return address_id;
@@ -149,12 +135,6 @@ public class AppUserDetailInfo {
 	}
 	public void setIs_auth(int is_auth) {
 		this.is_auth = is_auth;
-	}
-	public Date getAuth_create_time() {
-		return auth_create_time;
-	}
-	public void setAuth_create_time(Date auth_create_time) {
-		this.auth_create_time = auth_create_time;
 	}
 	public double getMoney() {
 		return money;
@@ -275,5 +255,23 @@ public class AppUserDetailInfo {
 	}
 	public void setLocal_below_url(String local_below_url) {
 		this.local_below_url = local_below_url;
+	}
+	public String getUpdate_time() {
+		return update_time;
+	}
+	public void setUpdate_time(String update_time) {
+		this.update_time = update_time;
+	}
+	public String getGraduation_time() {
+		return graduation_time;
+	}
+	public void setGraduation_time(String graduation_time) {
+		this.graduation_time = graduation_time;
+	}
+	public String getAuth_create_time() {
+		return auth_create_time;
+	}
+	public void setAuth_create_time(String auth_create_time) {
+		this.auth_create_time = auth_create_time;
 	}
 }

@@ -3,7 +3,7 @@ package com.tuzhi.app.entity;
 public class AppGoodField {
 	
 	private int id; //
-	private int name; //领域名称	1:网络 	2:服务器	3:监控 	4:虚拟化	5:云 	6:视频
+	private int name; //领域名称	1:网络 	2:服务器	3:监控 	4:虚拟化	5:云 	 6:视频
 	private String desc; //类型描述
 	private int parent_id; //父节点	0:根节点
 	private String url; //icon url

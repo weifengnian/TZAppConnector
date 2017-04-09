@@ -49,15 +49,45 @@ public class AppUserInfoDao extends SqlSessionDaoSupport implements IAppUserInfo
 	}
 	
 	@Override
+	public Integer deleteUserField(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return getSqlSession().delete("AppUserInfoDaoMapper.deleteUserField",map);
+	}
+	
+	@Override
 	public Integer addAppUserField(Map<String, String> map) {
 		// TODO Auto-generated method stub
 		return getSqlSession().insert("AppUserInfoDaoMapper.addAppUserField",map);
 	}
 	
 	@Override
-	public Integer addAppUserCertificate(Map<String, String> map) {
+	public Integer deleteCertificate(Map<String,String> map){
 		// TODO Auto-generated method stub
-		return getSqlSession().insert("AppUserInfoDaoMapper.addAppUserCertificate",map);
+		return getSqlSession().delete("AppUserInfoDaoMapper.deleteCertificate",map);
+	}
+	
+	@Override
+	public Integer deleteUserCertificate(Map<String,String> map){
+		// TODO Auto-generated method stub
+		return getSqlSession().delete("AppUserInfoDaoMapper.deleteUserCertificate",map);
+	}
+	
+	@Override
+	public Integer addCertificate(Map<String,String> map){
+		// TODO Auto-generated method stub
+		return getSqlSession().insert("AppUserInfoDaoMapper.addCertificate",map);
+	}
+	
+	@Override
+	public AppCertificate getAppCertificate(Map<String,String> map){
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne("AppUserInfoDaoMapper.getAppCertificate",map);
+	}
+	
+	@Override
+	public Integer addUserCertificate(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return getSqlSession().insert("AppUserInfoDaoMapper.addUserCertificate",map);
 	}
 
 	@Override

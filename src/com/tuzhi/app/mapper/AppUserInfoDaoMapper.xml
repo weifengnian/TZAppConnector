@@ -51,16 +51,81 @@
 		values(#{phone},#{password},#{token},#{create_time})
   	</insert>
   	
+  	<!-- 删除个人用户 擅长领域关联表-->
+  	<delete id="deleteUserField" parameterType="map" >
+		delete from app_user_field where user_id=#{user_id}
+  	</delete>
+  	
   	<!-- 新增个人用户 擅长领域关联表-->
   	<insert id="addAppUserField" parameterType="map" >
 		insert into app_user_field(field_id,user_id)
 		values(#{good_field},#{user_id})
   	</insert>
   	
-  	<!-- 新增个人用户用户证书关联表-->
-  	<insert id="addAppUserCertificate" parameterType="map" >
+    <!-- 删除用户资质证书  -->
+	<delete id="deleteCertificate" parameterType="map" >
+		delete from app_certificate where id in(select c.certificate_id from app_user_certificate c where c.user_id=#{user_id})
+  	</delete>
+	
+    <!-- 删除用户与证书关联表 -->
+	<delete id="deleteUserCertificate" parameterType="map" >
+		delete from app_user_certificate where user_id=#{user_id}
+  	</delete>
+	
+    <!-- 添加证书 -->
+	<insert id="addCertificate" parameterType="map" >
+		insert into app_certificate(
+		    <if test="certificate_name !=null and certificate_name !='' ">
+              certificate_name,
+            </if>
+            <if test="qualification_certificate !=null and qualification_certificate !='' ">
+              certificate_url,
+            </if>
+            <if test="local_url !=null and local_url !='' ">
+              local_url,
+            </if>
+            <if test="level !=null and level !='' ">
+              [level],
+            </if>
+            <if test="is_auth !=null and is_auth !='' ">
+              is_auth,
+            </if>
+            <if test="auth_time !=null and auth_time !='' ">
+              auth_time,
+            </if>
+			  create_time
+        )values(
+            <if test="certificate_name !=null and certificate_name !='' ">
+              #{certificate_name},
+            </if>
+            <if test="qualification_certificate !=null and qualification_certificate !='' ">
+              #{qualification_certificate},
+            </if>
+            <if test="local_url !=null and local_url !='' ">
+              #{local_url},
+            </if>
+            <if test="level !=null and level !='' ">
+              #{level},
+            </if>
+            <if test="is_auth !=null and is_auth !='' ">
+              #{is_auth},
+            </if>
+            <if test="auth_time !=null and auth_time !='' ">
+              #{auth_time},
+            </if>
+			  getdate()
+        )
+  	</insert>
+	
+    <!-- 获取证书id -->
+	<select id="getAppCertificate" parameterType="map" resultMap="certificate">
+		select c.* from app_certificate u where u.certificate_url=#{qualification_certificate}
+	</select>
+  	
+  	<!-- 新增用户证书关联表-->
+  	<insert id="addUserCertificate" parameterType="map" >
 		insert into app_user_certificate(certificate_id,user_id)
-		values(#{qualification_certificate},#{user_id})
+		values(#{certificate_id},#{user_id})
   	</insert>
   	    
   	<!-- 修改个人用户 -->
@@ -120,7 +185,7 @@
 		values(#{phone},#{password},#{token},#{create_time})
   	</insert>
 	
-	<!-- 修改企业用户信息 -->
+	<!-- 修改（完善）企业用户信息 -->
   	<update id="updateEnterprises" parameterType="map">
 		update app_enterprises_info set
 		  <if test="e_name !=null and e_name !='' ">
@@ -132,8 +197,20 @@
 		  <if test="business_img !=null and business_img !='' ">
               business_url=#{business_img},
           </if>
+		  <if test="logo !=null and logo !='' ">
+              enterprise_url=#{logo},
+          </if>
           <if test="password !=null and password !='' ">
               password=#{password},
+          </if>
+          <if test="telephone !=null and telephone !='' ">
+              telephone=#{telephone},
+          </if>
+          <if test="legal_person !=null and legal_person !='' ">
+              legal_person=#{legal_person},
+          </if>
+          <if test="desc !=null and desc !='' ">
+              [desc]=#{desc},
           </if>
 			update_time=getdate()
 			
