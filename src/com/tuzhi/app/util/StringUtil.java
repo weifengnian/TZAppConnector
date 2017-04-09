@@ -62,6 +62,14 @@ public class StringUtil {
 			return true;
 		return false;
 	}
+	
+	//判断字符是否为空
+	public static String isStr(String str) {
+		
+		String string = null==str?"":str;
+		
+		return string;
+	}
 
 	//Md5加密
 	public static String MD5pwd(String pwd){

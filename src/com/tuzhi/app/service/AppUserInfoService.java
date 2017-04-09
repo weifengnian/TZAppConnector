@@ -1,10 +1,13 @@
 package com.tuzhi.app.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.tuzhi.app.dao.IAppUserInfoDao;
+import com.tuzhi.app.entity.AppCertificate;
 import com.tuzhi.app.entity.AppEnterprisesInfo;
-import com.tuzhi.app.entity.AppUserInfo;
+import com.tuzhi.app.entity.AppGoodField;
+import com.tuzhi.app.pojo.AppUserDetailInfo;
 
 
 public class AppUserInfoService implements IAppUserInfoService {
@@ -20,9 +23,21 @@ public class AppUserInfoService implements IAppUserInfoService {
 	}
 	
 	@Override
-	public AppUserInfo getAppUser(Map<String, String> map) {
+	public AppUserDetailInfo getAppUser(Map<String, String> map) {
 		// TODO Auto-generated method stub
 		return appUserInfoDao.getAppUser(map);
+	}
+	
+	@Override
+	public List<AppGoodField> getGoodField(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return appUserInfoDao.getGoodField(map);
+	}
+	
+	@Override
+	public List<AppCertificate> getCertificate(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return appUserInfoDao.getCertificate(map);
 	}
 
 	@Override

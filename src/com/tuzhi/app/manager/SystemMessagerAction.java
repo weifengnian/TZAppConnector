@@ -51,20 +51,18 @@ public class SystemMessagerAction extends HttpServlet {
 			String status = "0";
 			String retMsg = "成功";
 			
-			//企业(y),个人(n)  type: 1:个人  2:企业
-			if("n".equals(map.get("is_business"))){
-				map.put("type", "1"); 
+			//验证参数     type=1指用户、type=2指企业
+			if(StringUtil.isBlank(map.get("opinion_content")) || StringUtil.isBlank(map.get("type")) ||
+				StringUtil.isBlank(map.get("user_id"))){
+				status = "15";
+				retMsg = "必要参数缺失";
 			}else{
-				map.put("type", "2");
-			}
-			
-			map.put("u_id", map.get("user_id")); //编号(type=1指用户id、type=2指企业id)
-		
-			//添加反馈意见
-			int resultStatus = systemMessagerService.insertFeedback(map);
-			if(resultStatus <= 0){
-				status = "12";
-				retMsg = "信息反馈失败";
+				//添加反馈意见
+				int resultStatus = systemMessagerService.insertFeedback(map);
+				if(resultStatus <= 0){
+					status = "12";
+					retMsg = "信息反馈失败";
+				}
 			}
 				
 			log.info("------status:"+status+"-------retMsg:"+retMsg);
@@ -103,7 +101,6 @@ public class SystemMessagerAction extends HttpServlet {
 	/**
 	 * 消息列表
 	 */
-	@SuppressWarnings("unchecked")
 	public void message(){
 		try {
 			HttpServletRequest request = ServletActionContext.getRequest(); 
@@ -119,22 +116,32 @@ public class SystemMessagerAction extends HttpServlet {
 			String status = "0";
 			String retMsg = "成功";
 		
-			//消息列表
-			List<AppMessage> listMessage = systemMessagerService.getMessage(map);
-			if(listMessage.size()<=0){
-				listMessage = (List<AppMessage>) new AppMessage();
-				status = "13";
-				retMsg = "消息列表获取失败";
+			//验证参数     type=1指用户、type=2指企业
+			List<AppMessage> listMessage = new ArrayList<AppMessage>();
+			if(StringUtil.isBlank(map.get("type")) || StringUtil.isBlank(map.get("user_id"))){
+				status = "15";
+				retMsg = "必要参数缺失";
+			}else{
+				//消息列表
+				listMessage = systemMessagerService.getMessage(map);
+				if(listMessage.size()<=0){
+					status = "13";
+					retMsg = "消息列表获取失败";
+				}
 			}
 			
 			List<Map<String,Object>> listMap = new ArrayList<Map<String,Object>>();
 			
-			for (int i = 0; i < listMessage.size(); i++) {
+			int num = 0;
+			if(listMessage.size()==0){
+				num = -1;
+			}
+			for (int i = num; i < listMessage.size(); i++) {
 				log.info("------status:"+status+"-------retMsg:"+retMsg);
 				Map<String,Object> map3 = new HashMap<String,Object>();
-				map3.put("msg_id", listMessage.get(i).getId());
-				map3.put("title", listMessage.get(i).getTitle());
-				map3.put("date", listMessage.get(i).getSendtime());
+				map3.put("msg_id", listMessage.size()==0?"":listMessage.get(i).getId());
+				map3.put("title", listMessage.size()==0?"":listMessage.get(i).getTitle());
+				map3.put("date", listMessage.size()==0?"":listMessage.get(i).getSendtime());
 				
 				Map<String,Object> map2 = new HashMap<String,Object>();
 				map2.put("list", map3);
@@ -178,7 +185,6 @@ public class SystemMessagerAction extends HttpServlet {
 	/**
 	 * 系统消息详细
 	 */
-	@SuppressWarnings("unchecked")
 	public void messageDetail(){
 		try {
 			HttpServletRequest request = ServletActionContext.getRequest(); 
@@ -193,21 +199,27 @@ public class SystemMessagerAction extends HttpServlet {
 			
 			String status = "0";
 			String retMsg = "成功";
-		
-			//消息列表
-			List<AppMessage> listMessage = systemMessagerService.getMessage(map);
-			if(listMessage == null){
-				listMessage = (List<AppMessage>) new AppMessage();
-				status = "14";
-				retMsg = "消息详情获取失败";
+			
+			//验证参数     type=1指用户、type=2指企业
+			List<AppMessage> listMessage = null;
+			if(StringUtil.isBlank(map.get("msg_id"))){
+				status = "15";
+				retMsg = "必要参数缺失";
+			}else{
+				//消息列表
+				listMessage = systemMessagerService.getMessage(map);
+				if(listMessage == null){
+					status = "14";
+					retMsg = "消息详情获取失败";
+				}
 			}
 				
 			log.info("------status:"+status+"-------retMsg:"+retMsg);
 			Map<String,Object> map2 = new HashMap<String,Object>();
-			map2.put("msg_id", listMessage.get(0).getId());
-			map2.put("title", listMessage.get(0).getTitle());
-			map2.put("content", listMessage.get(0).getContent());
-//			map2.put("date", listMessage.get(0).getSendtime());
+			map2.put("msg_id", listMessage==null?"":listMessage.get(0).getId());
+			map2.put("title", listMessage==null?"":listMessage.get(0).getTitle());
+			map2.put("content", listMessage==null?"":listMessage.get(0).getContent());
+//			map2.put("date", listMessage==null?"":listMessage.get(0).getSendtime());
 			map2.put("file_path", "");
 			
 			Map<String,Object> map1 = new HashMap<String,Object>();

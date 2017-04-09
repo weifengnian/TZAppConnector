@@ -1,18 +1,33 @@
 package com.tuzhi.app.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 
+import com.tuzhi.app.entity.AppCertificate;
 import com.tuzhi.app.entity.AppEnterprisesInfo;
-import com.tuzhi.app.entity.AppUserInfo;
+import com.tuzhi.app.entity.AppGoodField;
+import com.tuzhi.app.pojo.AppUserDetailInfo;
 
 public class AppUserInfoDao extends SqlSessionDaoSupport implements IAppUserInfoDao {
 
 	@Override
-	public AppUserInfo getAppUser(Map<String, String> map) {
+	public AppUserDetailInfo getAppUser(Map<String, String> map) {
 		// TODO Auto-generated method stub
 		return getSqlSession().selectOne("AppUserInfoDaoMapper.getAppUser",map);
+	}
+	
+	@Override
+	public List<AppGoodField> getGoodField(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectList("AppUserInfoDaoMapper.getGoodField",map);
+	}
+	
+	@Override
+	public List<AppCertificate> getCertificate(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectList("AppUserInfoDaoMapper.getCertificate",map);
 	}
 
 	@Override

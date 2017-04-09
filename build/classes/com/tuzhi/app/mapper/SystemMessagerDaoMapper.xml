@@ -13,8 +13,8 @@
 		  <if test="email != null and email != ''">
 			email,
 		  </if>
-		  <if test="user_id != null and user_id != ''">
-			user_id,
+		  <if test="phone != null and phone != ''">
+			phone,
 		  </if>
 		  <if test="opinion_content != null and opinion_content != ''">
 			opinion_content,
@@ -22,7 +22,7 @@
 		  <if test="type != null and type != ''">
 			type,
 		  </if>
-		  <if test="u_id != null and u_id != ''">
+		  <if test="user_id != null and user_id != ''">
 			u_id,
 		  </if>
 		    time
@@ -30,8 +30,8 @@
 		  <if test="email != null and email != ''">
 			#{email},
 		  </if>
-		  <if test="user_id != null and user_id != ''">
-			#{user_id},
+		  <if test="phone != null and phone != ''">
+			#{phone},
 		  </if>
 		  <if test="opinion_content != null and opinion_content != ''">
 			#{opinion_content},
@@ -39,8 +39,8 @@
 		  <if test="type != null and type != ''">
 			#{type},
 		  </if>
-		  <if test="u_id != null and u_id != ''">
-			#{u_id},
+		  <if test="user_id != null and user_id != ''">
+			#{user_id},
 		  </if>
 		    getdate()
 		)
@@ -52,10 +52,13 @@
           left join app_msg_receive r on m.id=r.msg_id
   		 where 1=1
   		 <if test="user_id !=null and user_id != ''">
-			and r.u_id= #{user_id}
+			and r.u_id = #{user_id}
+		 </if>
+		 <if test="type !=null and type != ''">
+			and r.type = #{type}
 		 </if>
 		 <if test="msg_id !=null and msg_id != ''">
-			and m.id= #{msg_id}
+			and m.id = #{msg_id}
 		 </if>
 		order by m.sendtime desc
 	</select>

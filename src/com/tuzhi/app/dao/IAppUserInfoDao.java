@@ -1,9 +1,12 @@
 package com.tuzhi.app.dao;
 
+import java.util.List;
 import java.util.Map;
 
+import com.tuzhi.app.entity.AppCertificate;
 import com.tuzhi.app.entity.AppEnterprisesInfo;
-import com.tuzhi.app.entity.AppUserInfo;
+import com.tuzhi.app.entity.AppGoodField;
+import com.tuzhi.app.pojo.AppUserDetailInfo;
 
 public interface IAppUserInfoDao {
 	
@@ -12,7 +15,21 @@ public interface IAppUserInfoDao {
 	 * @param map
 	 * @return
 	 */
-	public AppUserInfo getAppUser(Map<String,String> map);
+	public AppUserDetailInfo getAppUser(Map<String,String> map);
+	
+	/**
+	 * 查询个人用户领域信息
+	 * @param map
+	 * @return
+	 */
+	public List<AppGoodField> getGoodField(Map<String,String> map);
+	
+	/**
+	 * 查询个人用户资质证书信息
+	 * @param map
+	 * @return
+	 */
+	public List<AppCertificate> getCertificate(Map<String,String> map);
 	
 	/**
 	 * 注册用户信息

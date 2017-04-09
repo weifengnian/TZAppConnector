@@ -7,7 +7,7 @@
 	<package name="manager" extends="struts-default" namespace="/manager">
 
 		<!-- 用户 -->
-		<action name="*User" method="{1}" class="appUserInfoAction"></action>
+		<action name="*Ur" method="{1}" class="appUserInfoAction"></action>
 		
 		<!-- 系统消息 -->
 		<action name="*Msg" method="{1}" class="systemMessagerAction"></action>	
