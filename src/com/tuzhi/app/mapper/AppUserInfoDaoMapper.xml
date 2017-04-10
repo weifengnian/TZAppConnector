@@ -23,15 +23,22 @@
 		   <if test="user_id !=null and user_id != ''">
 			  and u.id = #{user_id}
 		   </if>
+		   <if test="token !=null and token != ''">
+			  and u.token = #{token}
+		   </if>
 	</select>
 	
 	<!-- 查询个人用户领域信息 -->
 	<select id="getGoodField" parameterType="map" resultMap="goodField">
 		select g.* from app_user_field u
            left join app_good_field g on u.field_id=g.id
+           left join app_user_info ui on u.user_id=ui.id
               where 1=1
 		   <if test="user_id !=null and user_id != ''">
 			  and u.user_id = #{user_id}
+		   </if>
+		   <if test="token !=null and token != ''">
+			  and ui.token = #{token}
 		   </if>
 	</select>
 	
@@ -39,9 +46,13 @@
 	<select id="getCertificate" parameterType="map" resultMap="certificate">
 		select c.* from app_user_certificate u
 			left join app_certificate c on u.certificate_id=c.id
+			left join app_user_info ui on u.user_id=ui.id 
               where 1=1
 		   <if test="user_id !=null and user_id != ''">
 			  and u.user_id = #{user_id}
+		   </if>
+		   <if test="token !=null and token != ''">
+			  and ui.token = #{token}
 		   </if>
 	</select>
 	
@@ -130,37 +141,40 @@
   	    
   	<!-- 修改个人用户 -->
   	<update id="updateAppUser" parameterType="map">
-		update app_user_info set
+		update app_user_info u set
 		  <if test="user_name !=null and user_name !='' ">
-              name=#{user_name},
+              u.name=#{user_name},
           </if> 
-<!-- 		  <if test="card !=null and card !='' "> -->
-<!--               card_id=#{card}, -->
-<!--           </if> -->
+		  <if test="card_id !=null and card_id !='' ">
+              u.card_id=#{card_id},
+          </if>
 		  <if test="sex !=null and sex !='' ">
-              sex=#{sex},
+              u.sex=#{sex},
           </if>
 		  <if test="graduation_time !=null and graduation_time !='' ">
-              graduation_time=#{graduation_time},
+              u.graduation_time=#{graduation_time},
           </if>
-<!-- 		  <if test="order_address !=null and order_address !='' "> -->
-<!--               address_id=#{order_address}, -->
-<!--           </if> -->
+		  <if test="address_id !=null and address_id !='' ">
+              u.address_id=#{address_id},
+          </if>
 		  <if test="card_id !=null and card_id !='' ">
-              card_img=#{card_id},
+              u.card_img=#{card_id},
           </if>
 		  <if test="password !=null and password !='' ">
-              password=#{password},
+              u.password=#{password},
           </if>
 		  <if test="logo_url !=null and logo_url !='' ">
-              local_url=#{logo_url},
+              u.local_url=#{logo_url},
           </if>
-			update_time=getdate()
+			u.update_time=getdate()
 			
 		where 1=1
-          <if test=" user_id !='' ">
-             and id=#{user_id} 
-          </if>
+          <if test="user_id !=null and user_id != ''">
+			  and u.id = #{user_id}
+		   </if>
+		   <if test="token !=null and token != ''">
+			  and u.token = #{token}
+		   </if>
   	</update>
   	
   	
@@ -176,6 +190,9 @@
 		   </if>
 		   <if test="user_id !=null and user_id != ''">
 			  and e.id = #{user_id}
+		   </if>
+		   <if test="token !=null and token != ''">
+			  and e.token = #{token}
 		   </if>
 	</select>
 	
@@ -221,6 +238,9 @@
           <if test="user_id !=null and user_id !='' ">
              and id=#{user_id} 
           </if>
+          <if test="token !=null and token != ''">
+			 and token=#{token}
+		   </if>
   	</update>
   	
   	

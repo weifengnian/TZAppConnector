@@ -50,6 +50,7 @@
 	<select id="getMessage" parameterType="map" resultMap="resultMessage">
 		select m.* from app_message m
           left join app_msg_receive r on m.id=r.msg_id
+          left join app_user_info u on  r.u_id=u.id
   		 where 1=1
   		 <if test="user_id !=null and user_id != ''">
 			and r.u_id = #{user_id}
@@ -59,6 +60,9 @@
 		 </if>
 		 <if test="msg_id !=null and msg_id != ''">
 			and m.id = #{msg_id}
+		 </if>
+		 <if test="token !=null and token != ''">
+			and  u.token=#{token}
 		 </if>
 		order by m.sendtime desc
 	</select>

@@ -140,16 +140,16 @@ public class AppUserInfoService implements IAppUserInfoService {
 			/*num = appUserInfoDao.addCardInfo(cfMap);*/
 		}
 		
-		//获取接单地址
+		//获取并添加接单地址
 		if(StringUtil.isBlank(map.get("order_address"))){
 			//获取地址集合
 			String address = map.get("order_address");
-			JSONArray arr = JSONArray.fromObject(address);
+			JSONObject jsonAddress = JSONObject.fromObject(address);
+			String list = jsonAddress.get("list").toString();
+			JSONArray arr = JSONArray.fromObject(list);
 			for (int i = 0; i < arr.size(); i++) {
 				JSONObject j = arr.getJSONObject(i);
-				JSONObject job  = JSONObject.fromObject(j);
-				String adrs = job.get("list").toString();
-				JSONObject jsonAdrs  = JSONObject.fromObject(adrs);
+				JSONObject jsonAdrs  = JSONObject.fromObject(j);
 				@SuppressWarnings("rawtypes")
 				Iterator itea = jsonAdrs.keys();
 				// 遍历jsonObject数据,添加到Map对象

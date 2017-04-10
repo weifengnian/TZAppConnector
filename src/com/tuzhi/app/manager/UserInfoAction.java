@@ -73,7 +73,7 @@ public class UserInfoAction extends HttpServlet {
 			}else{
 				//企业(y),个人(n)
 				if("n".equals(map.get("is_business"))){
-					//查询
+					//查询用户
 					AppUserDetailInfo userInfo = appUserInfoService.getAppUser(map);
 					if(userInfo != null){
 						status = "01";
@@ -301,11 +301,11 @@ public class UserInfoAction extends HttpServlet {
 			AppUserDetailInfo userInfo = appUserInfoService.getAppUser(map);
 			if(userInfo == null){
 				status = "09";
-				retMsg = "改用户已不存在";
+				retMsg = "该用户已不存在";
 			}else{
 				//完善个人用户信息
-				int resultStstus = appUserInfoService.updateAppUser(map);
-				if(resultStstus<=0){
+				int resultStstu = appUserInfoService.updateAppUser(map);
+				if(resultStstu<=0){
 					status = "07";
 					retMsg = "完善个人信息失败";
 				}
@@ -369,7 +369,7 @@ public class UserInfoAction extends HttpServlet {
 			AppUserDetailInfo uf = null;
 			
 			//验证参数
-			if(StringUtil.isBlank(map.get("user_id"))){
+			if(StringUtil.isBlank(map.get("user_id")) || StringUtil.isBlank(map.get("token"))){
 				status = "15";
 				retMsg = "必要参数缺失";
 			}else if(map.get("user_id").length()>10){
@@ -420,11 +420,10 @@ public class UserInfoAction extends HttpServlet {
 				fdMap.put("name", fd.size()==0?"":fd.get(i).getName()==0?"":fd.get(i).getName());
 				fdMap.put("url", fd.size()==0?"":fd.get(i).getUrl()==null?"":fd.get(i).getUrl());
 				fdMap.put("desc", fd.size()==0?"":fd.get(i).getDesc()==null?"":fd.get(i).getDesc());
-				
-				Map<String,Object> fdMap1 = new HashMap<String,Object>();
-				fdMap1.put("list", fdMap);
-				fdListMap.add(fdMap1);
+				fdListMap.add(fdMap);
 			}
+			Map<String,Object> fdMap1 = new HashMap<String,Object>();
+			fdMap1.put("list", fdListMap);
 			
 			//资质证书
 			List<Map<String,Object>> cfListMap = new ArrayList<Map<String,Object>>();
@@ -437,11 +436,10 @@ public class UserInfoAction extends HttpServlet {
 				cfMap.put("id", cf.size()==0?"":cf.get(i).getId()==0?"":cf.get(i).getId());
 				cfMap.put("certificate_name", cf.size()==0?"":cf.get(i).getCertificate_name()==null?"":cf.get(i).getCertificate_name());
 				cfMap.put("certificate_url", cf.size()==0?"":cf.get(i).getCertificate_url()==null?"":cf.get(i).getCertificate_url());
-				
-				Map<String,Object> cfMap1 = new HashMap<String,Object>();
-				cfMap1.put("list", cfMap);
-				cfListMap.add(cfMap1);
+				cfListMap.add(cfMap);
 			}
+			Map<String,Object> cfMap1 = new HashMap<String,Object>();
+			cfMap1.put("list", cfListMap);
 			
 			//用户基本信息
 			Map<String,Object> ufdMap = new HashMap<String,Object>();
@@ -459,8 +457,8 @@ public class UserInfoAction extends HttpServlet {
 			ufdMap.put("update_time", uf==null?"":uf.getUpdate_time()==null?"":uf.getUpdate_time());
 			ufdMap.put("graduation_time", uf==null?"":uf.getGraduation_time()==null?"":uf.getGraduation_time());
 			ufdMap.put("order_address", adrListMap);
-			ufdMap.put("good_field", fdListMap);
-			ufdMap.put("qualification_certificate", cfListMap);
+			ufdMap.put("good_field", fdMap1);
+			ufdMap.put("qualification_certificate", cfMap1);
 			ufdMap.put("card", crdMap);
 			
 			Map<String,Object> ufMap = new HashMap<String,Object>();
@@ -513,19 +511,29 @@ public class UserInfoAction extends HttpServlet {
 			String status = "0";
 			String retMsg = "成功";
 			
-			//查询企业信息
-			AppEnterprisesInfo ep = appUserInfoService.getEnterprises(map);
-			if(ep == null){
-				status = "09";
-				retMsg = "该用户已不存在";
+			//验证参数
+			if(StringUtil.isBlank(map.get("e_id")) || StringUtil.isBlank(map.get("token"))){
+				status = "15";
+				retMsg = "必要参数缺失";
+			}else if(map.get("e_id").length()>10){
+				status = "16";
+				retMsg = "必要参数输入有误";
 			}else{
-				//完善企业信息
-				int resultStatus = appUserInfoService.updateEnterprises(map);
-				if(resultStatus<=0){
-					status = "08";
-					retMsg = "完善企业信息失败";
+				//查询企业信息
+				AppEnterprisesInfo ep = appUserInfoService.getEnterprises(map);
+				if(ep == null){
+					status = "09";
+					retMsg = "该用户已不存在";
+				}else{
+					//完善企业信息
+					int resultStatus = appUserInfoService.updateEnterprises(map);
+					if(resultStatus<=0){
+						status = "08";
+						retMsg = "完善企业信息失败";
+					}
 				}
 			}
+			
 
 			Map<String,Object> map1 = new HashMap<String,Object>();
 			map1.put("status", status);
@@ -581,7 +589,7 @@ public class UserInfoAction extends HttpServlet {
 			AppEnterprisesInfo ep = null;
 			
 			//验证参数
-			if(StringUtil.isBlank(map.get("e_id"))){
+			if(StringUtil.isBlank(map.get("e_id")) || StringUtil.isBlank(map.get("token"))){
 				status = "15";
 				retMsg = "必要参数缺失";
 			}else if(map.get("e_id").length()>10){
@@ -592,7 +600,7 @@ public class UserInfoAction extends HttpServlet {
 				ep = appUserInfoService.getEnterprises(map);
 				if(ep == null){
 					status = "09";
-					retMsg = "改用户已不存在";
+					retMsg = "该用户已不存在";
 				}
 			}
 			
@@ -675,7 +683,7 @@ public class UserInfoAction extends HttpServlet {
 				 StringUtil.isBlank(map.get("new_pwd")) || StringUtil.isBlank(map.get("type"))){
 				status = "15";
 				retMsg = "必要参数缺失";
-			}else if(!"1".equals(map.get("type")) && !"2".equals(map.get("type")) && map.get("user_id").length()>10){
+			}else if((!"1".equals(map.get("type")) && !"2".equals(map.get("type"))) || map.get("user_id").length()>10){
 				status = "16";
 				retMsg = "必要参数输入有误";
 			}else{
@@ -685,7 +693,7 @@ public class UserInfoAction extends HttpServlet {
 					AppUserDetailInfo userInfo = appUserInfoService.getAppUser(map);
 					if(userInfo == null){
 						status = "09";
-						retMsg = "改用户已不存在";
+						retMsg = "该用户已不存在";
 					}else{
 						if(!old_pwd.equals(userInfo.getPassword())){
 							status = "10";
@@ -704,7 +712,7 @@ public class UserInfoAction extends HttpServlet {
 					AppEnterprisesInfo enterInfo = appUserInfoService.getEnterprises(map);
 					if(enterInfo == null){
 						status = "09";
-						retMsg = "改用户已不存在";
+						retMsg = "该用户已不存在";
 					}else{
 						if(!old_pwd.equals(enterInfo.getPassword())){
 							status = "10";
@@ -765,9 +773,9 @@ public class UserInfoAction extends HttpServlet {
 	
 	@SuppressWarnings("rawtypes")
 	public static void main(String[] args) {
-		Map<String,String> cfMap = new HashMap<String,String>();
-		cfMap.put("a", "123456789");
-		System.out.println(cfMap.get("a").length());
+		Map<String,Object> cfMap = new HashMap<String,Object>();
+//		cfMap.put("a", "123456789");
+//		System.out.println(cfMap.get("a").length());
 //		cfMap.put("b", "2");
 //		cfMap.put("c", "3");
 //		
@@ -776,7 +784,7 @@ public class UserInfoAction extends HttpServlet {
 //		map.put("b2", "2");
 //		map.put("c3", "3");
 //		
-		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+		List<Map<String,String>> list = new ArrayList<Map<String,String>>();
 //		list.add(cfMap);
 //		list.add(map);
 		
@@ -785,45 +793,30 @@ public class UserInfoAction extends HttpServlet {
 			map.put("a1", "1");
 			map.put("b2", "2");
 			map.put("c3", "3");
-			
-			Map<String,Object> fdMap1 = new HashMap<String,Object>();
-			fdMap1.put("list", map);
-			list.add(fdMap1);
+			list.add(map);
 		}
 		
 		Map<String,Object> map1 = new HashMap<String,Object>();
-		map1.put("info", list);
+		map1.put("list", list);
+		cfMap.put("info", map1);
 		
-		String json = JSON.encode(map1);
-//		System.out.println(json);
+		String json = JSON.encode(cfMap);
+		System.out.println("---"+json);
 		
 		JSONObject jsonObject  = JSONObject.fromObject(json);
-		@SuppressWarnings("rawtypes")
-		Iterator ite = jsonObject.keys();
-		// 遍历jsonObject数据,添加到Map对象
-		while (ite.hasNext()) {
-	        String key = ite.next().toString();
-	        String value = jsonObject .get(key).toString();
-	        cfMap.put(key, value);
-	    }
-//		System.out.println(cfMap);
-		String abcd = cfMap.get("info");
-//		System.out.println(abc);
-//		JSONObject ob = JSONObject.fromObject(cfMap.get("info"));
-//		System.out.println(ob.get("list"));
-		JSONArray arr = JSONArray.fromObject(abcd);
-//		System.out.println(arr.size());
+		
+		String infos = jsonObject.get("info").toString();
+		
+		JSONObject infoss  = JSONObject.fromObject(infos);
+		
+		String inf = infoss.get("list").toString();
+		
+		System.out.println(inf);
+		JSONArray arr = JSONArray.fromObject(inf);
+		System.out.println(arr.size());
 		for (int i = 0; i < arr.size(); i++) {
 			JSONObject j = arr.getJSONObject(i);
-			JSONObject js  = JSONObject.fromObject(j);
-//			JSONArray a = JSONArray.fromObject(j);
-//			System.out.println(js.get("list"));
-			String qq = js.get("list").toString();
-			System.out.println(qq);
-//			JSONObject jsonObject  = JSONObject.fromObject(sb.toString());
-			JSONObject jsd  = JSONObject.fromObject(qq.toString());
-//			System.out.println(jsd.get("a1"));
-			
+			JSONObject jsd  = JSONObject.fromObject(j);
 			Iterator itea = jsd.keys();
 			// 遍历jsonObject数据,添加到Map对象
 			Map<String,String> map = new HashMap<String,String>();

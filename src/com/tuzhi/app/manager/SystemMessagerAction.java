@@ -18,7 +18,9 @@ import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.tuzhi.app.entity.AppEnterprisesInfo;
 import com.tuzhi.app.entity.AppMessage;
+import com.tuzhi.app.pojo.AppUserDetailInfo;
 import com.tuzhi.app.service.IAppUserInfoService;
 import com.tuzhi.app.service.ISystemMessagerService;
 import com.tuzhi.app.util.StringUtil;
@@ -56,19 +58,42 @@ public class SystemMessagerAction extends HttpServlet {
 				StringUtil.isBlank(map.get("user_id"))){
 				status = "15";
 				retMsg = "必要参数缺失";
-			}else if(!"1".equals(map.get("type")) && !"2".equals(map.get("type")) && map.get("user_id").length()>10){
+			}else if((!"1".equals(map.get("type")) && !"2".equals(map.get("type"))) || map.get("user_id").length()>10){
 				status = "16";
 				retMsg = "必要参数输入有误";
 			}else{
-				//添加反馈意见
-				int resultStatus = systemMessagerService.insertFeedback(map);
-				if(resultStatus <= 0){
-					status = "12";
-					retMsg = "信息反馈失败";
+				//企业(2),个人(1)
+				if("1".equals(map.get("type"))){
+					//查询用户
+					AppUserDetailInfo userInfo = appUserInfoService.getAppUser(map);
+					if(userInfo == null){
+						status = "09";
+						retMsg = "该用户已不存在";
+					}else{
+						//添加反馈意见
+						int resultStatus = systemMessagerService.insertFeedback(map);
+						if(resultStatus <= 0){
+							status = "12";
+							retMsg = "信息反馈失败";
+						}
+					}
+				}else{
+					//查询企业信息
+					AppEnterprisesInfo enterInfo = appUserInfoService.getEnterprises(map);
+					if(enterInfo==null){
+						status = "09";
+						retMsg = "该用户已不存在";
+					}else{
+						//添加反馈意见
+						int resultStatus = systemMessagerService.insertFeedback(map);
+						if(resultStatus <= 0){
+							status = "12";
+							retMsg = "信息反馈失败";
+						}
+					}
 				}
 			}
 				
-			log.info("------status:"+status+"-------retMsg:"+retMsg);
 			Map<String,Object> resultMap = new HashMap<String,Object>();
 			resultMap.put("status", status);
 			resultMap.put("retMsg", retMsg);
@@ -121,10 +146,10 @@ public class SystemMessagerAction extends HttpServlet {
 		
 			//验证参数     type=1指用户、type=2指企业
 			List<AppMessage> lm = new ArrayList<AppMessage>();
-			if(StringUtil.isBlank(map.get("type")) || StringUtil.isBlank(map.get("user_id"))){
+			if(StringUtil.isBlank(map.get("type")) || StringUtil.isBlank(map.get("user_id")) || StringUtil.isBlank(map.get("token"))){
 				status = "15";
 				retMsg = "必要参数缺失";
-			}else if(!"1".equals(map.get("type")) && !"2".equals(map.get("type")) && map.get("user_id").length()>10){
+			}else if((!"1".equals(map.get("type")) && !"2".equals(map.get("type"))) || map.get("user_id").length()>10){
 				status = "16";
 				retMsg = "必要参数输入有误";
 			}else{
@@ -137,7 +162,6 @@ public class SystemMessagerAction extends HttpServlet {
 			}
 			
 			List<Map<String,Object>> listMap = new ArrayList<Map<String,Object>>();
-			
 			int num = 0;
 			if(lm.size()==0){
 				num = -1;
@@ -147,16 +171,15 @@ public class SystemMessagerAction extends HttpServlet {
 				map3.put("msg_id", lm.size()==0?"":lm.get(i).getId()==0?"":lm.get(i).getId());
 				map3.put("title", lm.size()==0?"":lm.get(i).getTitle()==null?"":lm.get(i).getTitle());
 				map3.put("date", lm.size()==0?"":lm.get(i).getSendtime()==null?"":lm.get(i).getSendtime());
-				
-				Map<String,Object> map2 = new HashMap<String,Object>();
-				map2.put("list", map3);
-				listMap.add(map2);
+				listMap.add(map3);
 			}
+			Map<String,Object> map2 = new HashMap<String,Object>();
+			map2.put("list", listMap);
 			
 			Map<String,Object> map1 = new HashMap<String,Object>();
 			map1.put("status", status);
 			map1.put("retMsg", retMsg);
-			map1.put("data", listMap);
+			map1.put("data", map2);
 			
 			String json = JSON.encode(map1);
 			
@@ -205,9 +228,9 @@ public class SystemMessagerAction extends HttpServlet {
 			String status = "0";
 			String retMsg = "成功";
 			
-			//验证参数     type=1指用户、type=2指企业
+			//验证参数 
 			List<AppMessage> lm = null;
-			if(StringUtil.isBlank(map.get("msg_id"))){
+			if(StringUtil.isBlank(map.get("msg_id")) || StringUtil.isBlank(map.get("token"))){
 				status = "15";
 				retMsg = "必要参数缺失";
 			}else if(map.get("msg_id").length()>10){
