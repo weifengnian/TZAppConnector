@@ -67,6 +67,9 @@ public class UserInfoAction extends HttpServlet {
 				StringUtil.isBlank(map.get("is_business"))){
 				status = "15";
 				retMsg = "必要参数缺失";
+			}else if(!"y".equals(map.get("is_business")) && !"n".equals(map.get("is_business").toString())){
+				status = "16";
+				retMsg = "必要参数输入有误";
 			}else{
 				//企业(y),个人(n)
 				if("n".equals(map.get("is_business"))){
@@ -175,6 +178,21 @@ public class UserInfoAction extends HttpServlet {
 				map1.put("retMsg", retMsg);
 				map1.put("token", "");
 				map1.put("data", map2);
+			}else if(!"y".equals(map.get("is_business")) && !"n".equals(map.get("is_business"))){
+				status = "16";
+				retMsg = "必要参数输入有误";
+				
+				map3.put("user_id", "");
+				map3.put("user_name", "");
+				map3.put("phone", "");
+				map3.put("logo_url", "");
+				
+				map2.put("user_Info", map3);
+				
+				map1.put("status", status);
+				map1.put("retMsg", retMsg);
+				map1.put("token", "");
+				map1.put("data", map2);
 			}else{
 				//企业(y),个人(n)
 				if("n".equals(map.get("is_business"))){
@@ -185,6 +203,7 @@ public class UserInfoAction extends HttpServlet {
 						retMsg = "个人用户不存在或输入错误";
 					}else{
 						if(!map.get("password").equals(ud.getPassword())){
+							ud = new AppUserDetailInfo();
 							status = "05"; //密码输入错误
 							retMsg = "密码输入错误";
 						}
@@ -210,6 +229,7 @@ public class UserInfoAction extends HttpServlet {
 						retMsg = "企业用户不存在或输入错误";
 					}else{
 						if(!map.get("password").equals(ep.getPassword())){
+							ep = new AppEnterprisesInfo();
 							status = "05"; //密码输入错误
 							retMsg = "密码输入错误";
 						}
@@ -352,6 +372,9 @@ public class UserInfoAction extends HttpServlet {
 			if(StringUtil.isBlank(map.get("user_id"))){
 				status = "15";
 				retMsg = "必要参数缺失";
+			}else if(map.get("user_id").length()>10){
+				status = "16";
+				retMsg = "必要参数输入有误";
 			}else{
 				uf = appUserInfoService.getAppUser(map);
 				if(uf!=null){
@@ -561,6 +584,9 @@ public class UserInfoAction extends HttpServlet {
 			if(StringUtil.isBlank(map.get("e_id"))){
 				status = "15";
 				retMsg = "必要参数缺失";
+			}else if(map.get("e_id").length()>10){
+				status = "16";
+				retMsg = "必要参数输入有误";
 			}else{
 				//查询企业信息
 				ep = appUserInfoService.getEnterprises(map);
@@ -649,9 +675,12 @@ public class UserInfoAction extends HttpServlet {
 				 StringUtil.isBlank(map.get("new_pwd")) || StringUtil.isBlank(map.get("type"))){
 				status = "15";
 				retMsg = "必要参数缺失";
+			}else if(!"1".equals(map.get("type")) && !"2".equals(map.get("type")) && map.get("user_id").length()>10){
+				status = "16";
+				retMsg = "必要参数输入有误";
 			}else{
-				//企业(y),个人(n)
-				if("n".equals(map.get("type"))){
+				//企业(2),个人(1)
+				if("1".equals(map.get("type"))){
 					//查询人员信息
 					AppUserDetailInfo userInfo = appUserInfoService.getAppUser(map);
 					if(userInfo == null){
@@ -737,7 +766,8 @@ public class UserInfoAction extends HttpServlet {
 	@SuppressWarnings("rawtypes")
 	public static void main(String[] args) {
 		Map<String,String> cfMap = new HashMap<String,String>();
-//		cfMap.put("a", "1");
+		cfMap.put("a", "123456789");
+		System.out.println(cfMap.get("a").length());
 //		cfMap.put("b", "2");
 //		cfMap.put("c", "3");
 //		

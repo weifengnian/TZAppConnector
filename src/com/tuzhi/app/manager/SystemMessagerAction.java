@@ -56,6 +56,9 @@ public class SystemMessagerAction extends HttpServlet {
 				StringUtil.isBlank(map.get("user_id"))){
 				status = "15";
 				retMsg = "必要参数缺失";
+			}else if(!"1".equals(map.get("type")) && !"2".equals(map.get("type")) && map.get("user_id").length()>10){
+				status = "16";
+				retMsg = "必要参数输入有误";
 			}else{
 				//添加反馈意见
 				int resultStatus = systemMessagerService.insertFeedback(map);
@@ -121,6 +124,9 @@ public class SystemMessagerAction extends HttpServlet {
 			if(StringUtil.isBlank(map.get("type")) || StringUtil.isBlank(map.get("user_id"))){
 				status = "15";
 				retMsg = "必要参数缺失";
+			}else if(!"1".equals(map.get("type")) && !"2".equals(map.get("type")) && map.get("user_id").length()>10){
+				status = "16";
+				retMsg = "必要参数输入有误";
 			}else{
 				//消息列表
 				lm = systemMessagerService.getMessage(map);
@@ -204,6 +210,9 @@ public class SystemMessagerAction extends HttpServlet {
 			if(StringUtil.isBlank(map.get("msg_id"))){
 				status = "15";
 				retMsg = "必要参数缺失";
+			}else if(map.get("msg_id").length()>10){
+				status = "16";
+				retMsg = "必要参数输入有误";
 			}else{
 				//消息列表
 				lm = systemMessagerService.getMessage(map);
