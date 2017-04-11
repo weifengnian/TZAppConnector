@@ -9,6 +9,8 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import com.tuzhi.app.dao.IAppUserInfoDao;
+import com.tuzhi.app.entity.AppAddress;
+import com.tuzhi.app.entity.AppCard;
 import com.tuzhi.app.entity.AppCertificate;
 import com.tuzhi.app.entity.AppEnterprisesInfo;
 import com.tuzhi.app.entity.AppGoodField;
@@ -76,14 +78,14 @@ public class AppUserInfoService implements IAppUserInfoService {
 		return appUserInfoDao.addAppUserField(map);
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public Integer updateAppUser(Map<String, String> map) {
 		// TODO Auto-generated method stub
 		
 		//修改用户 领域信息（注意，这里使用先删除后添加，一对多，主从表关系）
-		if(StringUtil.isBlank(map.get("good_field"))){
+		if(!StringUtil.isBlank(map.get("good_field"))){
 			//删除该用户 领域信息
-			@SuppressWarnings("unused")
 			int num = appUserInfoDao.deleteUserField(map);
 			String[] field = map.get("good_field").split(",");
 			for (int i = 0; i < field.length; i++) {
@@ -97,7 +99,7 @@ public class AppUserInfoService implements IAppUserInfoService {
 		
 		
 		//修改用户资质证书信息（注意，这里使用先删除后添加，一对多，主从表关系）
-		if(StringUtil.isBlank(map.get("qualification_certificate"))){
+		if(!StringUtil.isBlank(map.get("qualification_certificate"))){
 			//删除用户资质证书
 			int num = appUserInfoDao.deleteCertificate(map);
 			//删除用户与证书关联表
@@ -127,21 +129,27 @@ public class AppUserInfoService implements IAppUserInfoService {
 			}
 		}
 		
+		AppCard crd = null;
 		//修改用户身份证信息（注意，这里使用先删除后添加）
-		if(StringUtil.isBlank(map.get("card_img"))){
+		if(!StringUtil.isBlank(map.get("card_img")) && !StringUtil.isBlank(map.get("card"))){
 			//删除用户身份证书信息（根据身份证号删除）
-			/*int num = appUserInfoDao.deleteCardId(map);*/
-			
+			int num = appUserInfoDao.deleteCardId(map);
 			String cd[] = map.get("card_img").split(",");
 			Map<String,String> cfMap = new HashMap<String,String>();
 			cfMap.put("number", map.get("card"));
 			cfMap.put("upper_url", cd[0]);
 			cfMap.put("below_url", cd[1]);
-			/*num = appUserInfoDao.addCardInfo(cfMap);*/
+			num = appUserInfoDao.addCardInfo(cfMap);
+			if(num>0){
+				crd = appUserInfoDao.getCardInfo(cfMap);
+			}
+		}
+		if(crd != null){
+			map.put("card_id", String.valueOf(crd.getId()));
 		}
 		
 		//获取并添加接单地址
-		if(StringUtil.isBlank(map.get("order_address"))){
+		if(!StringUtil.isBlank(map.get("order_address"))){
 			//获取地址集合
 			String address = map.get("order_address");
 			JSONObject jsonAddress = JSONObject.fromObject(address);
@@ -152,14 +160,42 @@ public class AppUserInfoService implements IAppUserInfoService {
 				JSONObject jsonAdrs  = JSONObject.fromObject(j);
 				@SuppressWarnings("rawtypes")
 				Iterator itea = jsonAdrs.keys();
-				// 遍历jsonObject数据,添加到Map对象
+				//遍历jsonObject数据,添加到Map对象，maps=接单地址
 				Map<String,String> maps = new HashMap<String,String>();
 				while (itea.hasNext()) {
 			        String key = itea.next().toString();
 			        String value = jsonAdrs.get(key).toString();
 			        maps.put(key, value);
 			    }
-				/*int num = appUserInfoDao.addAddress(maps); */
+				
+				AppAddress ads = null;
+				//判断接单地址id为空,直接做添加，否则查询
+				if(!StringUtil.isBlank(maps.get("id"))){
+					//查询地址id是否存在
+					ads = appUserInfoDao.getAddress(maps);
+					if(ads!=null){
+						//修改地址
+						int num = appUserInfoDao.updateAddress(maps);
+					}
+				}
+				
+				if(StringUtil.isBlank(maps.get("id")) || ads==null){
+					String uid = StringUtil.getShortUUID();
+					maps.put("only_id", uid);
+					//添加地址
+					int num = appUserInfoDao.addAddress(maps);
+					if(num>0){
+						//获取地址id
+						ads = appUserInfoDao.getAddress(maps);
+						if(ads!=null){
+							Map<String,String> adsMap = new HashMap<String,String>();
+							adsMap.put("address_id", String.valueOf(ads.getId()));
+							adsMap.put("user_id", map.get("user_id"));
+							//添加用户接单关联地址表
+							num = appUserInfoDao.addUserOrdAds(adsMap);
+						}
+					}
+				}
 			}
 		}
 		

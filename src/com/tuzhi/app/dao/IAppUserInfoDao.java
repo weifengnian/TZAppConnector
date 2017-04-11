@@ -3,6 +3,8 @@ package com.tuzhi.app.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.tuzhi.app.entity.AppAddress;
+import com.tuzhi.app.entity.AppCard;
 import com.tuzhi.app.entity.AppCertificate;
 import com.tuzhi.app.entity.AppEnterprisesInfo;
 import com.tuzhi.app.entity.AppGoodField;
@@ -114,7 +116,56 @@ public interface IAppUserInfoDao {
 	 * @return
 	 */
 	public Integer updateEnterprises(Map<String,String> map);
+	
+	/**
+	 * 删除用户身份证书信息（根据身份证号删除）
+	 * @param map
+	 * @return
+	 */
+	public Integer deleteCardId(Map<String, String> map);
+	
+	/**
+	 * 添加用户身份证书信息
+	 * @param map
+	 * @return
+	 */
+	public Integer addCardInfo(Map<String, String> map);
+	
+	/**
+	 * 获取用户身份证书信息
+	 * @param map
+	 * @return
+	 */
+	public AppCard getCardInfo(Map<String, String> map);
 
+	/**
+	 * 查询地址id是否存在
+	 * @param map
+	 * @return
+	 */
+	public AppAddress getAddress(Map<String, String> map);
+	
+	/**
+	 * 修改地址
+	 * @param map
+	 * @return
+	 */
+	public Integer updateAddress(Map<String, String> map);
+	
+	/**
+	 * 添加地址
+	 * @param map
+	 * @return
+	 */
+	public Integer addAddress(Map<String, String> map);
+	
+	/**
+	 * 添加用户地址关联表
+	 * @param map
+	 * @return
+	 */
+	public Integer addUserOrdAds(Map<String, String> map);
+	
 	/**
 	 * 添加请求日志
 	 * @param map

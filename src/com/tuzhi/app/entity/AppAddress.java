@@ -15,6 +15,7 @@ public class AppAddress {
 	private String details; //详细
 	private float latitude; //纬度
 	private float longitude; //经度
+	private String only_id;  //唯一标识
 	
 	
 	public int getId() {
@@ -88,5 +89,11 @@ public class AppAddress {
 	}
 	public void setLongitude(float longitude) {
 		this.longitude = longitude;
+	}
+	public String getOnly_id() {
+		return only_id;
+	}
+	public void setOnly_id(String only_id) {
+		this.only_id = only_id;
 	}
 }

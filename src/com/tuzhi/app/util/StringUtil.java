@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.UUID;
 
 import net.sf.json.JSONObject;
 
@@ -117,6 +118,20 @@ public class StringUtil {
 		} catch (Exception e) {
 			return null;
 		}		
+	}
+	
+	/**
+	 * 获取uuid
+	 * @return
+	 */
+	public static String getUUID() {
+		return UUID.randomUUID().toString().toUpperCase();
+	}
+	public static String getShortUUID() {
+		String s = getUUID();
+		// 去掉“-”符号
+		return s.substring(0, 8) + s.substring(9, 13) + s.substring(14, 18)
+		+ s.substring(19, 23) + s.substring(24);
 	}
 
 }

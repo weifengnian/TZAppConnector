@@ -243,6 +243,185 @@
 		   </if>
   	</update>
   	
+	<!-- 删除用户身份证书信息（根据身份证号删除） -->
+<!--   	<delete id="deleteCardId" parameterType="map" > -->
+<!-- 		delete from app_card where [numer]=#{card} -->
+<!--   	</delete> -->
+	
+	<!-- 添加用户身份证书信息 -->
+  	<insert id="addCardInfo" parameterType="map" >
+		insert into app_card(
+		  <if test="upper_url !=null and upper_url !='' ">
+             upper_url,
+          </if>
+          <if test="local_upper_url !=null and local_upper_url !='' ">
+             local_upper_url,
+          </if>
+          <if test="below_url !=null and below_url !='' ">
+             below_url,
+          </if>
+          <if test="local_below_url !=null and local_below_url !='' ">
+             local_below_url,
+          </if>
+		     numer
+		)values(
+          <if test="upper_url !=null and upper_url !='' ">
+             #{upper_url},
+          </if>
+          <if test="local_upper_url !=null and local_upper_url !='' ">
+             #{local_upper_url},
+          </if>
+          <if test="below_url !=null and below_url !='' ">
+             #{below_url},
+          </if>
+          <if test="local_below_url !=null and local_below_url !='' ">
+             #{local_below_url},
+          </if>
+             #{number}
+		)
+  	</insert>
+	
+	<!-- 获取用户身份证书信息 -->
+  	<select id="getCardInfo" parameterType="map" >
+		select c.* from app_card c where 1=1 
+		  <if test="id !=null and id !='' ">
+		     and c.id=#{id}
+		  </if>
+		  <if test="number !=null and number !='' ">
+		     and c.numer=#{number}
+		  </if>
+  	</select>
+  	
+	<!-- 查询地址id是否存在  -->
+  	<select id="getAddress" parameterType="map" >
+		select a.* from app_address a where 1=1
+		 <if test="id !=null and id !='' ">
+		 	and a.id=#{id}
+		 </if>
+		 <if test="only_id !=null and only_id !='' ">
+		 	and a.only_id=#{only_id}
+		 </if>
+  	</select>
+	
+	<!-- 修改地址 -->
+  	<update id="updateAddress" parameterType="map" >
+		update app_address a set 
+		 <if test="pro_id !=null and pro_id !='' ">
+		 	a.pro_id=#{pro_id},
+		 </if>
+		 <if test="pro_name !=null and pro_name !='' ">
+		 	a.pro_name=#{pro_name},
+		 </if>
+		 <if test="city_id !=null and city_id !='' ">
+		 	a.city_id=#{city_id},
+		 </if>
+		 <if test="city_name !=null and city_name !='' ">
+		 	a.city_name=#{city_name},
+		 </if>
+		 <if test="dis_id !=null and dis_id !='' ">
+		 	a.dis_id=#{dis_id},
+		 </if>
+		 <if test="dis_name !=null and dis_name !='' ">
+		 	a.dis_name=#{dis_name},
+		 </if>
+		 <if test="stree_id !=null and stree_id !='' ">
+		 	a.stree_id=#{stree_id},
+		 </if>
+		 <if test="street_name !=null and street_name !='' ">
+		 	a.street_name=#{street_name},
+		 </if>
+		 <if test="details !=null and details !='' ">
+		 	a.details=#{details},
+		 </if>
+		 <if test="latitude !=null and latitude !='' ">
+		 	a.latitude=#{latitude},
+		 </if>
+		 <if test="longitude !=null and longitude !='' ">
+		 	a.longitude=#{longitude},
+		 </if>
+		 	a.updateTime=getdate()
+ 		where a.id=#{id}
+  	</update>
+	
+	<!-- 添加地址  -->
+  	<insert id="addAddress" parameterType="map" >
+  		insert into app_address(
+			 <if test="pro_id !=null and pro_id !='' ">
+			 	a.pro_id,
+			 </if>
+			 <if test="pro_name !=null and pro_name !='' ">
+			 	a.pro_name,
+			 </if>
+			 <if test="city_id !=null and city_id !='' ">
+			 	a.city_id,
+			 </if>
+			 <if test="city_name !=null and city_name !='' ">
+			 	a.city_name,
+			 </if>
+			 <if test="dis_id !=null and dis_id !='' ">
+			 	a.dis_id,
+			 </if>
+			 <if test="dis_name !=null and dis_name !='' ">
+			 	a.dis_name,
+			 </if>
+			 <if test="stree_id !=null and stree_id !='' ">
+			 	a.stree_id,
+			 </if>
+			 <if test="street_name !=null and street_name !='' ">
+			 	a.street_name,
+			 </if>
+			 <if test="details !=null and details !='' ">
+			 	a.details,
+			 </if>
+			 <if test="latitude !=null and latitude !='' ">
+			 	a.latitude,
+			 </if>
+			 <if test="longitude !=null and longitude !='' ">
+			 	a.longitude,
+			 </if>
+			    a.createTime
+		   )values(
+		     <if test="pro_id !=null and pro_id !='' ">
+			 	#{pro_id},
+			 </if>
+			 <if test="pro_name !=null and pro_name !='' ">
+			 	#{pro_name},
+			 </if>
+			 <if test="city_id !=null and city_id !='' ">
+			 	#{city_id},
+			 </if>
+			 <if test="city_name !=null and city_name !='' ">
+			 	#{city_name},
+			 </if>
+			 <if test="dis_id !=null and dis_id !='' ">
+			 	#{dis_id},
+			 </if>
+			 <if test="dis_name !=null and dis_name !='' ">
+			 	#{dis_name},
+			 </if>
+			 <if test="stree_id !=null and stree_id !='' ">
+			 	#{stree_id},
+			 </if>
+			 <if test="street_name !=null and street_name !='' ">
+			 	#{street_name},
+			 </if>
+			 <if test="details !=null and details !='' ">
+			 	#{details},
+			 </if>
+			 <if test="latitude !=null and latitude !='' ">
+			 	#{latitude},
+			 </if>
+			 <if test="longitude !=null and longitude !='' ">
+			 	#{longitude},
+			 </if>
+			    getdate()
+		   )    
+  	</insert>
+	
+	<!-- 添加用户地址关联表 -->
+  	<insert id="deleteCardId" parameterType="map" >
+		insert into app_user_order_address(address_id,user_id) values(#{address_id},#{user_id})
+  	</insert>
   	
   	<!-- 添加请求日志 -->
   	<insert id="insertAppLog" parameterType="map" >

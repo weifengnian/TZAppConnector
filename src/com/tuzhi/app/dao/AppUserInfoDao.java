@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 
+import com.tuzhi.app.entity.AppAddress;
+import com.tuzhi.app.entity.AppCard;
 import com.tuzhi.app.entity.AppCertificate;
 import com.tuzhi.app.entity.AppEnterprisesInfo;
 import com.tuzhi.app.entity.AppGoodField;
@@ -101,7 +103,49 @@ public class AppUserInfoDao extends SqlSessionDaoSupport implements IAppUserInfo
 		// TODO Auto-generated method stub
 		return getSqlSession().update("AppUserInfoDaoMapper.updateEnterprises",map);
 	}
-
+	
+	@Override
+	public Integer deleteCardId(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return getSqlSession().delete("AppUserInfoDaoMapper.deleteCardId",map);
+	}
+	
+	@Override
+	public Integer addCardInfo(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return getSqlSession().update("AppUserInfoDaoMapper.addCardInfo",map);
+	}
+	
+	@Override
+	public AppCard getCardInfo(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne("AppUserInfoDaoMapper.getCardInfo",map);
+	}
+	
+	@Override
+	public AppAddress getAddress(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne("AppUserInfoDaoMapper.getAddress",map);
+	}
+	
+	@Override
+	public Integer updateAddress(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne("AppUserInfoDaoMapper.updateAddress",map);
+	}
+	
+	@Override
+	public Integer addAddress(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne("AppUserInfoDaoMapper.addAddress",map);
+	}
+	
+	@Override
+	public Integer addUserOrdAds(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne("AppUserInfoDaoMapper.addUserOrdAds",map);
+	}
+	
 	@Override
 	public Integer insertAppLog(Map<String, Object> map) {
 		// TODO Auto-generated method stub
