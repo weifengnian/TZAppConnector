@@ -55,10 +55,7 @@ public class UserInfoAction extends HttpServlet {
 			//密码加密
 			String pwd = map.get("password");
 			map.put("password", StringUtil.MD5pwd(pwd));
-			String token =String.valueOf(System.currentTimeMillis());
-			map.put("token", StringUtil.MD5pwd(token));
 			map.put("create_time", StringUtil.getDisplayYMDHMS());
-			
 			String status = "0";
 			String retMsg = "成功";
 			
@@ -67,7 +64,7 @@ public class UserInfoAction extends HttpServlet {
 				StringUtil.isBlank(map.get("is_business"))){
 				status = "15";
 				retMsg = "必要参数缺失";
-			}else if(!"y".equals(map.get("is_business")) && !"n".equals(map.get("is_business").toString())){
+			}else if(!"y".equals(map.get("is_business")) && !"n".equals(map.get("is_business"))){
 				status = "16";
 				retMsg = "必要参数输入有误";
 			}else{
@@ -80,6 +77,7 @@ public class UserInfoAction extends HttpServlet {
 						retMsg = "该个人用户已经注册";
 					}else{
 						//注册app用户信息
+						map.put("token", StringUtil.MD5pwd(String.valueOf(System.currentTimeMillis())).toUpperCase());
 						int resultStatus = appUserInfoService.addAppUser(map);
 						if(resultStatus<=0){
 							status = "03";
@@ -95,6 +93,7 @@ public class UserInfoAction extends HttpServlet {
 						retMsg = "该企业用户已经注册";
 					}else{
 						//注册企业用户
+						map.put("token", StringUtil.MD5pwd(String.valueOf(System.currentTimeMillis())).toUpperCase());
 						int resultStatus = appUserInfoService.addEnterprises(map);
 						if(resultStatus<=0){
 							status = "03";
@@ -773,6 +772,10 @@ public class UserInfoAction extends HttpServlet {
 	
 	@SuppressWarnings("rawtypes")
 	public static void main(String[] args) {
+		
+		String str = StringUtil.MD5pwd(String.valueOf(System.currentTimeMillis())).toUpperCase();
+		System.out.println(str);
+		
 		Map<String,Object> cfMap = new HashMap<String,Object>();
 //		cfMap.put("a", "123456789");
 //		System.out.println(cfMap.get("a").length());
