@@ -773,7 +773,7 @@ public class UserInfoAction extends HttpServlet {
 	@SuppressWarnings("rawtypes")
 	public static void main(String[] args) {
 		
-		String str = StringUtil.MD5pwd(String.valueOf(System.currentTimeMillis())).toUpperCase();
+		String str = StringUtil.MD5pwd("123456");
 		System.out.println(str);
 		
 		Map<String,Object> cfMap = new HashMap<String,Object>();
