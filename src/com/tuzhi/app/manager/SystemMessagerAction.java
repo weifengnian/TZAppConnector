@@ -229,7 +229,7 @@ public class SystemMessagerAction extends HttpServlet {
 			String retMsg = "成功";
 			
 			//验证参数 
-			List<AppMessage> lm = null;
+			List<AppMessage> lm = new ArrayList<AppMessage>();
 			if(StringUtil.isBlank(map.get("msg_id")) || StringUtil.isBlank(map.get("token"))){
 				status = "15";
 				retMsg = "必要参数缺失";
@@ -239,17 +239,17 @@ public class SystemMessagerAction extends HttpServlet {
 			}else{
 				//消息列表
 				lm = systemMessagerService.getMessage(map);
-				if(lm == null){
+				if(lm.size() <= 0){
 					status = "14";
 					retMsg = "消息详情获取失败";
 				}
 			}
 				
 			Map<String,Object> map2 = new HashMap<String,Object>();
-			map2.put("msg_id", lm==null?"":lm.get(0).getId()==0?"":lm.get(0).getId());
-			map2.put("title", lm==null?"":lm.get(0).getTitle()==null?"":lm.get(0).getTitle());
-			map2.put("content", lm==null?"":lm.get(0).getContent()==null?"":lm.get(0).getContent());
-//			map2.put("date", lm==null?"":lm.get(0).getSendtime()==null?"":lm.get(0).getSendtime());
+			map2.put("msg_id", lm.size()<=0?"":lm.get(0).getId()==0?"":lm.get(0).getId());
+			map2.put("title", lm.size()<=0?"":lm.get(0).getTitle()==null?"":lm.get(0).getTitle());
+			map2.put("content", lm.size()<=0?"":lm.get(0).getContent()==null?"":lm.get(0).getContent());
+//			map2.put("date", lm.size()<=0?"":lm.get(0).getSendtime()==null?"":lm.get(0).getSendtime());
 			map2.put("file_path", "");
 			
 			Map<String,Object> map1 = new HashMap<String,Object>();
@@ -281,7 +281,7 @@ public class SystemMessagerAction extends HttpServlet {
 			
 		} catch (Exception e) {
 			// TODO: handle exception
-			log.info("---register--Exception:"+e.getMessage());
+			log.info("---messageDetail--Exception:"+e.getMessage());
 		}
 	}
 
