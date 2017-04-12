@@ -104,6 +104,9 @@
             <if test="auth_time !=null and auth_time !='' ">
               auth_time,
             </if>
+            <if test="only_id !=null and only_id !='' ">
+              only_id,
+            </if>
 			  create_time
         )values(
             <if test="certificate_name !=null and certificate_name !='' ">
@@ -124,13 +127,23 @@
             <if test="auth_time !=null and auth_time !='' ">
               #{auth_time},
             </if>
+            <if test="only_id !=null and only_id !='' ">
+              #{only_id},
+            </if>
 			  getdate()
         )
   	</insert>
 	
     <!-- 获取证书id -->
 	<select id="getAppCertificate" parameterType="map" resultMap="certificate">
-		select c.* from app_certificate u where u.certificate_url=#{qualification_certificate}
+		select u.* from app_certificate u where 1=1
+			<if test="id !=null and id !='' ">
+               and u.id=#{id} 
+            </if>
+            <if test="only_id !=null and only_id !='' ">
+               and u.only_id = #{only_id}
+            </if> 
+		
 	</select>
   	
   	<!-- 新增用户证书关联表-->

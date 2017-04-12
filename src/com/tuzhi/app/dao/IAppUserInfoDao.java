@@ -87,7 +87,7 @@ public interface IAppUserInfoDao {
 	 * @param map
 	 * @return
 	 */
-	public Integer addCertificate(Map<String,String> map);
+	public int addCertificate(Map<String,String> map);
 	
 	/**
 	 * 获取证书id

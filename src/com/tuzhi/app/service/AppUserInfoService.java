@@ -65,18 +65,6 @@ public class AppUserInfoService implements IAppUserInfoService {
 		// TODO Auto-generated method stub
 		return appUserInfoDao.addEnterprises(map);
 	}
-	
-	@Override
-	public Integer addAppUserField(Map<String, String> map) {
-		// TODO Auto-generated method stub
-		return appUserInfoDao.addAppUserField(map);
-	}
-	
-	@Override
-	public Integer addAppUserCertificate(Map<String, String> map) {
-		// TODO Auto-generated method stub
-		return appUserInfoDao.addAppUserField(map);
-	}
 
 	@SuppressWarnings("unused")
 	@Override
@@ -86,20 +74,20 @@ public class AppUserInfoService implements IAppUserInfoService {
 		//修改用户 领域信息（注意，这里使用先删除后添加，一对多，主从表关系）
 		if(!StringUtil.isBlank(map.get("good_field"))){
 			//删除该用户 领域信息
-			int num = appUserInfoDao.deleteUserField(map);
+			Integer num = appUserInfoDao.deleteUserField(map);
 			String[] field = map.get("good_field").split(",");
 			for (int i = 0; i < field.length; i++) {
 				Map<String,String> gfMap = new HashMap<String,String>();
 				gfMap.put("user_id", map.get("user_id"));
 				gfMap.put("good_field", field[i]);
 				//新增个人用户 擅长领域关联表
-				num = appUserInfoDao.addAppUserField(gfMap);
+			  num = appUserInfoDao.addAppUserField(gfMap);
 			}
-		}
+		 }
 		
 		
 		//修改用户资质证书信息（注意，这里使用先删除后添加，一对多，主从表关系）
-		if(!StringUtil.isBlank(map.get("qualification_certificate"))){
+		if(!StringUtil.isBlank(map.get("qualification_certificate")) && !StringUtil.isBlank(map.get("certificate_name"))){
 			//删除用户资质证书
 			int num = appUserInfoDao.deleteCertificate(map);
 			//删除用户与证书关联表
@@ -113,17 +101,18 @@ public class AppUserInfoService implements IAppUserInfoService {
 				cfMap.put("certificate_name", cn[i]);  
 				//证书url
 				cfMap.put("qualification_certificate", cf[i]);
+				cfMap.put("only_id", StringUtil.getShortUUID());
 				//添加证书
 				num = appUserInfoDao.addCertificate(cfMap); 
 				if(num>0){
 					//获取证书id
 					AppCertificate acf = appUserInfoDao.getAppCertificate(cfMap);
 					if(acf!=null){
-						Map<String,Object> ufMap = new HashMap<String,Object>();
+						Map<String,String> ufMap = new HashMap<String,String>();
 						ufMap.put("user_id", map.get("user_id"));
-						ufMap.put("certificate_id", acf.getId());
+						ufMap.put("certificate_id", String.valueOf(acf.getId()));
 						//添加用户与证书关联表
-						num = appUserInfoDao.addUserCertificate(cfMap);
+						num = appUserInfoDao.addUserCertificate(ufMap);
 					}
 				}
 			}
@@ -180,8 +169,7 @@ public class AppUserInfoService implements IAppUserInfoService {
 				}
 				
 				if(StringUtil.isBlank(maps.get("id")) || ads==null){
-					String uid = StringUtil.getShortUUID();
-					maps.put("only_id", uid);
+					maps.put("only_id", StringUtil.getShortUUID());
 					//添加地址
 					int num = appUserInfoDao.addAddress(maps);
 					if(num>0){

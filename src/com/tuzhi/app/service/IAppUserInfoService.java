@@ -53,20 +53,6 @@ public interface IAppUserInfoService {
 	public Integer addEnterprises(Map<String,String> map);
 	
 	/**
-	 * 新增个人用户 擅长领域关联表
-	 * @param map
-	 * @return
-	 */
-	public Integer addAppUserField(Map<String,String> map);
-	
-	/**
-	 * 新增个人用户用户证书关联表
-	 * @param map
-	 * @return
-	 */
-	public Integer addAppUserCertificate(Map<String,String> map);
-	
-	/**
 	 * 修改（完善）用户信息
 	 * @param map
 	 * @return

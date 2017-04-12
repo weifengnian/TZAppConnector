@@ -11,6 +11,7 @@ public class AppCertificate {
 	private int is_auth; //是否审核	0:未提交	1:已审核通过   10:审核中	-1:审核未通过
 	private String create_time; //创建时间
 	private String auth_time; //审核时间
+	private String only_id; //唯一标识，用来获取id
 	
 	
 	public int getId() {
@@ -60,5 +61,11 @@ public class AppCertificate {
 	}
 	public void setAuth_time(String auth_time) {
 		this.auth_time = auth_time;
+	}
+	public String getOnly_id() {
+		return only_id;
+	}
+	public void setOnly_id(String only_id) {
+		this.only_id = only_id;
 	}
 }

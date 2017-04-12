@@ -75,7 +75,7 @@ public class AppUserInfoDao extends SqlSessionDaoSupport implements IAppUserInfo
 	}
 	
 	@Override
-	public Integer addCertificate(Map<String,String> map){
+	public int addCertificate(Map<String,String> map){
 		// TODO Auto-generated method stub
 		return getSqlSession().insert("AppUserInfoDaoMapper.addCertificate",map);
 	}
