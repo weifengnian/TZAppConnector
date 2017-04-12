@@ -68,7 +68,36 @@ public class UserInfoAction extends HttpServlet {
 				status = "16";
 				retMsg = "必要参数输入有误";
 			}else{
-				//企业(y),个人(n)
+				//查询用户
+				AppUserDetailInfo userInfo = appUserInfoService.getAppUser(map);
+				//查询企业信息
+				AppEnterprisesInfo enterInfo = appUserInfoService.getEnterprises(map);
+				
+				if(userInfo !=null || enterInfo !=null){
+					status = "01";
+					retMsg = "该用户已经注册";
+				}else{
+					//企业(y),个人(n)
+					if("n".equals(map.get("is_business"))){
+						//注册个人用户信息
+						map.put("token", StringUtil.MD5pwd(String.valueOf(System.currentTimeMillis())).toUpperCase());
+						int resultStatus = appUserInfoService.addAppUser(map);
+						if(resultStatus<=0){
+							status = "03";
+							retMsg = "注册失败";
+						}
+					}else{
+						//注册企业用户
+						map.put("token", StringUtil.MD5pwd(String.valueOf(System.currentTimeMillis())).toUpperCase());
+						int resultStatus = appUserInfoService.addEnterprises(map);
+						if(resultStatus<=0){
+							status = "03";
+							retMsg = "注册失败";
+						}
+					}
+				}
+				
+				/*//企业(y),个人(n)
 				if("n".equals(map.get("is_business"))){
 					//查询用户
 					AppUserDetailInfo userInfo = appUserInfoService.getAppUser(map);
@@ -100,7 +129,7 @@ public class UserInfoAction extends HttpServlet {
 							retMsg = "注册失败";
 						}
 					}
-				}
+				}*/
 			}
 			
 			Map<String,Object> resultMap = new HashMap<String,Object>();

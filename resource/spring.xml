@@ -81,6 +81,11 @@
 			</props>
 		</property>
 	</bean>
+	
+	<!-- 配置哪些类的哪些方法参与事务 -->
+	<aop:config>
+		<aop:advisor pointcut="execution(* com.tuzhi..*.service..*.*(..))" advice-ref="transactionInterceptor" />
+	</aop:config>
 
 	<!-- 用来定义那些类需要采用事物管理 spring 事物的动态代理类 BeanNameAutoProxyCreator 根据类名自动代理，接受表达式 -->
 	<bean id="BeanProxy"
