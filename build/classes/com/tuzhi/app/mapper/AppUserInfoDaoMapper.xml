@@ -8,6 +8,9 @@
 	<resultMap type="com.tuzhi.app.entity.AppEnterprisesInfo" id="enterprisesInfo"/>
 	<resultMap type="com.tuzhi.app.entity.AppGoodField" id="goodField"/>
 	<resultMap type="com.tuzhi.app.entity.AppCertificate" id="certificate"/>
+	<resultMap type="com.tuzhi.app.entity.AppCard" id="cardInfo"/>
+	<resultMap type="com.tuzhi.app.entity.AppAddress" id="addressInfo"/>
+	
 	<!--查询：通过用户ID返回一个用户对象  -->
 	
 	<!-- 查询个人用户详细信息 -->
@@ -154,39 +157,36 @@
   	    
   	<!-- 修改个人用户 -->
   	<update id="updateAppUser" parameterType="map">
-		update app_user_info u set
+		update app_user_info set
 		  <if test="user_name !=null and user_name !='' ">
-              u.name=#{user_name},
+              name=#{user_name},
           </if> 
 		  <if test="card_id !=null and card_id !='' ">
-              u.card_id=#{card_id},
+              card_id=#{card_id},
           </if>
 		  <if test="sex !=null and sex !='' ">
-              u.sex=#{sex},
+              sex=#{sex},
           </if>
 		  <if test="graduation_time !=null and graduation_time !='' ">
-              u.graduation_time=#{graduation_time},
+              graduation_time=#{graduation_time},
           </if>
 		  <if test="address_id !=null and address_id !='' ">
-              u.address_id=#{address_id},
-          </if>
-		  <if test="card_id !=null and card_id !='' ">
-              u.card_img=#{card_id},
+              address_id=#{address_id},
           </if>
 		  <if test="password !=null and password !='' ">
-              u.password=#{password},
+              password=#{password},
           </if>
 		  <if test="logo_url !=null and logo_url !='' ">
-              u.local_url=#{logo_url},
+              local_url=#{logo_url},
           </if>
-			u.update_time=getdate()
+			  update_time=getdate()
 			
 		where 1=1
           <if test="user_id !=null and user_id != ''">
-			  and u.id = #{user_id}
+			  and id = #{user_id}
 		   </if>
 		   <if test="token !=null and token != ''">
-			  and u.token = #{token}
+			  and token = #{token}
 		   </if>
   	</update>
   	
@@ -256,10 +256,10 @@
 		   </if>
   	</update>
   	
-	<!-- 删除用户身份证书信息（根据身份证号删除） -->
-  	<delete id="deleteCardId" parameterType="map" >
-		delete from app_card where numer=#{card}
-  	</delete>
+	<!-- 修改用户身份证书信息（根据身份证号修改） -->
+  	<update id="updateCardInfo" parameterType="map" >
+		update app_card set upper_url=#{upper_url},below_url=#{below_url}  where numer=#{number}
+  	</update>
 	
 	<!-- 添加用户身份证书信息 -->
   	<insert id="addCardInfo" parameterType="map" >
@@ -276,6 +276,9 @@
           <if test="local_below_url !=null and local_below_url !='' ">
              local_below_url,
           </if>
+          <if test="only_id !=null and only_id !='' ">
+             only_id,
+          </if> 
 		     numer
 		)values(
           <if test="upper_url !=null and upper_url !='' ">
@@ -290,12 +293,15 @@
           <if test="local_below_url !=null and local_below_url !='' ">
              #{local_below_url},
           </if>
+          <if test="only_id !=null and only_id !='' ">
+             #{only_id},
+          </if>
              #{number}
 		)
   	</insert>
 	
 	<!-- 获取用户身份证书信息 -->
-  	<select id="getCardInfo" parameterType="map" >
+  	<select id="getCardInfo" parameterType="map" resultMap="cardInfo">
 		select c.* from app_card c where 1=1 
 		  <if test="id !=null and id !='' ">
 		     and c.id=#{id}
@@ -306,7 +312,7 @@
   	</select>
   	
 	<!-- 查询地址id是否存在  -->
-  	<select id="getAddress" parameterType="map" >
+  	<select id="getAddress" parameterType="map" resultMap="addressInfo">
 		select a.* from app_address a where 1=1
 		 <if test="id !=null and id !='' ">
 		 	and a.id=#{id}
@@ -392,7 +398,7 @@
 			 <if test="longitude !=null and longitude !='' ">
 			 	a.longitude,
 			 </if>
-			    a.createTime
+			    a.only_id
 		   )values(
 		     <if test="pro_id !=null and pro_id !='' ">
 			 	#{pro_id},
@@ -427,7 +433,7 @@
 			 <if test="longitude !=null and longitude !='' ">
 			 	#{longitude},
 			 </if>
-			    getdate()
+			    #{only_id}
 		   )    
   	</insert>
 	

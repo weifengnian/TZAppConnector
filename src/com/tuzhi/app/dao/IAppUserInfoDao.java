@@ -118,11 +118,11 @@ public interface IAppUserInfoDao {
 	public Integer updateEnterprises(Map<String,String> map);
 	
 	/**
-	 * 删除用户身份证书信息（根据身份证号删除）
+	 * 修改用户身份证书信息（根据身份证号修改）
 	 * @param map
 	 * @return
 	 */
-	public Integer deleteCardId(Map<String, String> map);
+	public Integer updateCardInfo(Map<String, String> map);
 	
 	/**
 	 * 添加用户身份证书信息

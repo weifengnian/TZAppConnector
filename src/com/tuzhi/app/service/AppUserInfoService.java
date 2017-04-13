@@ -88,31 +88,35 @@ public class AppUserInfoService implements IAppUserInfoService {
 		
 		//修改用户资质证书信息（注意，这里使用先删除后添加，一对多，主从表关系）
 		if(!StringUtil.isBlank(map.get("qualification_certificate")) && !StringUtil.isBlank(map.get("certificate_name"))){
-			//删除用户资质证书
-			int num = appUserInfoDao.deleteCertificate(map);
-			//删除用户与证书关联表
-			num = appUserInfoDao.deleteUserCertificate(map);
+			
 			String[] cn = map.get("certificate_name").split(",");
 			String[] cf = map.get("qualification_certificate").split(",");
-			for (int i = 0; i < cf.length; i++) {
-				Map<String,String> cfMap = new HashMap<String,String>();
-				cfMap.put("user_id", map.get("user_id"));
-				//证书名称
-				cfMap.put("certificate_name", cn[i]);  
-				//证书url
-				cfMap.put("qualification_certificate", cf[i]);
-				cfMap.put("only_id", StringUtil.getShortUUID());
-				//添加证书
-				num = appUserInfoDao.addCertificate(cfMap); 
-				if(num>0){
-					//获取证书id
-					AppCertificate acf = appUserInfoDao.getAppCertificate(cfMap);
-					if(acf!=null){
-						Map<String,String> ufMap = new HashMap<String,String>();
-						ufMap.put("user_id", map.get("user_id"));
-						ufMap.put("certificate_id", String.valueOf(acf.getId()));
-						//添加用户与证书关联表
-						num = appUserInfoDao.addUserCertificate(ufMap);
+			
+			if(cn.length==cf.length){
+				//删除用户资质证书
+				int num = appUserInfoDao.deleteCertificate(map);
+				//删除用户与证书关联表
+				num = appUserInfoDao.deleteUserCertificate(map);
+				for (int i = 0; i < cf.length; i++) {
+					Map<String,String> cfMap = new HashMap<String,String>();
+					cfMap.put("user_id", map.get("user_id"));
+					//证书名称
+					cfMap.put("certificate_name", cn[i]);  
+					//证书url
+					cfMap.put("qualification_certificate", cf[i]);
+					cfMap.put("only_id", StringUtil.getShortUUID());
+					//添加证书
+					num = appUserInfoDao.addCertificate(cfMap); 
+					if(num>0){
+						//获取证书id
+						AppCertificate acf = appUserInfoDao.getAppCertificate(cfMap);
+						if(acf!=null){
+							Map<String,String> ufMap = new HashMap<String,String>();
+							ufMap.put("user_id", map.get("user_id"));
+							ufMap.put("certificate_id", String.valueOf(acf.getId()));
+							//添加用户与证书关联表
+							num = appUserInfoDao.addUserCertificate(ufMap);
+						}
 					}
 				}
 			}
@@ -121,16 +125,23 @@ public class AppUserInfoService implements IAppUserInfoService {
 		AppCard crd = null;
 		//修改用户身份证信息（注意，这里使用先删除后添加）
 		if(!StringUtil.isBlank(map.get("card_img")) && !StringUtil.isBlank(map.get("card"))){
-			//删除用户身份证书信息（根据身份证号删除）
-			int num = appUserInfoDao.deleteCardId(map);
+			int num = 0;
 			String cd[] = map.get("card_img").split(",");
-			Map<String,String> cfMap = new HashMap<String,String>();
-			cfMap.put("number", map.get("card"));
-			cfMap.put("upper_url", cd[0]);
-			cfMap.put("below_url", cd[1]);
-			num = appUserInfoDao.addCardInfo(cfMap);
-			if(num>0){
-				crd = appUserInfoDao.getCardInfo(cfMap);
+			Map<String,String> cdMap = new HashMap<String,String>();
+			cdMap.put("number", map.get("card"));
+			cdMap.put("upper_url", cd[0]);
+			cdMap.put("below_url", cd[1]);
+//			cdMap.put("only_id", StringUtil.getShortUUID());
+			crd = appUserInfoDao.getCardInfo(cdMap);
+			if(crd==null){
+				//添加
+				num = appUserInfoDao.addCardInfo(cdMap);
+				if(num>0){
+					crd = appUserInfoDao.getCardInfo(cdMap);
+				}
+			}else{
+				//修改
+				num = appUserInfoDao.updateCardInfo(cdMap);
 			}
 		}
 		if(crd != null){

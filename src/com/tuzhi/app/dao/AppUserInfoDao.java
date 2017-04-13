@@ -105,15 +105,15 @@ public class AppUserInfoDao extends SqlSessionDaoSupport implements IAppUserInfo
 	}
 	
 	@Override
-	public Integer deleteCardId(Map<String, String> map) {
+	public Integer updateCardInfo(Map<String, String> map) {
 		// TODO Auto-generated method stub
-		return getSqlSession().delete("AppUserInfoDaoMapper.deleteCardId",map);
+		return getSqlSession().update("AppUserInfoDaoMapper.updateCardInfo",map);
 	}
 	
 	@Override
 	public Integer addCardInfo(Map<String, String> map) {
 		// TODO Auto-generated method stub
-		return getSqlSession().update("AppUserInfoDaoMapper.addCardInfo",map);
+		return getSqlSession().insert("AppUserInfoDaoMapper.addCardInfo",map);
 	}
 	
 	@Override
@@ -131,19 +131,19 @@ public class AppUserInfoDao extends SqlSessionDaoSupport implements IAppUserInfo
 	@Override
 	public Integer updateAddress(Map<String, String> map) {
 		// TODO Auto-generated method stub
-		return getSqlSession().selectOne("AppUserInfoDaoMapper.updateAddress",map);
+		return getSqlSession().update("AppUserInfoDaoMapper.updateAddress",map);
 	}
 	
 	@Override
 	public Integer addAddress(Map<String, String> map) {
 		// TODO Auto-generated method stub
-		return getSqlSession().selectOne("AppUserInfoDaoMapper.addAddress",map);
+		return getSqlSession().insert("AppUserInfoDaoMapper.addAddress",map);
 	}
 	
 	@Override
 	public Integer addUserOrdAds(Map<String, String> map) {
 		// TODO Auto-generated method stub
-		return getSqlSession().selectOne("AppUserInfoDaoMapper.addUserOrdAds",map);
+		return getSqlSession().insert("AppUserInfoDaoMapper.addUserOrdAds",map);
 	}
 	
 	@Override
