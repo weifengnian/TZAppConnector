@@ -235,6 +235,9 @@ public class UserInfoAction extends HttpServlet {
 							status = "05"; //密码输入错误
 							retMsg = "密码输入错误";
 						}
+					}else{
+						status = "09"; //密码输入错误
+						retMsg = "该用户不存在";
 					}
 					map3.put("user_id", ep==null?"":ep.getId()==0?"":ep.getId());
 					map3.put("user_name", ep==null?"":ep.getName()==null?"":ep.getName());

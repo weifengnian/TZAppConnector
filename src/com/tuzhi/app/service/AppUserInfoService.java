@@ -71,7 +71,7 @@ public class AppUserInfoService implements IAppUserInfoService {
 	public Integer updateAppUser(Map<String, String> map) {
 		// TODO Auto-generated method stub
 		
-		//修改用户 领域信息（注意，这里使用先删除后添加，一对多，主从表关系）
+		//修改用户 领域信息（注意，这里使用先查询，存在就修改，否则就添加，）
 		if(!StringUtil.isBlank(map.get("good_field"))){
 			//删除该用户 领域信息
 			Integer num = appUserInfoDao.deleteUserField(map);
@@ -85,7 +85,6 @@ public class AppUserInfoService implements IAppUserInfoService {
 			}
 		 }
 		
-		
 		//修改用户资质证书信息（注意，这里使用先删除后添加，一对多，主从表关系）
 		if(!StringUtil.isBlank(map.get("qualification_certificate")) && !StringUtil.isBlank(map.get("certificate_name"))){
 			
@@ -94,9 +93,9 @@ public class AppUserInfoService implements IAppUserInfoService {
 			
 			if(cn.length==cf.length){
 				//删除用户资质证书
-				int num = appUserInfoDao.deleteCertificate(map);
+				//int num = appUserInfoDao.deleteCertificate(map);
 				//删除用户与证书关联表
-				num = appUserInfoDao.deleteUserCertificate(map);
+				int num = appUserInfoDao.deleteUserCertificate(map);
 				for (int i = 0; i < cf.length; i++) {
 					Map<String,String> cfMap = new HashMap<String,String>();
 					cfMap.put("user_id", map.get("user_id"));
@@ -122,8 +121,8 @@ public class AppUserInfoService implements IAppUserInfoService {
 			}
 		}
 		
+		//修改用户身份证信息（注意，这里使用先查询,存在就修改，否则添加）
 		AppCard crd = null;
-		//修改用户身份证信息（注意，这里使用先删除后添加）
 		if(!StringUtil.isBlank(map.get("card_img")) && !StringUtil.isBlank(map.get("card"))){
 			int num = 0;
 			String cd[] = map.get("card_img").split(",");
@@ -131,7 +130,6 @@ public class AppUserInfoService implements IAppUserInfoService {
 			cdMap.put("number", map.get("card"));
 			cdMap.put("upper_url", cd[0]);
 			cdMap.put("below_url", cd[1]);
-//			cdMap.put("only_id", StringUtil.getShortUUID());
 			crd = appUserInfoDao.getCardInfo(cdMap);
 			if(crd==null){
 				//添加
@@ -148,7 +146,8 @@ public class AppUserInfoService implements IAppUserInfoService {
 			map.put("card_id", String.valueOf(crd.getId()));
 		}
 		
-		//获取并添加接单地址
+		
+		//修改用户接单地址（注意，这里使用先通过id查询,存在就修改，否则添加）
 		if(!StringUtil.isBlank(map.get("order_address"))){
 			//获取地址集合
 			String address = map.get("order_address");
@@ -197,35 +196,6 @@ public class AppUserInfoService implements IAppUserInfoService {
 				}
 			}
 		}
-		
-//		“user_id”:”编号”,
-//		“phone”:”手机号”，
-//		“user_name”:”真实姓名”,
-//	    “nick_name”:”昵称”,
-//		“card”:”身份证号”,
-//		“sex”:”性别”，
-//		“graduation_time”:”毕业时间”，
-//	    “order_address”:{// 接单地址
-//	       “list”:[{
-//					“id”:”编号”，
-//					“pro_id”:”省编号”，
-//	  				“pro_name”:” 省名称” ，
-//	 				“city_id”:”城市编号”, 
-//	 				“city_name”:”城市名称”，
-//					“dis_id”:”区编号”，
-//					“dis_name”:” 区名称” ，
-//	 				“street_id”:”街道编号”,
-//					“street_name”:”街道名称”,
-//					“details”:”地址详细”
-//				   }]
-//						},
- 
-
-//		“card_img”:”身份证照片”，
-//		“token”:”系统唯一标示”，
-//		“version”:”版本”，
-//		“logo”:”头像url”
-
 		
 		return appUserInfoDao.updateAppUser(map);
 	}

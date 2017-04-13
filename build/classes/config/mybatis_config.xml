@@ -9,6 +9,11 @@
 		<setting name="useColumnLabel" value="true" />
 		<setting name="autoMappingBehavior" value="FULL" />
 	</settings>
+	
+	<plugins>
+		<!-- 物理分页 -->
+		<plugin interceptor="com.tuzhi.app.util.PaginationInterceptor" />
+	</plugins>
 
 	<mappers>
 	

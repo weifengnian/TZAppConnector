@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import net.sf.json.JSONObject;
 
+import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -132,6 +133,28 @@ public class StringUtil {
 		// 去掉“-”符号
 		return s.substring(0, 8) + s.substring(9, 13) + s.substring(14, 18)
 		+ s.substring(19, 23) + s.substring(24);
+	}
+	
+	public static RowBounds getRowBounds(int PageNum, int PageSize)
+	{
+		int offset;
+		int limit;
+
+		if (PageNum == 0)
+		{
+			offset = 0;
+			//limit = Integer.MAX_VALUE;
+			limit = PageSize;
+		}
+		else
+		{
+			offset = (PageNum - 1) * PageSize;
+			//limit = offset + PageSize;
+			limit = PageSize;
+		}
+
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return rowBounds;
 	}
 
 }

@@ -324,42 +324,42 @@
 	
 	<!-- 修改地址 -->
   	<update id="updateAddress" parameterType="map" >
-		update app_address a set 
+		update app_address set 
 		 <if test="pro_id !=null and pro_id !='' ">
-		 	a.pro_id=#{pro_id},
+		 	pro_id=#{pro_id},
 		 </if>
 		 <if test="pro_name !=null and pro_name !='' ">
-		 	a.pro_name=#{pro_name},
+		 	pro_name=#{pro_name},
 		 </if>
 		 <if test="city_id !=null and city_id !='' ">
-		 	a.city_id=#{city_id},
+		 	city_id=#{city_id},
 		 </if>
 		 <if test="city_name !=null and city_name !='' ">
-		 	a.city_name=#{city_name},
+		 	city_name=#{city_name},
 		 </if>
 		 <if test="dis_id !=null and dis_id !='' ">
-		 	a.dis_id=#{dis_id},
+		 	dis_id=#{dis_id},
 		 </if>
 		 <if test="dis_name !=null and dis_name !='' ">
-		 	a.dis_name=#{dis_name},
+		 	dis_name=#{dis_name},
 		 </if>
 		 <if test="stree_id !=null and stree_id !='' ">
-		 	a.stree_id=#{stree_id},
+		 	stree_id=#{stree_id},
 		 </if>
 		 <if test="street_name !=null and street_name !='' ">
-		 	a.street_name=#{street_name},
+		 	street_name=#{street_name},
 		 </if>
 		 <if test="details !=null and details !='' ">
-		 	a.details=#{details},
+		 	details=#{details},
 		 </if>
 		 <if test="latitude !=null and latitude !='' ">
-		 	a.latitude=#{latitude},
+		 	latitude=#{latitude},
 		 </if>
 		 <if test="longitude !=null and longitude !='' ">
-		 	a.longitude=#{longitude},
+		 	longitude=#{longitude},
 		 </if>
-		 	a.updateTime=getdate()
- 		where a.id=#{id}
+		 	updateTime=getdate()
+ 		where id=#{id}
   	</update>
 	
 	<!-- 添加地址  -->
