@@ -1,6 +1,11 @@
 package com.tuzhi.app.util;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -65,14 +70,6 @@ public class StringUtil {
 		return false;
 	}
 	
-	//判断字符是否为空
-	public static String isStr(String str) {
-		
-		String string = null==str?"":str;
-		
-		return string;
-	}
-
 	//Md5加密
 	public static String MD5pwd(String pwd){
 		
@@ -105,16 +102,32 @@ public class StringUtil {
 		return password;
 	}
 	
-	private static final SimpleDateFormat DF_YMDHMS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	/**
 	 * 获得date时间
 	 * @param date
 	 * @return yyyy-MM-dd HH:mm:ss
 	 */
+	private static final SimpleDateFormat DF_YMDHMS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	public static String getDisplayYMDHMS(){
 		try {
 			Calendar calendar = Calendar.getInstance();
 			return ((SimpleDateFormat) DF_YMDHMS.clone()).format(calendar
+					.getTime());
+		} catch (Exception e) {
+			return null;
+		}		
+	}
+	
+	/**
+	 * 获得date时间
+	 * @param date
+	 * @return yyyy-MM-dd
+	 */
+	private static final SimpleDateFormat DF_YMD = new SimpleDateFormat("yyyy-MM-dd");
+	public static String getDisplayYMD(){
+		try {
+			Calendar calendar = Calendar.getInstance();
+			return ((SimpleDateFormat) DF_YMD.clone()).format(calendar
 					.getTime());
 		} catch (Exception e) {
 			return null;
@@ -155,6 +168,37 @@ public class StringUtil {
 
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		return rowBounds;
+	}
+	
+	/**
+	 * 复制文件
+	 * @param src 源文件
+	 * @param dst 目标文件
+	 * @throws IOException
+	 */
+	@SuppressWarnings("resource")
+	public static void copy(File src, File dst) throws IOException {
+		FileChannel srcChannel = new FileInputStream(src).getChannel();
+		FileChannel destChannel = new FileOutputStream(dst).getChannel();
+		try {
+			srcChannel.transferTo(0, srcChannel.size(), destChannel);
+		} finally {
+			srcChannel.close();
+			destChannel.close();
+		}
+	}
+	
+	/**
+	 * 建立文件夹
+	 * @param filePath 文件夹路径
+	 * @return
+	 */
+	public static File createDirectory(String filePath) {
+		File file = new File(filePath);
+		if (!file.exists()) {
+			file.mkdirs();
+		}
+		return file;
 	}
 
 }
