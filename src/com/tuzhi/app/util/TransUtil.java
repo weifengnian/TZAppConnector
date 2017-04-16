@@ -11,8 +11,14 @@ public class TransUtil {
 	
 	public static final String ENCODING = "UTF-8"; //编码类型
 	
-	public static final String UPLOAD_PATH = "F:\\Program Files\\apache-tomcat-7.0.55\\webapps"; //上传路径路径
+	//本地
+//	public static final String UPLOAD_PATH = "D:\\Program Files\\apache-tomcat-7.0.55\\webapps"; //上传路径路径
+	//生产
+	public static final String UPLOAD_PATH = "C:\\tomcat\\apache-tomcat-7.0.55\\webapps"; //上传路径路径
 	
-	public static final String LOAD_PATH = ""; //查看路径
+	//本地
+//	public static final String LOAD_PATH = "http://localhost:8080"; //查看路径
+	//生产
+	public static final String LOAD_PATH = "http://192.168.8.239:8080"; //查看路径
 
 }

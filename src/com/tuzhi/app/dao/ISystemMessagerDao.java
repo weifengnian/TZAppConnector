@@ -3,6 +3,8 @@ package com.tuzhi.app.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.tuzhi.app.entity.AppBanner;
+import com.tuzhi.app.entity.AppGoodField;
 import com.tuzhi.app.entity.AppMessage;
 import com.tuzhi.app.entity.AppMsgReceive;
 
@@ -28,5 +30,19 @@ public interface ISystemMessagerDao {
 	 * @return
 	 */
 	public AppMsgReceive getMsgReceive(Map<String,String> map);
+	
+	/**
+	 * 获取所有领域
+	 * @param map
+	 * @return
+	 */
+	public List<AppGoodField> getAllField(Map<String,String> map);
+	
+	/**
+	 * 获取广告图片
+	 * @param map
+	 * @return
+	 */
+	public List<AppBanner> getMyBanner(Map<String,String> map);
 
 }
