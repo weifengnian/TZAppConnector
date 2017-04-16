@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.tuzhi.app.dao.ISystemMessagerDao;
+import com.tuzhi.app.entity.AppBanner;
+import com.tuzhi.app.entity.AppGoodField;
 import com.tuzhi.app.entity.AppMessage;
 import com.tuzhi.app.entity.AppMsgReceive;
 
@@ -36,6 +38,18 @@ public class SystemMessagerService implements ISystemMessagerService {
 	public AppMsgReceive getMsgReceive(Map<String, String> map) {
 		// TODO Auto-generated method stub
 		return systemMessagerDao.getMsgReceive(map);
+	}
+
+	@Override
+	public List<AppGoodField> getAllField(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return systemMessagerDao.getAllField(map);
+	}
+
+	@Override
+	public List<AppBanner> getMyBanner(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return systemMessagerDao.getMyBanner(map);
 	}
 	
 }

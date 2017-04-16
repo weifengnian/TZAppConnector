@@ -6,6 +6,8 @@
 	<resultMap type="com.tuzhi.app.entity.AppFeedback" id="resultFeedback"/>
 	<resultMap type="com.tuzhi.app.entity.AppMessage" id="resultMessage"/>
 	<resultMap type="com.tuzhi.app.entity.AppMsgReceive" id="resultMsgReceive"/>
+	<resultMap type="com.tuzhi.app.entity.AppGoodField" id="resultGoodField"/>
+	<resultMap type="com.tuzhi.app.entity.AppBanner" id="resultBanner"/>
 	
 	<!-- 添加反馈意见 -->
   	<insert id="insertFeedback" parameterType="map" >
@@ -67,6 +69,18 @@
 		order by m.sendtime desc
 	</select>
 	
+	<!-- 获取所有领域 -->
+	<select id="getAllField" parameterType="map" resultMap="resultGoodField">
+		select f.* from app_good_field f where 1=1
+	</select>
+	
+	<!-- 获取广告图片 -->
+	<select id="getMyBanner" parameterType="map" resultMap="resultBanner">
+		select b.* from app_banner b where 1=1
+  		 <if test="type !=null and type != ''">
+			and b.type = #{type}
+		 </if>
+	</select>
   	
 <!--   	<update id="update" parameterType="com.XingJia.pojo.User"> -->
 <!-- 		update xj_user set -->
