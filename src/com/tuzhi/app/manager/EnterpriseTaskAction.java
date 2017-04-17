@@ -105,14 +105,14 @@ public class EnterpriseTaskAction extends HttpServlet {
 			String retMsg = "成功";
 		
 			//验证参数     type=1指用户、type=2指企业
-			List<AppTask> lm = new ArrayList<AppTask>();
+			List<AppTask> at = new ArrayList<AppTask>();
 			if(StringUtil.isBlank(map.get("user_id")) || StringUtil.isBlank(map.get("page")) || StringUtil.isBlank(map.get("rows")) || StringUtil.isBlank(map.get("token"))){
 				status = "15";
 				retMsg = "必要参数缺失";
 			}else{
 				//消息列表
-				lm = enterpriseTaskService.getTask(map);
-				if(lm.size()<=0){
+				at = enterpriseTaskService.getTask(map);
+				if(at.size()<=0){
 					status = "13";
 					retMsg = "消息列表获取失败";
 				}
@@ -120,13 +120,13 @@ public class EnterpriseTaskAction extends HttpServlet {
 			
 			List<Map<String,Object>> listMap = new ArrayList<Map<String,Object>>();
 			int num = 0;
-			if(lm.size()==0){
+			if(at.size()==0){
 				num = -1;
 			}
-			for (int i = num; i < lm.size(); i++) {
+			for (int i = num; i < at.size(); i++) {
 				Map<String,Object> map3 = new HashMap<String,Object>();
-				map3.put("msg_id", lm.size()==0?"":lm.get(i).getId()==0?"":lm.get(i).getId());
-				map3.put("title", lm.size()==0?"":lm.get(i).getTitle()==null?"":lm.get(i).getTitle());
+				map3.put("msg_id", at.size()==0?"":at.get(i).getId()==0?"":at.get(i).getId());
+				map3.put("title", at.size()==0?"":at.get(i).getTitle()==null?"":at.get(i).getTitle());
 //				map3.put("date", lm.size()==0?"":lm.get(i).getSendtime()==null?"":lm.get(i).getSendtime());
 				listMap.add(map3);
 			}
