@@ -5,20 +5,27 @@
        	   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 	<!-- 配置Spring的view -->
 	
-	<!-- -->
+	<!-- app用户 -->
 	<bean name="appUserInfoAction" class="com.tuzhi.app.manager.UserInfoAction" scope="prototype">
 		<property name="appUserInfoService">
 			<ref bean="appUserInfoService" />
 		</property>
 	</bean>
 	
-	<!-- -->
+	<!-- 系统消息 -->
 	<bean name="systemMessagerAction" class="com.tuzhi.app.manager.SystemMessagerAction" scope="prototype">
 		<property name="systemMessagerService">
 			<ref bean="systemMessagerService" />
 		</property>
 		<property name="appUserInfoService">
 			<ref bean="appUserInfoService" />
+		</property>
+	</bean>
+	
+	<!-- 企业任务 -->
+	<bean name="enterpriseTaskAction" class="com.tuzhi.app.manager.EnterpriseTaskAction" scope="prototype">
+		<property name="enterpriseTaskService">
+			<ref bean="enterpriseTaskService" />
 		</property>
 	</bean>
 	

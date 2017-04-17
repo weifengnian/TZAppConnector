@@ -10,7 +10,10 @@
 		<action name="*Ur" method="{1}" class="appUserInfoAction"></action>
 		
 		<!-- 系统消息 -->
-		<action name="*Msg" method="{1}" class="systemMessagerAction"></action>	
+		<action name="*Msg" method="{1}" class="systemMessagerAction"></action>
+		
+		<!-- 企业任务 -->
+		<action name="*Tsk" method="{1}" class="enterpriseTaskAction"></action>	
 		
 	</package>
 </struts>

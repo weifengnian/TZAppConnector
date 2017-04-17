@@ -23,6 +23,9 @@
 		<!-- 系统消息 -->
 		<mapper resource="com/tuzhi/app/mapper/SystemMessagerDaoMapper.xml" />
 		
+		<!-- 企业任务 -->
+		<mapper resource="com/tuzhi/app/mapper/EnterpriseTaskDaoMapper.xml" />
+		
 	</mappers>
 	
 </configuration>
