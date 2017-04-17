@@ -19,4 +19,11 @@
 		</property>
 	</bean>
 	
+	<!-- 企业任务 -->
+	<bean id="enterpriseTaskService" class="com.tuzhi.app.service.EnterpriseTaskService" scope="singleton">
+		<property name="enterpriseTaskDao">
+			<ref bean="enterpriseTaskDao"/>
+		</property>
+	</bean>
+	
 </beans>

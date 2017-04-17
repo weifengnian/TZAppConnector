@@ -15,4 +15,9 @@
 		<property name="sqlSessionTemplate" ref="sqlSession" />
 	</bean>
 	
+	<!-- 企业任务 -->
+	<bean id="enterpriseTaskDao" class="com.tuzhi.app.dao.EnterpriseTaskDao" scope="singleton">
+		<property name="sqlSessionTemplate" ref="sqlSession" />
+	</bean>
+	
 </beans>
