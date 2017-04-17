@@ -2,7 +2,6 @@ package com.tuzhi.app.manager;
 
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,18 +17,9 @@ import net.arnx.jsonic.JSON;
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.tuzhi.app.entity.AppBanner;
-import com.tuzhi.app.entity.AppEnterprisesInfo;
-import com.tuzhi.app.entity.AppGoodField;
-import com.tuzhi.app.entity.AppMessage;
 import com.tuzhi.app.entity.AppTask;
-import com.tuzhi.app.pojo.AppUserDetailInfo;
-import com.tuzhi.app.service.IAppUserInfoService;
 import com.tuzhi.app.service.IEnterpriseTaskService;
-import com.tuzhi.app.service.ISystemMessagerService;
 import com.tuzhi.app.util.StringUtil;
-import com.tuzhi.app.util.TransUtil;
 
 public class EnterpriseTaskAction extends HttpServlet {
 	

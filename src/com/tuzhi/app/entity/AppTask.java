@@ -19,7 +19,6 @@ public class AppTask {
 	private int address_id; //关联地址
 	private String desc; //备注
 	
-	
 	public int getId() {
 		return id;
 	}
