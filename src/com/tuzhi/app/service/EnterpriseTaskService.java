@@ -21,6 +21,7 @@ public class EnterpriseTaskService implements IEnterpriseTaskService {
 	@Override
 	public Integer insertTask(Map<String, String> map) {
 		// TODO Auto-generated method stub
+		
 		return enterpriseTaskDao.insertTask(map);
 	}
 

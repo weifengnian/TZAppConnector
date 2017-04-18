@@ -99,11 +99,11 @@
   	</insert>
 	
 	<!-- 查询任务列表  -->
-	<select id=getTask parameterType="map" resultMap="resultTask">
+	<select id="getTask" parameterType="map" resultMap="resultTask">
 		select t.* from app_task t 
  			left join app_task_user u on t.id=u.order_id
  			where 1=1 
-  		 <if test="user_id !=null and user_id != ''">
+  		 <if test="user_id !=null and user_id !='' ">
 			and u.user_id=#{user_id}
 		 </if>
 		order by t.create_time desc
