@@ -3,28 +3,18 @@ package com.tuzhi.app.manager;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import net.arnx.jsonic.JSON;
-
 import org.apache.struts2.ServletActionContext;
-import org.fusesource.hawtbuf.ByteArrayInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
-
 import com.tuzhi.app.entity.AppBanner;
 import com.tuzhi.app.entity.AppEnterprisesInfo;
 import com.tuzhi.app.entity.AppGoodField;
@@ -462,7 +452,7 @@ public class SystemMessagerAction extends HttpServlet {
 	
 	private String fileName; //文件名称
 	private String version; //版本号
-	private String template; //更能模板，1、用户，2、企业，3、身份证，4资质证书
+	private String template; //功能模板，1、用户，2、企业，3、身份证，4资质证书
 	private File img; //文件流(图片)
 
 	/**
@@ -470,34 +460,17 @@ public class SystemMessagerAction extends HttpServlet {
 	 */
 	public void upload(){
 		try {
-			HttpServletRequest request = ServletActionContext.getRequest(); 
+			//HttpServletRequest request = ServletActionContext.getRequest(); 
 			HttpServletResponse response = ServletActionContext.getResponse();
 			response.setCharacterEncoding("UTF-8");
 			response.setContentType("application/json; charset=utf-8");
 			
 			log.info("----fileName:"+fileName+"----template:"+template+",----file:"+img);
 			
-			byte data[] = new byte[90240];
-	        
-	        try {
-				
-				InputStream is =  request.getInputStream();
-				is.read(data);
-				log.info("----data:"+data);
-//				response.flushBuffer();
-//		        OutputStream toClient = response.getOutputStream(); // 得到向客户端输出二进制数据的对象
-//		        toClient.write(data); // 输出数据
-//		        toClient.flush();
-//				toClient.close();
-				is.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	        
 			String status = "0";
 			String retMsg = "成功";
 			
+			//判断功能模板，1、用户，2、企业，3、身份证，4资质证书
 			if(!"1".equals(template) && !"2".equals(template) && !"3".equals(template) && !"4".equals(template)){
 				Map<String,Object> resultMap = new HashMap<String,Object>();
 				resultMap.put("status", "17");
@@ -508,15 +481,16 @@ public class SystemMessagerAction extends HttpServlet {
 				return;
 			}
 			
-//			if(img == null){
-//				Map<String,Object> resultMap = new HashMap<String,Object>();
-//				resultMap.put("status", "18");
-//				resultMap.put("retMsg", "无法获取图片流");
-//				resultMap.put("url", "");
-//				String json = JSON.encode(resultMap);
-//				response.getWriter().write(json);
-//				return;
-//			}
+			//判断文件流
+			if(img == null){
+				Map<String,Object> resultMap = new HashMap<String,Object>();
+				resultMap.put("status", "18");
+				resultMap.put("retMsg", "无法获取图片流");
+				resultMap.put("url", "");
+				String json = JSON.encode(resultMap);
+				response.getWriter().write(json);
+				return;
+			}
 			
 			//获取日期yyyy-mm-dd
 			String date = StringUtil.getDisplayYMD();
@@ -547,48 +521,26 @@ public class SystemMessagerAction extends HttpServlet {
 			//目标文件
 			String targetDirectory = TransUtil.UPLOAD_PATH+upload_path.toString();
 			
-//			//建立文件夹
-//			StringUtil.createDirectory(targetDirectory);
+			//建立文件夹
+			StringUtil.createDirectory(targetDirectory);
 			
 			String directory = String.valueOf(System.currentTimeMillis());
 			
-			String file_path = targetDirectory+"\\"+directory+".jpg";
-			log.info("--------file_path:"+file_path);
+			File filepath = new File(targetDirectory+"\\"+directory+".jpg");
 			
-			File file = new File(targetDirectory); 
-			if (!file.exists()) {
-				file.mkdirs();
-			}
+			//file = new File("C:\\abc.png");
 			
-			FileOutputStream fos = null;
-			try {
-				fos = new FileOutputStream(file);
-				fos.write(data,0,data.length);
-			} catch (Exception e) {
-				throw new Exception(e);
-			} finally {
-				if (fos != null) {
-					fos.flush();
-					fos.close();
-				}
-			}
-			
-//			File filepath = new File(targetDirectory+"\\"+directory+".jpg");
-			
-//			file = new File("C:\\abc.png");
-			
-//			StringUtil.copy(img, filepath);
+			StringUtil.copy(img, filepath);
 			
 			Map<String,Object> resultMap = new HashMap<String,Object>();
 			resultMap.put("status", status);
 			resultMap.put("retMsg", retMsg);
 			resultMap.put("url", TransUtil.LOAD_PATH+load_path.toString()+directory+".jpg");
-			log.info("----upload_path:"+file_path);
+			log.info("----upload_path:"+filepath);
 			log.info("----load_path:"+TransUtil.LOAD_PATH+load_path.toString()+directory+".jpg");
 			String json = JSON.encode(resultMap);
 			
 			response.getWriter().write(json);
-	        
 //			//添加日志信息
 //			Map<String,Object> logMap = new HashMap<String,Object>();
 //			logMap.put("url", "xxxxxx/TZAppConnector/manager/feedback.action");  //请求命令Url

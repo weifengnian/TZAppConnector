@@ -50,7 +50,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 			
 			int resultStstu = enterpriseTaskService.insertTask(map);
 			if(resultStstu<=0){
-				status = "";
+				status = "21";
 				retMsg = "任务发布失败";
 			}
 			
@@ -109,12 +109,15 @@ public class EnterpriseTaskAction extends HttpServlet {
 			if(StringUtil.isBlank(map.get("user_id")) || StringUtil.isBlank(map.get("page")) || StringUtil.isBlank(map.get("rows")) || StringUtil.isBlank(map.get("token"))){
 				status = "15";
 				retMsg = "必要参数缺失";
+			}else if(map.get("user_id").length()>10){
+				status = "16";
+				retMsg = "必要参数输入有误";
 			}else{
 				//消息列表
 				at = enterpriseTaskService.getTask(map);
 				if(at.size()<=0){
-					status = "13";
-					retMsg = "消息列表获取失败";
+					status = "22";
+					retMsg = "任务列表获取失败";
 				}
 			}
 			
@@ -125,9 +128,18 @@ public class EnterpriseTaskAction extends HttpServlet {
 			}
 			for (int i = num; i < at.size(); i++) {
 				Map<String,Object> map3 = new HashMap<String,Object>();
-				map3.put("msg_id", at.size()==0?"":at.get(i).getId()==0?"":at.get(i).getId());
-				map3.put("title", at.size()==0?"":at.get(i).getTitle()==null?"":at.get(i).getTitle());
-//				map3.put("date", lm.size()==0?"":lm.get(i).getSendtime()==null?"":lm.get(i).getSendtime());
+				map3.put("task_id", at.size()==0?"":at.get(i).getId()==0?"":at.get(i).getId());
+				map3.put("task_start_date", at.size()==0?"":at.get(i).getEnd_time()==null?"":at.get(i).getEnd_time());
+				map3.put("task_end_date", at.size()==0?"":at.get(i).getStart_time()==null?"":at.get(i).getStart_time());
+				map3.put("sender", "");
+				map3.put("release_time", "");
+				map3.put("title", "");
+				map3.put("money", "");
+				map3.put("province", "");
+				map3.put("city", "");
+				map3.put("district", "");
+				map3.put("address", "");
+				map3.put("field", "");
 				listMap.add(map3);
 			}
 			Map<String,Object> map2 = new HashMap<String,Object>();
@@ -187,27 +199,27 @@ public class EnterpriseTaskAction extends HttpServlet {
 			
 			//验证参数 
 			List<AppTask> lm = new ArrayList<AppTask>();
-			if(StringUtil.isBlank(map.get("msg_id")) || StringUtil.isBlank(map.get("token"))){
+			if(StringUtil.isBlank(map.get("task_id")) || StringUtil.isBlank(map.get("token"))){
 				status = "15";
 				retMsg = "必要参数缺失";
-			}else if(map.get("msg_id").length()>10){
+			}else if(map.get("task_id").length()>10){
 				status = "16";
 				retMsg = "必要参数输入有误";
 			}else{
 				//消息列表
 				lm = enterpriseTaskService.getTask(map);
 				if(lm.size() <= 0){
-					status = "14";
-					retMsg = "消息详情获取失败";
+					status = "23";
+					retMsg = "任务详情获取失败";
 				}
 			}
 				
 			Map<String,Object> map2 = new HashMap<String,Object>();
-			map2.put("msg_id", lm.size()<=0?"":lm.get(0).getId()==0?"":lm.get(0).getId());
 			map2.put("title", lm.size()<=0?"":lm.get(0).getTitle()==null?"":lm.get(0).getTitle());
 			map2.put("content", lm.size()<=0?"":lm.get(0).getContent()==null?"":lm.get(0).getContent());
-//			map2.put("date", lm.size()<=0?"":lm.get(0).getSendtime()==null?"":lm.get(0).getSendtime());
-			map2.put("file_path", "");
+			map2.put("order_id", "");
+			map2.put("order_state", "");
+			map2.put("actor_num", "");
 			
 			Map<String,Object> map1 = new HashMap<String,Object>();
 			map1.put("status", status);
