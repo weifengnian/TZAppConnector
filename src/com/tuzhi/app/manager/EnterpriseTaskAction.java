@@ -7,17 +7,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import net.arnx.jsonic.JSON;
-
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.tuzhi.app.entity.AppTask;
+import com.tuzhi.app.pojo.AppTaskInfo;
 import com.tuzhi.app.service.IEnterpriseTaskService;
 import com.tuzhi.app.util.StringUtil;
 
@@ -105,7 +102,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 			String retMsg = "成功";
 		
 			//验证参数     type=1指用户、type=2指企业
-			List<AppTask> at = new ArrayList<AppTask>();
+			List<AppTaskInfo> at = new ArrayList<AppTaskInfo>();
 			if(StringUtil.isBlank(map.get("user_id")) || StringUtil.isBlank(map.get("page")) || StringUtil.isBlank(map.get("rows")) || StringUtil.isBlank(map.get("token"))){
 				status = "15";
 				retMsg = "必要参数缺失";
@@ -131,15 +128,15 @@ public class EnterpriseTaskAction extends HttpServlet {
 				map3.put("task_id", at.size()==0?"":at.get(i).getId()==0?"":at.get(i).getId());
 				map3.put("task_start_date", at.size()==0?"":at.get(i).getEnd_time()==null?"":at.get(i).getEnd_time());
 				map3.put("task_end_date", at.size()==0?"":at.get(i).getStart_time()==null?"":at.get(i).getStart_time());
-				map3.put("sender", "");
-				map3.put("release_time", "");
-				map3.put("title", "");
-				map3.put("money", "");
-				map3.put("province", "");
-				map3.put("city", "");
-				map3.put("district", "");
-				map3.put("address", "");
-				map3.put("field", "");
+				map3.put("sender", at.size()==0?"":at.get(i).getCreate_per()==null?"":at.get(i).getCreate_per());
+				map3.put("release_time", at.size()==0?"":at.get(i).getCreate_time()==null?"":at.get(i).getCreate_time());
+				map3.put("title", at.size()==0?"":at.get(i).getTitle()==null?"":at.get(i).getTitle());
+				map3.put("money", at.size()==0?"":at.get(i).getMoney()==0?"":at.get(i).getMoney());
+				map3.put("province", at.size()==0?"":at.get(i).getProvince()==null?"":at.get(i).getProvince());
+				map3.put("city", at.size()==0?"":at.get(i).getCity()==null?"":at.get(i).getCity());
+				map3.put("district", at.size()==0?"":at.get(i).getDistrict()==null?"":at.get(i).getDistrict());
+				map3.put("address", at.size()==0?"":at.get(i).getAddress()==null?"":at.get(i).getAddress());
+				map3.put("field", at.size()==0?"":at.get(i).getName()==null?"":at.get(i).getName());
 				listMap.add(map3);
 			}
 			Map<String,Object> map2 = new HashMap<String,Object>();
@@ -198,7 +195,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 			String retMsg = "成功";
 			
 			//验证参数 
-			List<AppTask> lm = new ArrayList<AppTask>();
+			List<AppTaskInfo> at = new ArrayList<AppTaskInfo>();
 			if(StringUtil.isBlank(map.get("task_id")) || StringUtil.isBlank(map.get("token"))){
 				status = "15";
 				retMsg = "必要参数缺失";
@@ -207,19 +204,19 @@ public class EnterpriseTaskAction extends HttpServlet {
 				retMsg = "必要参数输入有误";
 			}else{
 				//消息列表
-				lm = enterpriseTaskService.getTask(map);
-				if(lm.size() <= 0){
+				at = enterpriseTaskService.getTask(map);
+				if(at.size() <= 0){
 					status = "23";
 					retMsg = "任务详情获取失败";
 				}
 			}
 				
 			Map<String,Object> map2 = new HashMap<String,Object>();
-			map2.put("title", lm.size()<=0?"":lm.get(0).getTitle()==null?"":lm.get(0).getTitle());
-			map2.put("content", lm.size()<=0?"":lm.get(0).getContent()==null?"":lm.get(0).getContent());
-			map2.put("order_id", "");
-			map2.put("order_state", "");
-			map2.put("actor_num", "");
+			map2.put("title", at.size()==0?"":at.get(0).getTitle()==null?"":at.get(0).getTitle());
+			map2.put("content", at.size()==0?"":at.get(0).getContent()==null?"":at.get(0).getContent());
+			map2.put("order_id", at.size()==0?"":at.get(0).getOrder_code()==null?"":at.get(0).getOrder_code());
+			map2.put("order_state", at.size()==0?"":at.get(0).getStatus()==0?"":at.get(0).getStatus());
+			map2.put("actor_num", at.size()==0?"":at.get(0).getCnt()==null?"":at.get(0).getCnt());
 			
 			Map<String,Object> map1 = new HashMap<String,Object>();
 			map1.put("status", status);

@@ -2,11 +2,10 @@ package com.tuzhi.app.dao;
 
 import java.util.List;
 import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
-import com.tuzhi.app.entity.AppTask;
+import com.tuzhi.app.pojo.AppTaskInfo;
 import com.tuzhi.app.util.StringUtil;
 
 /**
@@ -25,7 +24,7 @@ public class EnterpriseTaskDao extends SqlSessionDaoSupport implements IEnterpri
 	}
 
 	@Override
-	public List<AppTask> getTask(Map<String, String> map) {
+	public List<AppTaskInfo> getTask(Map<String, String> map) {
 		// TODO Auto-generated method stub
 		int pagenum=1;
 		int pagesize=999999;

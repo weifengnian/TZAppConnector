@@ -2,7 +2,7 @@ package com.tuzhi.app.service;
 
 import java.util.List;
 import java.util.Map;
-import com.tuzhi.app.entity.AppTask;
+import com.tuzhi.app.pojo.AppTaskInfo;
 
 /**
  * @Description: 
@@ -25,6 +25,6 @@ public interface IEnterpriseTaskService {
 	 * @param map
 	 * @return
 	 */
-	public List<AppTask> getTask(Map<String,String> map);
+	public List<AppTaskInfo> getTask(Map<String,String> map);
 	
 }
