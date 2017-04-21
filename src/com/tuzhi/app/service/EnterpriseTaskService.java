@@ -3,6 +3,7 @@ package com.tuzhi.app.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import com.tuzhi.app.dao.IAppUserInfoDao;
 import com.tuzhi.app.dao.IEnterpriseTaskDao;
 import com.tuzhi.app.entity.AppAddress;
@@ -62,6 +63,8 @@ public class EnterpriseTaskService implements IEnterpriseTaskService {
 		
 		//发布者Id
 		map.put("create_per", map.get("e_id"));
+		//订单编号
+		map.put("order_code", "BH"+String.valueOf(System.currentTimeMillis()));
 		
 		return enterpriseTaskDao.insertTask(map);
 	}

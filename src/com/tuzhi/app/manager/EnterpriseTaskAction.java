@@ -7,15 +7,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import net.arnx.jsonic.JSON;
+
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.tuzhi.app.entity.AppEnterprisesInfo;
+import com.tuzhi.app.entity.AppGoodField;
 import com.tuzhi.app.pojo.AppTaskInfo;
+import com.tuzhi.app.service.IAppUserInfoService;
 import com.tuzhi.app.service.IEnterpriseTaskService;
+import com.tuzhi.app.service.ISystemMessagerService;
 import com.tuzhi.app.util.StringUtil;
 
 public class EnterpriseTaskAction extends HttpServlet {
@@ -26,6 +34,8 @@ public class EnterpriseTaskAction extends HttpServlet {
 	private final static Logger log = LoggerFactory.getLogger(EnterpriseTaskAction.class);
 	
 	private IEnterpriseTaskService enterpriseTaskService;
+	private IAppUserInfoService appUserInfoService;
+	private ISystemMessagerService systemMessagerService;
 	
 	/**
 	 * 企业发布任务（添加）
@@ -44,11 +54,38 @@ public class EnterpriseTaskAction extends HttpServlet {
 			
 			String status = "0";
 			String retMsg = "成功";
-			
-			int resultStstu = enterpriseTaskService.insertTask(map);
-			if(resultStstu<=0){
-				status = "21";
-				retMsg = "任务发布失败";
+			if(StringUtil.isBlank(map.get("title")) || StringUtil.isBlank(map.get("content")) || 
+					StringUtil.isBlank(map.get("start_time")) || StringUtil.isBlank(map.get("end_time")) ||
+					StringUtil.isBlank(map.get("money")) || StringUtil.isBlank(map.get("desc"))){
+				status = "15";
+				retMsg = "必要参数缺失";
+			}else if(map.get("e_id").length()>10 || map.get("field").length()>10){
+				status = "16";
+				retMsg = "必要参数输入有误";
+			}else{
+				AppEnterprisesInfo enfo = appUserInfoService.getEnterprises(map);
+				if(enfo != null){
+					//获取领域信息
+					Map<String,String> eiMap = new HashMap<String,String>();
+					eiMap.put("id", map.get("field"));
+					List<AppGoodField> gf = systemMessagerService.getAllField(eiMap);
+					if(gf.size()>0){
+						//发布者Id
+						map.put("create_user_id", String.valueOf(enfo.getId()));
+						//添加发布任务
+						int resultStstu = enterpriseTaskService.insertTask(map);
+						if(resultStstu<=0){
+							status = "21";
+							retMsg = "任务发布失败";
+						}
+					}else{
+						status = "25";
+						retMsg = "领域编号无效";
+					}
+				}else{
+					status = "24";
+					retMsg = "企业编号无效";
+				}
 			}
 			
 			Map<String,Object> resultMap = new HashMap<String,Object>();
@@ -103,10 +140,11 @@ public class EnterpriseTaskAction extends HttpServlet {
 		
 			//验证参数     type=1指用户、type=2指企业
 			List<AppTaskInfo> at = new ArrayList<AppTaskInfo>();
-			if(StringUtil.isBlank(map.get("user_id")) || StringUtil.isBlank(map.get("page")) || StringUtil.isBlank(map.get("rows")) || StringUtil.isBlank(map.get("token"))){
+			if(StringUtil.isBlank(map.get("user_id")) || StringUtil.isBlank(map.get("page")) || StringUtil.isBlank(map.get("rows")) || 
+					StringUtil.isBlank(map.get("token")) || StringUtil.isBlank(map.get("type"))){
 				status = "15";
 				retMsg = "必要参数缺失";
-			}else if(map.get("user_id").length()>10){
+			}else if((!"1".equals(map.get("type")) && !"2".equals(map.get("type"))) || map.get("user_id").length()>10){
 				status = "16";
 				retMsg = "必要参数输入有误";
 			}else{
@@ -126,8 +164,8 @@ public class EnterpriseTaskAction extends HttpServlet {
 			for (int i = num; i < at.size(); i++) {
 				Map<String,Object> map3 = new HashMap<String,Object>();
 				map3.put("task_id", at.size()==0?"":at.get(i).getId()==0?"":at.get(i).getId());
-				map3.put("task_start_date", at.size()==0?"":at.get(i).getEnd_time()==null?"":at.get(i).getEnd_time());
-				map3.put("task_end_date", at.size()==0?"":at.get(i).getStart_time()==null?"":at.get(i).getStart_time());
+				map3.put("task_start_date", at.size()==0?"":at.get(i).getStart_time()==null?"":at.get(i).getStart_time());
+				map3.put("task_end_date", at.size()==0?"":at.get(i).getEnd_time()==null?"":at.get(i).getEnd_time());
 				map3.put("sender", at.size()==0?"":at.get(i).getCreate_per()==null?"":at.get(i).getCreate_per());
 				map3.put("release_time", at.size()==0?"":at.get(i).getCreate_time()==null?"":at.get(i).getCreate_time());
 				map3.put("title", at.size()==0?"":at.get(i).getTitle()==null?"":at.get(i).getTitle());
@@ -196,14 +234,15 @@ public class EnterpriseTaskAction extends HttpServlet {
 			
 			//验证参数 
 			List<AppTaskInfo> at = new ArrayList<AppTaskInfo>();
-			if(StringUtil.isBlank(map.get("task_id")) || StringUtil.isBlank(map.get("token"))){
+			if(StringUtil.isBlank(map.get("task_id"))){
 				status = "15";
 				retMsg = "必要参数缺失";
 			}else if(map.get("task_id").length()>10){
 				status = "16";
 				retMsg = "必要参数输入有误";
 			}else{
-				//消息列表
+				//任务详细 （注意这里要去掉token）
+				map.remove("token");
 				at = enterpriseTaskService.getTask(map);
 				if(at.size() <= 0){
 					status = "23";
@@ -214,7 +253,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 			Map<String,Object> map2 = new HashMap<String,Object>();
 			map2.put("title", at.size()==0?"":at.get(0).getTitle()==null?"":at.get(0).getTitle());
 			map2.put("content", at.size()==0?"":at.get(0).getContent()==null?"":at.get(0).getContent());
-			map2.put("order_id", at.size()==0?"":at.get(0).getOrder_code()==null?"":at.get(0).getOrder_code());
+			map2.put("order_id", at.size()==0?"":at.get(0).getId()==0?"":at.get(0).getId());
 			map2.put("order_state", at.size()==0?"":at.get(0).getStatus()==0?"":at.get(0).getStatus());
 			map2.put("actor_num", at.size()==0?"":at.get(0).getCnt()==null?"":at.get(0).getCnt());
 			
@@ -259,5 +298,21 @@ public class EnterpriseTaskAction extends HttpServlet {
 			IEnterpriseTaskService enterpriseTaskService) {
 		this.enterpriseTaskService = enterpriseTaskService;
 	}
-	
+
+	public IAppUserInfoService getAppUserInfoService() {
+		return appUserInfoService;
+	}
+
+	public void setAppUserInfoService(IAppUserInfoService appUserInfoService) {
+		this.appUserInfoService = appUserInfoService;
+	}
+
+	public ISystemMessagerService getSystemMessagerService() {
+		return systemMessagerService;
+	}
+
+	public void setSystemMessagerService(
+			ISystemMessagerService systemMessagerService) {
+		this.systemMessagerService = systemMessagerService;
+	}
 }

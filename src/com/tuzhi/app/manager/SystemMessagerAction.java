@@ -309,7 +309,7 @@ public class SystemMessagerAction extends HttpServlet {
 				status = "15";
 				retMsg = "必要参数缺失";
 			}else{
-				//消息列表
+				//领域信息
 				gf = systemMessagerService.getAllField(map);
 				if(gf.size() <= 0){
 					status = "19";

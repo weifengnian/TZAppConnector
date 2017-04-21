@@ -27,6 +27,12 @@
 		<property name="enterpriseTaskService">
 			<ref bean="enterpriseTaskService" />
 		</property>
+		<property name="systemMessagerService">
+			<ref bean="systemMessagerService" />
+		</property>
+		<property name="appUserInfoService">
+			<ref bean="appUserInfoService" />
+		</property>
 	</bean>
 	
 </beans>

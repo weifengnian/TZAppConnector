@@ -24,6 +24,9 @@
 		<property name="enterpriseTaskDao">
 			<ref bean="enterpriseTaskDao"/>
 		</property>
+		<property name="appUserInfoDao">
+			<ref bean="appUserInfoDao"/>
+		</property>
 	</bean>
 	
 </beans>
