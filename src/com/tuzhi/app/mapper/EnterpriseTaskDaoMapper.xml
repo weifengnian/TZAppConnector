@@ -99,7 +99,7 @@
 		)
   	</insert>
 	
-	<!-- 查询任务列表  -->
+	<!-- 查询任务列表  userid＝－1查询所有任务  -->
 	<select id="getTask" parameterType="map" resultMap="resultTaskInfo">
 		select t.*,case gf.name 
 	       when '1' then '网络'
@@ -110,28 +110,31 @@
 	       when '6' then '视频' 
        		 end name,gf.name fieldid,ad.pro_name province,ad.city_name city,ad.dis_name district,ad.details address,tsk.cnt
         		from app_task t 
-<!--  			left join app_task_user u on t.id=u.order_id -->
  			left join app_address ad on t.address_id=ad.id
  			left join app_good_field gf on t.field_id=gf.id
  			left join (
  			           select tu.order_id,tu.user_id,count(*) cnt from app_task_user tu group by tu.order_id,tu.user_id
  			          )tsk on tsk.order_id=t.id
- 			<if test="type=='1'.toString() ">
- 			   left join app_user_info us on tsk.user_id=us.id
-		    </if>          
- 			<if test="type=='2'.toString() ">
- 			   left join app_enterprises_info us on tsk.user_id=us.id
-		    </if>
- 			where 1=1 
-  		 <if test="user_id !=null and user_id !='' ">
-			and tsk.user_id=#{user_id}
-		 </if>
-		 <if test="token !=null and token !='' ">
-			and us.token=#{token}
-		 </if>
-		 <if test="task_id !=null and task_id !='' ">
-			and t.id=#{task_id}
-		 </if>
+ 			<if test=" user_id !='-1'.toString() ">
+ 				<if test="type=='1'.toString() ">
+ 			   		left join app_user_info us on tsk.user_id=us.id
+		    	</if>          
+ 				<if test="type=='2'.toString() ">
+ 			   		left join app_enterprises_info us on tsk.user_id=us.id
+		    	</if>
+ 			</if>          
+ 			where 1=1
+ 			<if test=" user_id !='-1'.toString() "> 
+		  		 <if test="user_id !=null and user_id !='' ">
+					and tsk.user_id=#{user_id}
+				 </if>
+				 <if test="token !=null and token !='' ">
+					and us.token=#{token}
+				 </if>
+				 <if test="task_id !=null and task_id !='' ">
+					and t.id=#{task_id}
+				 </if>
+			</if>	 
 		order by t.create_time desc
 	</select>
 	

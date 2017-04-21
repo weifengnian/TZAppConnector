@@ -26,6 +26,13 @@ public class EnterpriseTaskDao extends SqlSessionDaoSupport implements IEnterpri
 	@Override
 	public List<AppTaskInfo> getTask(Map<String, String> map) {
 		// TODO Auto-generated method stub
+		
+		//userid＝－1查询所有任务
+		if("-1".equals(map.get("user_id"))){
+			map.remove("page");
+			map.remove("rows");
+		}
+		
 		int pagenum=1;
 		int pagesize=999999;
 		if(map.get("page")!=null && StringUtils.isNumeric(map.get("page").toString()))
