@@ -16,14 +16,19 @@ import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.log4j.Logger;
-
+/**
+ * @Description: 
+ * @company: 
+ * @author: weifengnian
+ * @Data: 2017年4月22日	
+ * @Copyright:
+ */
 @Intercepts({ @Signature(type = StatementHandler.class, method = "prepare", args = { Connection.class }) })
 public class PaginationInterceptor implements Interceptor {
 	// 日志对象
 	private static final Logger logger = Logger.getLogger("Daolog");
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.ibatis.plugin.Interceptor#intercept(org.apache.ibatis.plugin.Invocation)
 	 */
 	@SuppressWarnings("rawtypes")
@@ -77,7 +82,6 @@ public class PaginationInterceptor implements Interceptor {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.ibatis.plugin.Interceptor#plugin(java.lang.Object)
 	 */
 	public Object plugin(Object target) {
@@ -86,7 +90,6 @@ public class PaginationInterceptor implements Interceptor {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.ibatis.plugin.Interceptor#setProperties(java.util.Properties)
 	 */
 	public void setProperties(Properties arg0) {

@@ -1,6 +1,10 @@
 package com.tuzhi.app.util;
 /**
- * @author 
+ * @Description: 
+ * @company: 
+ * @author: weifengnian
+ * @Data: 2017年4月22日	
+ * @Copyright:
  */
 public class SQLServerDialect extends Dialect {
 

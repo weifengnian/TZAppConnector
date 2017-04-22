@@ -19,6 +19,13 @@ import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * @Description: 
+ * @company: 
+ * @author: weifengnian
+ * @Data: 2017年4月22日	
+ * @Copyright:
+ */
 public class StringUtil {
 	
 	private final static Logger log = LoggerFactory.getLogger(StringUtil.class);

@@ -25,7 +25,13 @@ import com.tuzhi.app.service.IAppUserInfoService;
 import com.tuzhi.app.service.IEnterpriseTaskService;
 import com.tuzhi.app.service.ISystemMessagerService;
 import com.tuzhi.app.util.StringUtil;
-
+/**
+ * @Description: 
+ * @company: 
+ * @author: weifengnian
+ * @Data: 2017年4月22日	
+ * @Copyright:
+ */
 public class EnterpriseTaskAction extends HttpServlet {
 	
     private static final long serialVersionUID = 1L;

@@ -35,4 +35,11 @@
 		</property>
 	</bean>
 	
+	<!-- 课程信息 -->
+	<bean name="coursesAction" class="com.tuzhi.app.manager.CoursesAction" scope="prototype">
+		<property name="coursesService">
+			<ref bean="coursesService" />
+		</property>
+	</bean>
+	
 </beans>

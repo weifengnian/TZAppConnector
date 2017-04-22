@@ -1,5 +1,12 @@
 package com.tuzhi.app.pojo;
 
+/**
+ * @Description: 
+ * @company: 
+ * @author: weifengnian
+ * @Data: 2017年4月22日	
+ * @Copyright:
+ */
 public class AppTaskInfo {
 	
 	//企业任务表

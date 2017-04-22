@@ -26,6 +26,9 @@
 		<!-- 企业任务 -->
 		<mapper resource="com/tuzhi/app/mapper/EnterpriseTaskDaoMapper.xml" />
 		
+		<!-- 课程信息 -->
+		<mapper resource="com/tuzhi/app/mapper/CoursesDaoMapper.xml" />
+		
 	</mappers>
 	
 </configuration>

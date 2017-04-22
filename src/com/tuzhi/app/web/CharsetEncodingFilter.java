@@ -11,6 +11,13 @@ import javax.servlet.ServletResponse;
 
 import com.tuzhi.app.util.TransUtil;
 
+/**
+ * @Description: 
+ * @company: 
+ * @author: weifengnian
+ * @Data: 2017年4月22日	
+ * @Copyright:
+ */
 public class CharsetEncodingFilter implements Filter {
 	
 	@Override

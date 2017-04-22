@@ -1,7 +1,12 @@
 package com.tuzhi.app.util;
 
+
 /**
- * Dialect
+ * @Description: 
+ * @company: 
+ * @author: weifengnian
+ * @Data: 2017年4月22日	
+ * @Copyright:
  */
 public class Dialect
 {

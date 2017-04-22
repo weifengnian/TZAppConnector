@@ -29,4 +29,11 @@
 		</property>
 	</bean>
 	
+	<!-- 课程信息 -->
+	<bean id="coursesService" class="com.tuzhi.app.service.CoursesService" scope="singleton">
+		<property name="coursesDao">
+			<ref bean="coursesDao"/>
+		</property>
+	</bean>
+	
 </beans>

@@ -15,5 +15,8 @@
 		<!-- 企业任务 -->
 		<action name="*Tsk" method="{1}" class="enterpriseTaskAction"></action>	
 		
+		<!-- 课程信息 -->
+		<action name="*Cus" method="{1}" class="coursesAction"></action>	
+		
 	</package>
 </struts>

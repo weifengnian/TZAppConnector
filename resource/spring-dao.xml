@@ -20,4 +20,9 @@
 		<property name="sqlSessionTemplate" ref="sqlSession" />
 	</bean>
 	
+	<!-- 课程信息 -->
+	<bean id="coursesDao" class="com.tuzhi.app.dao.CoursesDao" scope="singleton">
+		<property name="sqlSessionTemplate" ref="sqlSession" />
+	</bean>
+	
 </beans>
