@@ -15,7 +15,7 @@
 			 where 1=1 
  			<if test=" user_id !='-1'.toString() "> 
 		  		 <if test="title !=null and title !='' ">
-					and c.name=#[title]
+					and c.name=#{title}
 				 </if>
 			</if>	 
 		order by c.create_time desc
@@ -30,7 +30,7 @@
 		  left join app_courses cr on cc.courses_id=cr.id
 		  where 1=1 
 	  		 <if test="course_id !=null and course_id !='' ">
-				and cr.id=#[course_id]
+				and cr.id=#{course_id}
 			 </if>
 	</select>
 	
