@@ -22,9 +22,6 @@
 
 	<package name="api-base" extends="struts-default"></package>
 	
-	
 	<include file="struts-manager.xml"/>
-	<include file="struts-common.xml" />
-	
 	
 </struts>

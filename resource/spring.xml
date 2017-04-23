@@ -20,8 +20,7 @@
 	<!-- 开启注解模式 -->
 	<context:annotation-config />
 	<!-- 设置需要进行Spring注解扫描的类包 -->
-	<context:component-scan base-package="com.p2b" />	
-	
+	<context:component-scan base-package="com.tuzhi" />	
 	
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"	destroy-method="close">
 		<property name="driverClass" value="${jdbc.driverClass}"></property>
@@ -38,9 +37,6 @@
 		<property name="maxStatements" value="0"></property>
 		<property name="testConnectionOnCheckout" value="false"></property>
 	</bean>
-	
-	
-	
 	
 	<!-- 配置myBatis的sqlSessionFactory -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -104,8 +100,6 @@
 		</property>
 	</bean>
 
-	<!-- 定时任务 -->
-	<!-- import resource="spring-quarz.xml"/ -->
 	<!-- action层 -->
 	<import resource="spring-views.xml" />
 	<!-- service层 -->

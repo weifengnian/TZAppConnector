@@ -8,6 +8,13 @@ import com.tuzhi.app.entity.AppGoodField;
 import com.tuzhi.app.entity.AppMessage;
 import com.tuzhi.app.entity.AppMsgReceive;
 
+/**
+ * @Description: 
+ * @company: 
+ * @author: weifengnian
+ * @Data: 2017年4月23日	
+ * @Copyright:
+ */
 public interface ISystemMessagerDao {
 	
 	/**

@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
        	   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-	<!-- 配置myBatis映射器 -->
+	<!-- 配置Sqlserver映射器 -->
 		
 	<!-- app用户信息-->
 	<bean id="appUserInfoDao" class="com.tuzhi.app.dao.AppUserInfoDao" scope="singleton">

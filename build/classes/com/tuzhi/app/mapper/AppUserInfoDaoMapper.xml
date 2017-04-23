@@ -444,7 +444,6 @@
   	
   	<!-- 添加请求日志 -->
   	<insert id="insertAppLog" parameterType="map" >
-<!--   	insert into app_log(url,result_code,req_content,resp_content,token,result_msg,record_time)values(#{url},#{result_code},#{req_content},#{resp_content},#{token},#{result_msg},#{record_time}) -->
 		insert into app_log(
 		  <if test="url !=null and url !='' ">
              url,
@@ -458,9 +457,6 @@
 		  <if test="version !=null and version !='' ">
              version,
           </if>
-		  <if test="result_code !=null and result_code !='' ">
-             result_code,
-          </if>
 		  <if test="req_content !=null and req_content !='' ">
              req_content,
           </if>
@@ -469,6 +465,9 @@
           </if>
           <if test="token !=null and token !='' ">
              token,
+          </if>
+          <if test="result_code !=null and result_code !='' ">
+             result_code,
           </if>
           <if test="result_msg !=null and result_msg !='' ">
              result_msg,
@@ -487,17 +486,17 @@
 		  <if test="version !=null and version !='' ">
              #{version},
           </if>
-		  <if test="result_code !=null and result_code !='' ">
-             #{result_code},
-          </if>
 		  <if test="req_content !=null and req_content !='' ">
              #{req_content},
           </if>
 		  <if test="resp_content !=null and resp_content !='' ">
              #{resp_content},
           </if>
-		  <if test="token !=null and token !='' ">
+          <if test="token !=null and token !='' ">
              #{token},
+          </if>
+          <if test="result_code !=null and result_code !='' ">
+             #{result_code},
           </if>
           <if test="result_msg !=null and result_msg !='' ">
              #{result_msg},

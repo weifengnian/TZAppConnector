@@ -13,6 +13,13 @@ import com.tuzhi.app.entity.AppMessage;
 import com.tuzhi.app.entity.AppMsgReceive;
 import com.tuzhi.app.util.StringUtil;
 
+/**
+ * @Description: 
+ * @company: 
+ * @author: weifengnian
+ * @Data: 2017年4月23日	
+ * @Copyright:
+ */
 public class SystemMessagerDao extends SqlSessionDaoSupport implements ISystemMessagerDao {
 	
 

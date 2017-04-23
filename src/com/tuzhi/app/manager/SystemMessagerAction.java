@@ -1,6 +1,5 @@
 package com.tuzhi.app.manager;
 
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -56,6 +55,7 @@ public class SystemMessagerAction extends HttpServlet {
 			
 			//处理JSON字符串
 			StringUtil.getJsonStr(br,map);
+			log.info("----request--map:"+map);
 			
 			String status = "0";
 			String retMsg = "成功";
@@ -106,30 +106,29 @@ public class SystemMessagerAction extends HttpServlet {
 			resultMap.put("retMsg", retMsg);
 			
 			String json = JSON.encode(resultMap);
+			log.info("----response--json:"+json);
 			
 			response.setCharacterEncoding("UTF-8");
 			response.setContentType("application/json; charset=utf-8");
 			response.getWriter().write(json);
 			
-//			//添加日志信息
-//			Map<String,Object> logMap = new HashMap<String,Object>();
-//			logMap.put("url", "xxxxxx/TZAppConnector/manager/feedback.action");  //请求命令Url
-//			logMap.put("u_id", "");  //编号(type=1指用户id、type=2指企业id) 
-//			logMap.put("type", "");  //1:个人2：企业
-//			logMap.put("version", map.get("version"));  //APP版本
-//////		logMap.put("record_time", "");  //记录时间 (mapper文件默认当前时间)
-//			logMap.put("result_code", status); //状态码
-//			logMap.put("result_msg", retMsg); //状态码说明
-//			logMap.put("token", map.get("token")); //系统唯一标识
-//			logMap.put("req_content", map); //请求内容
-//			logMap.put("resp_content", json); //相应内容
-//			int resultLog = appUserInfoService.insertAppLog(logMap);
-//			log.info("----resultLog:"+resultLog);
+			//添加日志信息
+			Map<String,Object> logMap = new HashMap<String,Object>();
+			logMap.put("url", "http://192.168.8.239:8080/TZAppConnector/manager/feedbackMsg.action");  //请求命令Url
+			logMap.put("u_id", map.get("user_id"));  //编号(type=1指用户id、type=2指企业id) 
+			logMap.put("type", map.get("type"));  //1:个人2：企业
+			logMap.put("version", map.get("version"));  //APP版本
+			logMap.put("req_content", map.toString()); //请求内容
+			logMap.put("resp_content", json); //相应内容
+			logMap.put("token", map.get("token")); //系统唯一标识
+			logMap.put("result_code", status); //状态码
+			logMap.put("result_msg", retMsg); //状态码说明
+			int resultLog = appUserInfoService.insertAppLog(logMap);
+			log.info("----resultLog:"+resultLog);
 			return;
-			
 		} catch (Exception e) {
 			// TODO: handle exception
-			log.info("---register--Exception:"+e.getMessage());
+			log.info("---feedback--Exception:"+e.getMessage());
 		}
 	}
 	
@@ -147,6 +146,7 @@ public class SystemMessagerAction extends HttpServlet {
 			
 			//处理JSON字符串
 			StringUtil.getJsonStr(br,map);
+			log.info("----request--map:"+map);
 			
 			String status = "0";
 			String retMsg = "成功";
@@ -189,30 +189,29 @@ public class SystemMessagerAction extends HttpServlet {
 			map1.put("data", map2);
 			
 			String json = JSON.encode(map1);
+			log.info("----response--json:"+json);
 			
 			response.setCharacterEncoding("UTF-8");
 			response.setContentType("application/json; charset=utf-8");
 			response.getWriter().write(json);
 			
-//			//添加日志信息
-//			Map<String,Object> logMap = new HashMap<String,Object>();
-//			logMap.put("url", "xxxxxx/TZAppConnector/manager/message.action");  //请求命令Url
-//			logMap.put("u_id", "");  //编号(type=1指用户id、type=2指企业id) 
-//			logMap.put("type", "");  //1:个人2：企业
-//			logMap.put("version", map.get("version"));  //APP版本
-////			logMap.put("record_time", "");  //记录时间 (mapper文件默认当前时间)
-//			logMap.put("result_code", status); //状态码
-//			logMap.put("result_msg", retMsg); //状态码说明
-//			logMap.put("token", map.get("token")); //系统唯一标识
-//			logMap.put("req_content", map); //请求内容
-//			logMap.put("resp_content", json); //相应内容
-//			int resultLog = appUserInfoService.insertAppLog(logMap);
-//			log.info("----resultLog:"+resultLog);
+			//添加日志信息
+			Map<String,Object> logMap = new HashMap<String,Object>();
+			logMap.put("url", "http://192.168.8.239:8080/TZAppConnector/manager/messageMsg.action");  //请求命令Url
+			logMap.put("u_id", map.get("user_id"));  //编号(type=1指用户id、type=2指企业id) 
+			logMap.put("type", map.get("type"));  //1:个人2：企业
+			logMap.put("version", map.get("version"));  //APP版本
+			logMap.put("req_content", map.toString()); //请求内容
+			logMap.put("resp_content", json); //相应内容
+			logMap.put("token", map.get("token")); //系统唯一标识
+			logMap.put("result_code", status); //状态码
+			logMap.put("result_msg", retMsg); //状态码说明
+			int resultLog = appUserInfoService.insertAppLog(logMap);
+			log.info("----resultLog:"+resultLog);
 			return;
-			
 		} catch (Exception e) {
 			// TODO: handle exception
-			log.info("---register--Exception:"+e.getMessage());
+			log.info("---message--Exception:"+e.getMessage());
 		}
 	}
 	
@@ -231,6 +230,7 @@ public class SystemMessagerAction extends HttpServlet {
 			
 			//处理JSON字符串
 			StringUtil.getJsonStr(br,map);
+			log.info("----request--map:"+map);
 			
 			String status = "0";
 			String retMsg = "成功";
@@ -265,27 +265,26 @@ public class SystemMessagerAction extends HttpServlet {
 			map1.put("data", map2);
 			
 			String json = JSON.encode(map1);
+			log.info("----response--json:"+json);
 			
 			response.setCharacterEncoding("UTF-8");
 			response.setContentType("application/json; charset=utf-8");
 			response.getWriter().write(json);
 			
-//			//添加日志信息
-//			Map<String,Object> logMap = new HashMap<String,Object>();
-//			logMap.put("url", "xxxxxx/TZAppConnector/manager/messageDetail.action");  //请求命令Url
-//			logMap.put("u_id", "");  //编号(type=1指用户id、type=2指企业id) 
-//			logMap.put("type", "");  //1:个人2：企业
-//			logMap.put("version", map.get("version"));  //APP版本
-////			logMap.put("record_time", "");  //记录时间 (mapper文件默认当前时间)
-//			logMap.put("result_code", status); //状态码
-//			logMap.put("result_msg", retMsg); //状态码说明
-//			logMap.put("token", map.get("token")); //系统唯一标识
-//			logMap.put("req_content", map); //请求内容
-//			logMap.put("resp_content", json); //相应内容
-//			int resultLog = appUserInfoService.insertAppLog(logMap);
-//			log.info("----resultLog:"+resultLog);
+			//添加日志信息
+			Map<String,Object> logMap = new HashMap<String,Object>();
+			logMap.put("url", "http://192.168.8.239:8080/TZAppConnector/manager/messageDetailMsg.action");  //请求命令Url
+			logMap.put("u_id", map.get("msg_id"));  //编号(type=1指用户id、type=2指企业id) 
+			logMap.put("type", map.get("type"));  //1:个人2：企业
+			logMap.put("version", map.get("version"));  //APP版本
+			logMap.put("req_content", map.toString()); //请求内容
+			logMap.put("resp_content", json); //相应内容
+			logMap.put("token", map.get("token")); //系统唯一标识
+			logMap.put("result_code", status); //状态码
+			logMap.put("result_msg", retMsg); //状态码说明
+			int resultLog = appUserInfoService.insertAppLog(logMap);
+			log.info("----resultLog:"+resultLog);
 			return;
-			
 		} catch (Exception e) {
 			// TODO: handle exception
 			log.info("---messageDetail--Exception:"+e.getMessage());
@@ -306,6 +305,7 @@ public class SystemMessagerAction extends HttpServlet {
 			
 			//处理JSON字符串
 			StringUtil.getJsonStr(br,map);
+			log.info("----request--map:"+map);
 			
 			String status = "0";
 			String retMsg = "成功";
@@ -346,30 +346,29 @@ public class SystemMessagerAction extends HttpServlet {
 			map1.put("data", map2);
 			
 			String json = JSON.encode(map1);
+			log.info("----response--json:"+json);
 			
 			response.setCharacterEncoding("UTF-8");
 			response.setContentType("application/json; charset=utf-8");
 			response.getWriter().write(json);
 			
-//			//添加日志信息
-//			Map<String,Object> logMap = new HashMap<String,Object>();
-//			logMap.put("url", "xxxxxx/TZAppConnector/manager/messageDetail.action");  //请求命令Url
-//			logMap.put("u_id", "");  //编号(type=1指用户id、type=2指企业id) 
-//			logMap.put("type", "");  //1:个人2：企业
-//			logMap.put("version", map.get("version"));  //APP版本
-////			logMap.put("record_time", "");  //记录时间 (mapper文件默认当前时间)
-//			logMap.put("result_code", status); //状态码
-//			logMap.put("result_msg", retMsg); //状态码说明
-//			logMap.put("token", map.get("token")); //系统唯一标识
-//			logMap.put("req_content", map); //请求内容
-//			logMap.put("resp_content", json); //相应内容
-//			int resultLog = appUserInfoService.insertAppLog(logMap);
-//			log.info("----resultLog:"+resultLog);
+			//添加日志信息
+			Map<String,Object> logMap = new HashMap<String,Object>();
+			logMap.put("url", "http://192.168.8.239:8080/TZAppConnector/manager/allGoodFieldMsg.action");  //请求命令Url
+			logMap.put("u_id", "");  //编号(type=1指用户id、type=2指企业id) 
+			logMap.put("type", "");  //1:个人2：企业
+			logMap.put("version", map.get("version"));  //APP版本
+			logMap.put("req_content", map.toString()); //请求内容
+			logMap.put("resp_content", json); //相应内容
+			logMap.put("token", map.get("token")); //系统唯一标识
+			logMap.put("result_code", status); //状态码
+			logMap.put("result_msg", retMsg); //状态码说明
+			int resultLog = appUserInfoService.insertAppLog(logMap);
+			log.info("----resultLog:"+resultLog);
 			return;
-			
 		} catch (Exception e) {
 			// TODO: handle exception
-			log.info("---messageDetail--Exception:"+e.getMessage());
+			log.info("---allGoodField--Exception:"+e.getMessage());
 		}
 	}
 	
@@ -387,12 +386,13 @@ public class SystemMessagerAction extends HttpServlet {
 			
 			//处理JSON字符串
 			StringUtil.getJsonStr(br,map);
+			log.info("----request--map:"+map);
 			
 			String status = "0";
 			String retMsg = "成功";
 			
-			//验证参数 
 			List<AppBanner> ab = new ArrayList<AppBanner>();
+			//验证参数 
 			if(StringUtil.isBlank(map.get("type"))){
 				status = "15";
 				retMsg = "必要参数缺失";
@@ -429,30 +429,29 @@ public class SystemMessagerAction extends HttpServlet {
 			map1.put("data", map2);
 			
 			String json = JSON.encode(map1);
+			log.info("----response--json:"+json);
 			
 			response.setCharacterEncoding("UTF-8");
 			response.setContentType("application/json; charset=utf-8");
 			response.getWriter().write(json);
 			
-//			//添加日志信息
-//			Map<String,Object> logMap = new HashMap<String,Object>();
-//			logMap.put("url", "xxxxxx/TZAppConnector/manager/messageDetail.action");  //请求命令Url
-//			logMap.put("u_id", "");  //编号(type=1指用户id、type=2指企业id) 
-//			logMap.put("type", "");  //1:个人2：企业
-//			logMap.put("version", map.get("version"));  //APP版本
-////			logMap.put("record_time", "");  //记录时间 (mapper文件默认当前时间)
-//			logMap.put("result_code", status); //状态码
-//			logMap.put("result_msg", retMsg); //状态码说明
-//			logMap.put("token", map.get("token")); //系统唯一标识
-//			logMap.put("req_content", map); //请求内容
-//			logMap.put("resp_content", json); //相应内容
-//			int resultLog = appUserInfoService.insertAppLog(logMap);
-//			log.info("----resultLog:"+resultLog);
+			//添加日志信息
+			Map<String,Object> logMap = new HashMap<String,Object>();
+			logMap.put("url", "http://192.168.8.239:8080/TZAppConnector/manager/myBannerMsg.action");  //请求命令Url
+			logMap.put("u_id", map.get("user_id"));  //编号(type=1指用户id、type=2指企业id) 
+			logMap.put("type", map.get("type"));  //1:个人2：企业
+			logMap.put("version", map.get("version"));  //APP版本
+			logMap.put("req_content", map.toString()); //请求内容
+			logMap.put("resp_content", json); //相应内容
+			logMap.put("token", map.get("token")); //系统唯一标识
+			logMap.put("result_code", status); //状态码
+			logMap.put("result_msg", retMsg); //状态码说明
+			int resultLog = appUserInfoService.insertAppLog(logMap);
+			log.info("----resultLog:"+resultLog);
 			return;
-			
 		} catch (Exception e) {
 			// TODO: handle exception
-			log.info("---messageDetail--Exception:"+e.getMessage());
+			log.info("---myBanner--Exception:"+e.getMessage());
 		}
 	}
 	
@@ -461,7 +460,6 @@ public class SystemMessagerAction extends HttpServlet {
 	private String version; //版本号
 	private String template; //功能模板，1、用户，2、企业，3、身份证，4资质证书
 	private File img; //文件流(图片)
-
 	/**
 	 * 上传图片
 	 */
@@ -546,27 +544,27 @@ public class SystemMessagerAction extends HttpServlet {
 			log.info("----upload_path:"+filepath);
 			log.info("----load_path:"+TransUtil.LOAD_PATH+load_path.toString()+directory+".jpg");
 			String json = JSON.encode(resultMap);
+			log.info("----response--json:"+json);
 			
 			response.getWriter().write(json);
-//			//添加日志信息
-//			Map<String,Object> logMap = new HashMap<String,Object>();
-//			logMap.put("url", "xxxxxx/TZAppConnector/manager/feedback.action");  //请求命令Url
-//			logMap.put("u_id", "");  //编号(type=1指用户id、type=2指企业id) 
-//			logMap.put("type", "");  //1:个人2：企业
-//			logMap.put("version", map.get("version"));  //APP版本
-//////		logMap.put("record_time", "");  //记录时间 (mapper文件默认当前时间)
-//			logMap.put("result_code", status); //状态码
-//			logMap.put("result_msg", retMsg); //状态码说明
-//			logMap.put("token", map.get("token")); //系统唯一标识
-//			logMap.put("req_content", map); //请求内容
-//			logMap.put("resp_content", json); //相应内容
-//			int resultLog = appUserInfoService.insertAppLog(logMap);
-//			log.info("----resultLog:"+resultLog);
-			return;
 			
+			//添加日志信息
+			Map<String,Object> logMap = new HashMap<String,Object>();
+			logMap.put("url", "http://192.168.8.239:8080/TZAppConnector/manager/uploadMsg.action");  //请求命令Url
+			logMap.put("u_id", "");  //编号(type=1指用户id、type=2指企业id) 
+			logMap.put("type", "");  //1:个人2：企业
+			logMap.put("version", version);  //APP版本
+			logMap.put("req_content", fileName+","+version+","+template+","+img); //请求内容
+			logMap.put("resp_content", json); //相应内容
+			logMap.put("token", ""); //系统唯一标识
+			logMap.put("result_code", status); //状态码
+			logMap.put("result_msg", retMsg); //状态码说明
+			int resultLog = appUserInfoService.insertAppLog(logMap);
+			log.info("----resultLog:"+resultLog);
+			return;
 		} catch (Exception e) {
 			// TODO: handle exception
-			log.info("---register--Exception:"+e.getMessage());
+			log.info("---upload--Exception:"+e.getMessage());
 		}
 	}
 

@@ -12,6 +12,13 @@ import com.tuzhi.app.entity.AppEnterprisesInfo;
 import com.tuzhi.app.entity.AppGoodField;
 import com.tuzhi.app.pojo.AppUserDetailInfo;
 
+/**
+ * @Description: 
+ * @company: 
+ * @author: weifengnian
+ * @Data: 2017年4月23日	
+ * @Copyright:
+ */
 public class AppUserInfoDao extends SqlSessionDaoSupport implements IAppUserInfoDao {
 
 	@Override

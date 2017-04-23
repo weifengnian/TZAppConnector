@@ -17,7 +17,13 @@ import com.tuzhi.app.entity.AppGoodField;
 import com.tuzhi.app.pojo.AppUserDetailInfo;
 import com.tuzhi.app.util.StringUtil;
 
-
+/**
+ * @Description: 
+ * @company: 
+ * @author: weifengnian
+ * @Data: 2017年4月23日	
+ * @Copyright:
+ */
 public class AppUserInfoService implements IAppUserInfoService {
 
 	private IAppUserInfoDao appUserInfoDao;
