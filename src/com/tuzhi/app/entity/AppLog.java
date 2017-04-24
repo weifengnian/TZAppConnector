@@ -1,7 +1,12 @@
 package com.tuzhi.app.entity;
 
-import java.util.Date;
-
+/**
+ * @Description: 
+ * @company: 
+ * @author: weifengnian
+ * @Data: 2017年4月24日	
+ * @Copyright:
+ */
 public class AppLog {
 	
 	private int id; //	4	
@@ -9,13 +14,12 @@ public class AppLog {
 	private int u_id; //编号(type=1指用户id、type=2指企业id)
 	private int type; //1:个人2：企业
 	private String version; //	APP版本
-	private Date record_time; //记录时间
+	private String record_time; //记录时间
 	private int result_code; //状态码
 	private String result_msg; //状态码说明
 	private String req_content; //请求内容
 	private String resp_content; //相应内容
 	private String token; //系统唯一标识
-	
 	
 	public int getId() {
 		return id;
@@ -47,10 +51,10 @@ public class AppLog {
 	public void setVersion(String version) {
 		this.version = version;
 	}
-	public Date getRecord_time() {
+	public String getRecord_time() {
 		return record_time;
 	}
-	public void setRecord_time(Date record_time) {
+	public void setRecord_time(String record_time) {
 		this.record_time = record_time;
 	}
 	public int getResult_code() {

@@ -23,7 +23,6 @@ public class SystemMessagerService implements ISystemMessagerService {
 	public ISystemMessagerDao getSystemMessagerDao() {
 		return systemMessagerDao;
 	}
-
 	public void setSystemMessagerDao(ISystemMessagerDao systemMessagerDao) {
 		this.systemMessagerDao = systemMessagerDao;
 	}

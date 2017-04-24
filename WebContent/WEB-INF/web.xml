@@ -3,7 +3,6 @@
   <display-name>TZAppConnector</display-name>
   <description>App</description>
   
-  
     <!-- 配置struts2拦截器 -->
 	<filter>
 		<filter-name>struts2</filter-name>

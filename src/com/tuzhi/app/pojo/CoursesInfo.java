@@ -24,6 +24,13 @@ public class CoursesInfo {
 	private String ctname; //课程类型
 	private String study_num; //课程参与人数
 	
+	private String chapter_id; //章节编号
+	private String chapter_title; //章节标题
+	
+	private String class_id; //课时编号
+	private String class_title; //课时标题
+	private String class_url; //课时地址
+	private String class_time; //课时时长
 	
 	public int getId() {
 		return id;
@@ -102,5 +109,41 @@ public class CoursesInfo {
 	}
 	public void setStudy_num(String study_num) {
 		this.study_num = study_num;
+	}
+	public String getChapter_id() {
+		return chapter_id;
+	}
+	public void setChapter_id(String chapter_id) {
+		this.chapter_id = chapter_id;
+	}
+	public String getChapter_title() {
+		return chapter_title;
+	}
+	public void setChapter_title(String chapter_title) {
+		this.chapter_title = chapter_title;
+	}
+	public String getClass_id() {
+		return class_id;
+	}
+	public void setClass_id(String class_id) {
+		this.class_id = class_id;
+	}
+	public String getClass_title() {
+		return class_title;
+	}
+	public void setClass_title(String class_title) {
+		this.class_title = class_title;
+	}
+	public String getClass_url() {
+		return class_url;
+	}
+	public void setClass_url(String class_url) {
+		this.class_url = class_url;
+	}
+	public String getClass_time() {
+		return class_time;
+	}
+	public void setClass_time(String class_time) {
+		this.class_time = class_time;
 	}
 }

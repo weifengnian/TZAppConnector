@@ -33,9 +33,7 @@ public class StringUtil {
 	//获取前台传输的JSON字符串
 	@SuppressWarnings("rawtypes")
 	public static void getJsonStr(BufferedReader br,Map<String,String> map){
-		
 		try {
-			
 			//获取JSON字符串
 			log.info("--br:"+br);
 			String line = null;
@@ -155,28 +153,6 @@ public class StringUtil {
 		+ s.substring(19, 23) + s.substring(24);
 	}
 	
-	public static RowBounds getRowBounds(int PageNum, int PageSize)
-	{
-		int offset;
-		int limit;
-
-		if (PageNum == 0)
-		{
-			offset = 0;
-			//limit = Integer.MAX_VALUE;
-			limit = PageSize;
-		}
-		else
-		{
-			offset = (PageNum - 1) * PageSize;
-			//limit = offset + PageSize;
-			limit = PageSize;
-		}
-
-		RowBounds rowBounds = new RowBounds(offset, limit);
-		return rowBounds;
-	}
-	
 	/**
 	 * 复制文件
 	 * @param src 源文件
@@ -206,6 +182,34 @@ public class StringUtil {
 			file.mkdirs();
 		}
 		return file;
+	}
+	
+	/**
+	 * 分页
+	 * @param PageNum
+	 * @param PageSize
+	 * @return
+	 */
+	public static RowBounds getRowBounds(int PageNum, int PageSize)
+	{
+		int offset;
+		int limit;
+
+		if (PageNum == 0)
+		{
+			offset = 0;
+			//limit = Integer.MAX_VALUE;
+			limit = PageSize;
+		}
+		else
+		{
+			offset = (PageNum - 1) * PageSize;
+			//limit = offset + PageSize;
+			limit = PageSize;
+		}
+
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return rowBounds;
 	}
 
 }

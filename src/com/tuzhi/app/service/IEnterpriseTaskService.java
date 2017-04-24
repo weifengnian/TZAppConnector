@@ -27,4 +27,5 @@ public interface IEnterpriseTaskService {
 	 */
 	public List<AppTaskInfo> getTask(Map<String,String> map);
 	
+	
 }

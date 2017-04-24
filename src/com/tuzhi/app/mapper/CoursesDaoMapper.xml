@@ -21,11 +21,9 @@
 		order by c.create_time desc
 	</select>
 	
-	<!-- 查询课程详细  -->
-	<select id="getCourseDetails" parameterType="map" resultMap="resultCourses">
-		select cl.code,cl.title,cl.class_url,cl.time,ch.code chcode,ch.title chtitle,cr.content crcontent from app_class cl 
-		  left join app_chapter_class chl on cl.id=chl.class_id
-		  left join app_chapter ch on chl.chapter_id=ch.id
+	<!-- 获取章节  -->
+	<select id="getChapter" parameterType="map" resultMap="resultCourses">
+		select ch.id,ch.title,cr.content from app_chapter ch
 		  left join app_courses_chapter cc on ch.id=cc.chapter_id
 		  left join app_courses cr on cc.courses_id=cr.id
 		  where 1=1 
@@ -33,5 +31,17 @@
 				and cr.id=#{course_id}
 			 </if>
 	</select>
+	
+	<!-- 获取课时  -->
+	<select id="getClass" parameterType="map" resultMap="resultCourses">
+		select cl.id class_id,cl.title class_title,cl.class_url,cl.time class_time 
+		   from app_class cl 
+           left join app_chapter_class chl on cl.id=chl.class_id
+           where 1=1 
+	  		 <if test="chapter_id !=null and chapter_id !='' ">
+	  		 	and chl.chapter_id=#{chapter_id}
+			 </if>
+	</select>
+	
 	
 </mapper>

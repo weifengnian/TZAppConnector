@@ -1,6 +1,12 @@
 package com.tuzhi.app.entity;
 
-
+/**
+ * @Description: 
+ * @company: 
+ * @author: weifengnian
+ * @Data: 2017年4月24日	
+ * @Copyright:
+ */
 public class AppEnterprisesInfo {
 	
 	private int id; //
@@ -23,7 +29,6 @@ public class AppEnterprisesInfo {
 	private String token; //令牌
 	private int money; //余额
 	private int status; //状态	-1:黑名单	1:正常
-	
 	
 	public int getId() {
 		return id;

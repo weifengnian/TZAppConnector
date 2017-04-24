@@ -3,7 +3,6 @@ package com.tuzhi.app.util;
 import java.sql.Connection;
 import java.util.Map;
 import java.util.Properties;
-
 import org.apache.ibatis.executor.parameter.DefaultParameterHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
@@ -16,6 +15,7 @@ import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.log4j.Logger;
+
 /**
  * @Description: 
  * @company: 
@@ -94,7 +94,6 @@ public class PaginationInterceptor implements Interceptor {
 	 */
 	public void setProperties(Properties arg0) {
 		// TODO Auto-generated method stub
-
 	}
 
 }

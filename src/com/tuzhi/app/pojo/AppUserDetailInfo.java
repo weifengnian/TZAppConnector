@@ -29,7 +29,6 @@ public class AppUserDetailInfo {
 	private String auth_create_time; //认证时间
 	private double money; //帐号金额
 	private int status; //状态	-1:黑名单	1:正常
-
 	
 	private int addressid; // id
 	private String pro_id; //省
@@ -44,14 +43,12 @@ public class AppUserDetailInfo {
 	private float latitude; //纬度
 	private float longitude; //经度
 	
-	
 	private int cardid; //
 	private String number; //身份证号码
 	private String upper_url; //正面照片地址
 	private String local_upper_url; //本地地址
 	private String below_url; //反面照片地址
 	private String local_below_url; //本地地址
-	
 	
 	public int getId() {
 		return id;

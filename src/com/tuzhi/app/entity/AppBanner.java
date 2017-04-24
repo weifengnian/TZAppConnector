@@ -1,5 +1,12 @@
 package com.tuzhi.app.entity;
 
+/**
+ * @Description: 
+ * @company: 
+ * @author: weifengnian
+ * @Data: 2017年4月24日	
+ * @Copyright:
+ */
 public class AppBanner {
 	
 	private int id; //
@@ -9,7 +16,6 @@ public class AppBanner {
 	private String time; //创建时间
 	private int status; //状态	-1:废弃	1:正常
 	private int type; //类型	1:个人   2:企业
-	
 	
 	public int getId() {
 		return id;

@@ -1,10 +1,18 @@
 package com.tuzhi.app.entity;
 
+/**
+ * @Description: 
+ * @company: 
+ * @author: weifengnian
+ * @Data: 2017年4月24日	
+ * @Copyright:
+ */
 public class AppUserField {
 	
 	private int id;
 	private int field_id;
 	private int user_id;
+	
 	public int getId() {
 		return id;
 	}
@@ -23,6 +31,4 @@ public class AppUserField {
 	public void setUser_id(int user_id) {
 		this.user_id = user_id;
 	}
-
-
 }

@@ -1,7 +1,13 @@
 package com.tuzhi.app.entity;
 
+/**
+ * @Description: 
+ * @company: 
+ * @author: weifengnian
+ * @Data: 2017年4月24日	
+ * @Copyright:
+ */
 public class AppAddress {
-	
 	
 	private int id; //
 	private String pro_id; //省
@@ -16,7 +22,6 @@ public class AppAddress {
 	private float latitude; //纬度
 	private float longitude; //经度
 	private String only_id;  //唯一标识
-	
 	
 	public int getId() {
 		return id;

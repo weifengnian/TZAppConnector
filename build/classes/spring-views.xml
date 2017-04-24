@@ -5,7 +5,7 @@
        	   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 	<!-- 配置Spring的view -->
 	
-	<!-- app用户 -->
+	<!-- app用户  -->
 	<bean name="appUserInfoAction" class="com.tuzhi.app.manager.UserInfoAction" scope="prototype">
 		<property name="appUserInfoService">
 			<ref bean="appUserInfoService" />
@@ -39,6 +39,9 @@
 	<bean name="coursesAction" class="com.tuzhi.app.manager.CoursesAction" scope="prototype">
 		<property name="coursesService">
 			<ref bean="coursesService" />
+		</property>
+		<property name="appUserInfoService">
+			<ref bean="appUserInfoService" />
 		</property>
 	</bean>
 	

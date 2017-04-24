@@ -1,6 +1,5 @@
 package com.tuzhi.app.util;
 
-
 /**
  * @Description: 
  * @company: 
@@ -15,7 +14,6 @@ public class Dialect
 	{
 		return false;
 	}
-
 	public boolean supportsLimitOffset()
 	{
 		return supportsLimit();

@@ -1,17 +1,21 @@
 package com.tuzhi.app.entity;
 
-import java.util.Date;
-
+/**
+ * @Description: 
+ * @company: 
+ * @author: weifengnian
+ * @Data: 2017年4月24日	
+ * @Copyright:
+ */
 public class AppFeedback {
 	
 	private int id; //
 	private String email; //邮箱
 	private String user_id; //用户id
 	private String opinion_content; //意见
-	private Date time; //反馈时间
+	private String time; //反馈时间
 	private int type; //1:个人	2:企业
 	private int u_id; //编号(type=1指用户id、type=2指企业id)
-	
 	
 	public int getId() {
 		return id;
@@ -37,10 +41,10 @@ public class AppFeedback {
 	public void setOpinion_content(String opinion_content) {
 		this.opinion_content = opinion_content;
 	}
-	public Date getTime() {
+	public String getTime() {
 		return time;
 	}
-	public void setTime(Date time) {
+	public void setTime(String time) {
 		this.time = time;
 	}
 	public int getType() {

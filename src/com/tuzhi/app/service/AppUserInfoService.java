@@ -31,7 +31,6 @@ public class AppUserInfoService implements IAppUserInfoService {
 	public IAppUserInfoDao getAppUserInfoDao() {
 		return appUserInfoDao;
 	}
-
 	public void setAppUserInfoDao(IAppUserInfoDao appUserInfoDao) {
 		this.appUserInfoDao = appUserInfoDao;
 	}
@@ -217,5 +216,4 @@ public class AppUserInfoService implements IAppUserInfoService {
 		// TODO Auto-generated method stub
 		return appUserInfoDao.insertAppLog(map);
 	}
-	
 }

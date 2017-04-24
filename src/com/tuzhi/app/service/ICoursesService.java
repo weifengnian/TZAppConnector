@@ -21,10 +21,18 @@ public interface ICoursesService {
 	public List<CoursesInfo> getMyCourses(Map<String, String> map);
 	
 	/**
-	 * 获取课程详细
+	 * 获取课程-->章节 （获取章节）
 	 * @param map
 	 * @return
 	 */
-	public List<CoursesInfo> getCourseDetails(Map<String, String> map);
+	public List<CoursesInfo> getChapter(Map<String, String> map);
 	
+	/**
+	 * 获取课程-->章节-->课时 （获取课时）
+	 * @param map
+	 * @return
+	 */
+	public List<CoursesInfo> getClass(Map<String, String> map);
+	
+
 }

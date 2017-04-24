@@ -1,4 +1,5 @@
 package com.tuzhi.app.util;
+
 /**
  * @Description: 
  * @company: 
@@ -11,7 +12,6 @@ public class SQLServerDialect extends Dialect {
 	public boolean supportsLimitOffset() {
 		return false;
 	}
-
 	public boolean supportsLimit() {
 		return true;
 	}

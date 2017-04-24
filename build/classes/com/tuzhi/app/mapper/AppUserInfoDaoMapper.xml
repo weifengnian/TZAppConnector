@@ -11,8 +11,6 @@
 	<resultMap type="com.tuzhi.app.entity.AppCard" id="cardInfo"/>
 	<resultMap type="com.tuzhi.app.entity.AppAddress" id="addressInfo"/>
 	
-	<!--查询：通过用户ID返回一个用户对象  -->
-	
 	<!-- 查询个人用户详细信息 -->
 	<select id="getAppUser" parameterType="map" resultMap="detailInfo">
 		select u.*,d.id addressid,d.pro_id,d.pro_name,d.city_id,d.city_name,d.dis_id,d.dis_name,d.street_id,
@@ -190,8 +188,6 @@
 		   </if>
   	</update>
   	
-  	
-    <!-- 企业 -->
   	<!-- 查询企业用户 -->
 	<select id="getEnterprises" parameterType="map" resultMap="enterprisesInfo">
 		select e.* from app_enterprises_info e where 1=1
@@ -504,6 +500,5 @@
 		     getdate()
 		  )   
   	</insert>
-  	
 		
 </mapper>

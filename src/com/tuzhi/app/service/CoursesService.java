@@ -2,6 +2,7 @@ package com.tuzhi.app.service;
 
 import java.util.List;
 import java.util.Map;
+
 import com.tuzhi.app.dao.ICoursesDao;
 import com.tuzhi.app.pojo.CoursesInfo;
 
@@ -28,11 +29,17 @@ public class CoursesService implements ICoursesService {
 		// TODO Auto-generated method stub
 		return coursesDao.getMyCourses(map);
 	}
-
+	
 	@Override
-	public List<CoursesInfo> getCourseDetails(Map<String, String> map) {
+	public List<CoursesInfo> getChapter(Map<String, String> map) {
 		// TODO Auto-generated method stub
-		return coursesDao.getCourseDetails(map);
+		return coursesDao.getChapter(map);
+	}
+	
+	@Override
+	public List<CoursesInfo> getClass(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return coursesDao.getClass(map);
 	}
 
 }

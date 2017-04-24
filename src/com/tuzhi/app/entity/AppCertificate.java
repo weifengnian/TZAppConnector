@@ -1,6 +1,12 @@
 package com.tuzhi.app.entity;
 
-
+/**
+ * @Description: 
+ * @company: 
+ * @author: weifengnian
+ * @Data: 2017年4月24日	
+ * @Copyright:
+ */
 public class AppCertificate {
 	
 	private int id; //
@@ -12,7 +18,6 @@ public class AppCertificate {
 	private String create_time; //创建时间
 	private String auth_time; //审核时间
 	private String only_id; //唯一标识，用来获取id
-	
 	
 	public int getId() {
 		return id;

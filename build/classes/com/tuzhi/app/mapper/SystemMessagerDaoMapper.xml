@@ -85,21 +85,4 @@
 		 </if>
 	</select>
   	
-<!--   	<update id="update" parameterType="com.XingJia.pojo.User"> -->
-<!-- 		update xj_user set -->
-<!-- 		  <if test="deptId !=null and deptId !='' "> -->
-<!--               deptId=#{deptId}, -->
-<!--           </if>  -->
-<!-- 		  <if test="modifyUser !=null and modifyUser !='' "> -->
-<!--               modifyUser=#{modifyUser}, -->
-<!--           </if> -->
-<!-- 		  <if test="isStoreUser !=null"> -->
-<!--               isstoreuser=#{isStoreUser}, -->
-<!--           </if> -->
-<!--             storeId=#{storeId}, -->
-<!-- 			modifyDate=sysdate -->
-			
-<!-- 		where userId=#{userId}  -->
-<!--   	</update> -->
-  	
 </mapper>

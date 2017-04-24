@@ -1,5 +1,12 @@
 package com.tuzhi.app.entity;
 
+/**
+ * @Description: 
+ * @company: 
+ * @author: weifengnian
+ * @Data: 2017年4月24日	
+ * @Copyright:
+ */
 public class AppCard {
 	
 	private int id; //
