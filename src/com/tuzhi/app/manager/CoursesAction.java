@@ -17,6 +17,7 @@ import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.tuzhi.app.pojo.AppUserDetailInfo;
 import com.tuzhi.app.pojo.CoursesInfo;
 import com.tuzhi.app.service.IAppUserInfoService;
 import com.tuzhi.app.service.ICoursesService;
@@ -129,7 +130,7 @@ public class CoursesAction extends HttpServlet {
 	/**
 	 * 课程详细
 	 */
-	public void taskDetails(){
+	public void courseDetails(){
 		try {
 			HttpServletRequest request = ServletActionContext.getRequest(); 
 			HttpServletResponse response = ServletActionContext.getResponse();
@@ -154,11 +155,18 @@ public class CoursesAction extends HttpServlet {
 				status = "16";
 				retMsg = "必要参数输入有误";
 			}else{
-				//查询课程章节
-				zj = coursesService.getChapter(map);
-				if(zj.size() <= 0){
-					status = "27";
-					retMsg = "课程详情获取失败";
+				//查询用户
+				AppUserDetailInfo userInfo = appUserInfoService.getAppUser(map);
+				if(userInfo!=null){
+					//查询课程章节
+					zj = coursesService.getChapter(map);
+					if(zj.size() <= 0){
+						status = "27";
+						retMsg = "课程详情获取失败";
+					}
+				}else{
+					status = "09";
+					retMsg = "该用户已不存在";
 				}
 			}
 				
@@ -169,12 +177,12 @@ public class CoursesAction extends HttpServlet {
 			}
 			for (int i = num; i < zj.size(); i++) {
 				Map<String,Object> map3 = new HashMap<String,Object>();
-				map3.put("chapter_id", zj.size()==0?"":zj.get(i).getId()==0?"":zj.get(i).getId());
-				map3.put("chapter_title", zj.size()==0?"":zj.get(i).getImg_url()==null?"":zj.get(i).getImg_url());
+				map3.put("chapter_id", zj.size()==0?"":zj.get(i).getChapter_id()==null?"":zj.get(i).getChapter_id());
+				map3.put("chapter_title", zj.size()==0?"":zj.get(i).getChapter_title()==null?"":zj.get(i).getChapter_title());
 				
 					//章节id存入map
 					Map<String,String> mapKs = new HashMap<String,String>();
-					mapKs.put("chapter_id", (String) (zj.size()==0?"":zj.get(i).getId()==0?"":zj.get(i).getId()));
+					mapKs.put("chapter_id", zj.size()==0?"-1":zj.get(i).getChapter_id()==null?"-1":zj.get(i).getChapter_id());
 					//根据章节id，查询课时
 					List<CoursesInfo> ks = coursesService.getClass(mapKs);
 					//定义课时ListMap
@@ -185,10 +193,10 @@ public class CoursesAction extends HttpServlet {
 					}
 					for (int j = cnt; j < ks.size(); j++) {
 						Map<String,Object> ksMap = new HashMap<String,Object>();
-						ksMap.put("class_id", ks.size()==0?"":ks.get(i).getClass_id()==null?"":ks.get(i).getClass_id());
-						ksMap.put("class_title", ks.size()==0?"":ks.get(i).getClass_title()==null?"":ks.get(i).getClass_title());
-						ksMap.put("class_url", ks.size()==0?"":ks.get(i).getClass_url()==null?"":ks.get(i).getClass_url());
-						ksMap.put("class_time", ks.size()==0?"":ks.get(i).getClass_time()==null?"":ks.get(i).getClass_time());
+						ksMap.put("class_id", ks.size()==0?"":ks.get(j).getClass_id()==null?"":ks.get(j).getClass_id());
+						ksMap.put("class_title", ks.size()==0?"":ks.get(j).getClass_title()==null?"":ks.get(j).getClass_title());
+						ksMap.put("class_url", ks.size()==0?"":ks.get(j).getClass_url()==null?"":ks.get(j).getClass_url());
+						ksMap.put("class_time", ks.size()==0?"":ks.get(j).getClass_time()==null?"":ks.get(j).getClass_time());
 						listMapKs.add(ksMap);
 					}
 					
@@ -197,7 +205,7 @@ public class CoursesAction extends HttpServlet {
 			}
 			Map<String,Object> map2 = new HashMap<String,Object>();
 			map2.put("list", listMapZj);
-			map2.put("course_desc", zj.get(0).getContent());
+			map2.put("course_desc", zj.size()==0?"":zj.get(0).getContent()==null?"":zj.get(0).getContent());
 			
 			Map<String,Object> map1 = new HashMap<String,Object>();
 			map1.put("status", status);
@@ -213,7 +221,7 @@ public class CoursesAction extends HttpServlet {
 			
 			//添加日志信息
 			Map<String,Object> logMap = new HashMap<String,Object>();
-			logMap.put("url", "http://192.168.8.239:8080/TZAppConnector/manager/taskDetailsCus.action");  //请求命令Url
+			logMap.put("url", "http://192.168.8.239:8080/TZAppConnector/manager/courseDetailsCus.action");  //请求命令Url
 			logMap.put("u_id", map.get("user_id"));  //编号(type=1指用户id、type=2指企业id) 
 			logMap.put("type", "1");  //1:个人2：企业
 			logMap.put("version", map.get("version"));  //APP版本
@@ -227,7 +235,7 @@ public class CoursesAction extends HttpServlet {
 			return;
 		} catch (Exception e) {
 			// TODO: handle exception
-			log.info("---taskDetails--Exception:"+e.getMessage());
+			log.info("---courseDetails--Exception:"+e.getMessage());
 		}
 	}
 

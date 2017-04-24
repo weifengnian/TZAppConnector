@@ -23,7 +23,7 @@
 	
 	<!-- 获取章节  -->
 	<select id="getChapter" parameterType="map" resultMap="resultCourses">
-		select ch.id,ch.title,cr.content from app_chapter ch
+		select ch.id chapter_id,ch.title chapter_title,cr.content from app_chapter ch
 		  left join app_courses_chapter cc on ch.id=cc.chapter_id
 		  left join app_courses cr on cc.courses_id=cr.id
 		  where 1=1 
