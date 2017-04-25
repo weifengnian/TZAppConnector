@@ -17,6 +17,7 @@ import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.tuzhi.app.entity.AppEnterprisesInfo;
 import com.tuzhi.app.pojo.AppUserDetailInfo;
 import com.tuzhi.app.pojo.CoursesInfo;
 import com.tuzhi.app.service.IAppUserInfoService;
@@ -62,10 +63,10 @@ public class CoursesAction extends HttpServlet {
 			//验证参数
 			List<CoursesInfo> ci = new ArrayList<CoursesInfo>();
 			if(StringUtil.isBlank(map.get("user_id")) || StringUtil.isBlank(map.get("page")) || StringUtil.isBlank(map.get("rows")) || 
-					StringUtil.isBlank(map.get("token")) || StringUtil.isBlank(map.get("title"))){
+					StringUtil.isBlank(map.get("token")) || StringUtil.isBlank(map.get("title")) || StringUtil.isBlank(map.get("type"))){
 				status = "15";
 				retMsg = "必要参数缺失";
-			}else if(map.get("user_id").length()>10){
+			}else if((!"1".equals(map.get("type")) && !"2".equals(map.get("type"))) || map.get("user_id").length()>10){
 				status = "16";
 				retMsg = "必要参数输入有误";
 			}else{
@@ -87,6 +88,7 @@ public class CoursesAction extends HttpServlet {
 				map3.put("course_id", ci.size()==0?"":ci.get(i).getId()==0?"":ci.get(i).getId());
 				map3.put("course_img", ci.size()==0?"":ci.get(i).getImg_url()==null?"":ci.get(i).getImg_url());
 				map3.put("study_num", ci.size()==0?"":ci.get(i).getStudy_num()==null?"":ci.get(i).getStudy_num());
+				map3.put("course_type_id", ci.size()==0?"":ci.get(i).getCourses_type_id()==0?"":ci.get(i).getCourses_type_id());
 				map3.put("course_type", ci.size()==0?"":ci.get(i).getCtname()==null?"":ci.get(i).getCtname());
 				map3.put("course_title", ci.size()==0?"":ci.get(i).getName()==null?"":ci.get(i).getName());
 				listMap.add(map3);
@@ -155,20 +157,39 @@ public class CoursesAction extends HttpServlet {
 				status = "16";
 				retMsg = "必要参数输入有误";
 			}else{
-				//查询用户
+				//查询用户 (通过token查询)
 				AppUserDetailInfo userInfo = appUserInfoService.getAppUser(map);
-				if(userInfo!=null){
+				//查询企业信息
+				AppEnterprisesInfo enterInfo = appUserInfoService.getEnterprises(map);
+				
+				if(userInfo!=null || enterInfo!=null){
 					//查询课程章节
 					zj = coursesService.getChapter(map);
 					if(zj.size() <= 0){
 						status = "27";
 						retMsg = "课程详情获取失败";
 					}
+					
+					//客户一旦请求课程明细，将改课程添加到我的课程中，  （这里先查询再添加）
+					if(zj.size()>0){
+						Map<String,String> cuMap = new HashMap<String,String>();
+						cuMap.put("user_id", String.valueOf(userInfo!=null?userInfo.getId():enterInfo.getId()));
+						cuMap.put("courses_id", String.valueOf(zj.get(0).getId()));
+						cuMap.put("type", userInfo!=null?"1":"2");
+						//查询当前用户是否拥有，当前课程
+						int cnt = coursesService.getCoursesUser(cuMap);
+						if(cnt<=0){
+							//将当前课程赋给当前用户（添加）
+							cnt = coursesService.addCoursesUser(cuMap);
+						}
+					}
+					
 				}else{
 					status = "09";
 					retMsg = "该用户已不存在";
 				}
 			}
+			
 				
 			List<Map<String,Object>> listMapZj = new ArrayList<Map<String,Object>>();
 			int num = 0;

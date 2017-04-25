@@ -10,12 +10,15 @@
 		select c.*,ct.name ctname,acu.cnt study_num from app_courses c
 			 left join app_courses_type ct on c.courses_type_id=ct.id
 			 left join(
-			           select cu.courses_id,COUNT(*) cnt from app_courses_user cu group by cu.courses_id
+			           select cu.courses_id,cu.type,COUNT(*) cnt from app_courses_user cu group by cu.courses_id,cu.type
 			          )acu on c.id=acu.courses_id
 			 where 1=1 
  			<if test=" user_id !='-1'.toString() "> 
 		  		 <if test="title !=null and title !='' ">
 					and c.name=#{title}
+				 </if>
+				 <if test="type !=null and type !='' ">
+					and acu.type=#{type}
 				 </if>
 			</if>	 
 		order by c.create_time desc
@@ -23,7 +26,7 @@
 	
 	<!-- 获取章节  -->
 	<select id="getChapter" parameterType="map" resultMap="resultCourses">
-		select ch.id chapter_id,ch.title chapter_title,cr.content from app_chapter ch
+		select ch.id chapter_id,ch.title chapter_title,cr.content,cr.id from app_chapter ch
 		  left join app_courses_chapter cc on ch.id=cc.chapter_id
 		  left join app_courses cr on cc.courses_id=cr.id
 		  where 1=1 
@@ -42,6 +45,16 @@
 	  		 	and chl.chapter_id=#{chapter_id}
 			 </if>
 	</select>
+	
+	<!-- 查询该用户，是否拥有该课程  -->
+	<select id="getCoursesUser" parameterType="map" resultType="Int">
+		select count(*) from app_courses_user cu where cu.courses_id=#{courses_id} and cu.user_id=#{user_id} and cu.type=#{type}
+	</select>
+	
+    <!-- 将该课程，添加到该用户下  -->
+	<insert id="addCoursesUser" parameterType="map">
+		insert into app_courses_user(courses_id,user_id,type) values(#{courses_id},#{user_id},#{type})
+	</insert>
 	
 	
 </mapper>

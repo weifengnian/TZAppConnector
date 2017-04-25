@@ -52,4 +52,16 @@ public class CoursesDao extends SqlSessionDaoSupport implements ICoursesDao {
 		return getSqlSession().selectList("CoursesDaoMapper.getClass",map);
 	}
 
+	@Override
+	public Integer getCoursesUser(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne("CoursesDaoMapper.getCoursesUser",map);
+	}
+
+	@Override
+	public Integer addCoursesUser(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return getSqlSession().insert("CoursesDaoMapper.addCoursesUser",map);
+	}
+
 }

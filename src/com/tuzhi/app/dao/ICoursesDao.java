@@ -35,4 +35,18 @@ public interface ICoursesDao {
 	 */
 	public List<CoursesInfo> getClass(Map<String, String> map);
 	
+	/**
+	 * 查询该用户，是否拥有该课程
+	 * @param map
+	 * @return
+	 */
+	public Integer getCoursesUser(Map<String, String> map);
+	
+	/**
+	 * 将该课程，添加到该用户下
+	 * @param map
+	 * @return
+	 */
+	public Integer addCoursesUser(Map<String, String> map);
+	
 }

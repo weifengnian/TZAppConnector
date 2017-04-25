@@ -41,5 +41,17 @@ public class CoursesService implements ICoursesService {
 		// TODO Auto-generated method stub
 		return coursesDao.getClass(map);
 	}
+	
+	@Override
+	public Integer getCoursesUser(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return coursesDao.getCoursesUser(map);
+	}
+	
+	@Override
+	public Integer addCoursesUser(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return coursesDao.addCoursesUser(map);
+	}
 
 }
