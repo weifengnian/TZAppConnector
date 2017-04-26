@@ -63,10 +63,11 @@ public class CoursesAction extends HttpServlet {
 			//验证参数
 			List<CoursesInfo> ci = new ArrayList<CoursesInfo>();
 			if(StringUtil.isBlank(map.get("user_id")) || StringUtil.isBlank(map.get("page")) || StringUtil.isBlank(map.get("rows")) || 
-					StringUtil.isBlank(map.get("token")) || StringUtil.isBlank(map.get("title")) || StringUtil.isBlank(map.get("type"))){
+					StringUtil.isBlank(map.get("token")) || StringUtil.isBlank(map.get("title")) || StringUtil.isBlank(map.get("type")) || 
+					StringUtil.isBlank(map.get("course_type_id"))){
 				status = "15";
 				retMsg = "必要参数缺失";
-			}else if((!"1".equals(map.get("type")) && !"2".equals(map.get("type"))) || map.get("user_id").length()>10){
+			}else if((!"1".equals(map.get("type")) && !"2".equals(map.get("type"))) || map.get("user_id").length()>10 || map.get("course_type_id").length()>10 ){
 				status = "16";
 				retMsg = "必要参数输入有误";
 			}else{
@@ -91,6 +92,7 @@ public class CoursesAction extends HttpServlet {
 				map3.put("course_type_id", ci.size()==0?"":ci.get(i).getCourses_type_id()==0?"":ci.get(i).getCourses_type_id());
 				map3.put("course_type", ci.size()==0?"":ci.get(i).getCtname()==null?"":ci.get(i).getCtname());
 				map3.put("course_title", ci.size()==0?"":ci.get(i).getName()==null?"":ci.get(i).getName());
+				map3.put("course_time", ci.size()==0?"":ci.get(i).getUpdate_time()==null?"":ci.get(i).getUpdate_time());
 				listMap.add(map3);
 			}
 			Map<String,Object> map2 = new HashMap<String,Object>();

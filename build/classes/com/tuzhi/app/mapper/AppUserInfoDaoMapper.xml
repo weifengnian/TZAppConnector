@@ -186,6 +186,9 @@
 		   <if test="token !=null and token != ''">
 			  and token = #{token}
 		   </if>
+		   <if test="phone !=null and phone != ''">
+			  and mobile_phone = #{phone}
+		   </if>
   	</update>
   	
   	<!-- 查询企业用户 -->
@@ -249,6 +252,9 @@
           </if>
           <if test="token !=null and token != ''">
 			 and token=#{token}
+		   </if>
+		   <if test="phone !=null and phone != ''">
+			  and mobile_phone = #{phone}
 		   </if>
   	</update>
   	

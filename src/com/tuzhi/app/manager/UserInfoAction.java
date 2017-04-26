@@ -208,23 +208,23 @@ public class UserInfoAction extends HttpServlet {
 			}else{
 				//查询人员信息
 				AppUserDetailInfo ud = appUserInfoService.getAppUser(map);
-				if(ud!=null){
+				if(ud != null){
 					if(!map.get("password").equals(ud.getPassword())){
 						ud = new AppUserDetailInfo();
 						status = "05"; //密码输入错误
 						retMsg = "密码输入错误";
 					}
-					map3.put("user_id", ud==null?"":ud.getId()==0?"":ud.getId());
-					map3.put("user_name", ud==null?"":ud.getName()==null?"":ud.getName());
-					map3.put("phone", ud==null?"":ud.getMobile_phone()==null?"":ud.getMobile_phone());
-					map3.put("logo_url", ud==null?"":ud.getLocal_url()==null?"":ud.getLocal_url());
+					map3.put("user_id", ud.getId()==0?"":ud.getId());
+					map3.put("user_name", ud.getName()==null?"":ud.getName());
+					map3.put("phone", ud.getMobile_phone()==null?"":ud.getMobile_phone());
+					map3.put("logo_url", ud.getLocal_url()==null?"":ud.getLocal_url());
 					map3.put("type", "1");
 					
 					map2.put("user_Info", map3);
 					
 					map1.put("status", status);
 					map1.put("retMsg", retMsg);
-					map1.put("token", ud==null?"":ud.getToken()==null?"":ud.getToken());
+					map1.put("token", ud.getToken()==null?"":ud.getToken());
 					map1.put("data", map2);
 				}else{
 					//查询企业信息
@@ -243,7 +243,7 @@ public class UserInfoAction extends HttpServlet {
 					map3.put("user_name", ep==null?"":ep.getName()==null?"":ep.getName());
 					map3.put("phone", ep==null?"":ep.getMobile_phone()==null?"":ep.getMobile_phone());
 					map3.put("logo_url", ep==null?"":ep.getEnterprise_url()==null?"":ep.getEnterprise_url());
-					map3.put("type", "2");
+					map3.put("type", ep==null?"":"2");
 					
 					map2.put("user_Info", map3);
 					
@@ -814,6 +814,93 @@ public class UserInfoAction extends HttpServlet {
 			//添加日志信息
 			Map<String,Object> logMap = new HashMap<String,Object>();
 			logMap.put("url", "http://192.168.8.239:8080/TZAppConnector/manager/updatePasswordUr.action");  //请求命令Url
+			logMap.put("u_id", map.get("user_id"));  //编号(type=1指用户id、type=2指企业id) 
+			logMap.put("type", map.get("type"));  //1:个人2：企业
+			logMap.put("version", map.get("version"));  //APP版本
+			logMap.put("req_content", map.toString()); //请求内容
+			logMap.put("resp_content", json); //相应内容
+			logMap.put("token", map.get("token")); //系统唯一标识
+			logMap.put("result_code", status); //状态码
+			logMap.put("result_msg", retMsg); //状态码说明
+			int resultLog = appUserInfoService.insertAppLog(logMap);
+			log.info("----resultLog:"+resultLog);
+			return;
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info("---updatePassword--Exception:"+e.getMessage());
+		}
+	}
+	
+	
+	/**
+	 * 找回密码
+	 */
+	public void setPwd(){
+		try {
+			HttpServletRequest request = ServletActionContext.getRequest(); 
+			HttpServletResponse response = ServletActionContext.getResponse();
+			//读取请求内容
+			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(),"UTF-8"));
+			//定义Map
+			Map<String,String> map = new HashMap<String,String>();
+			
+			//处理JSON字符串
+			StringUtil.getJsonStr(br,map);
+			log.info("----request--map:"+map);
+			
+			//新密码
+			map.put("password", StringUtil.MD5pwd(map.get("password")));
+	
+			Map<String,Object> map1 = new HashMap<String,Object>();
+			String status = "0";
+			String retMsg = "成功";
+			
+			//验证参数
+			if(StringUtil.isBlank(map.get("phone")) || StringUtil.isBlank(map.get("password"))){
+				status = "15";
+				retMsg = "必要参数缺失";
+			}else{
+				//企业信息
+				AppEnterprisesInfo enterInfo = null;
+				//查询人员信息
+				AppUserDetailInfo userInfo = appUserInfoService.getAppUser(map);
+				if(userInfo != null){
+					int resultStatus = appUserInfoService.updateAppUser(map);
+					if(resultStatus<=0){
+						status = "28";
+						retMsg = "密码重置失败";
+					}
+				}else{
+					//查询企业信息
+					enterInfo = appUserInfoService.getEnterprises(map);
+					if(enterInfo != null){
+						int resultStatus = appUserInfoService.updateEnterprises(map);
+						if(resultStatus<=0){
+							status = "28";
+							retMsg = "密码重置失败";
+						}
+					}
+				}
+				
+				if(userInfo == null && enterInfo == null){
+					status = "09";
+					retMsg = "该用户已不存在";
+				}
+			}
+			
+			map1.put("status", status);
+			map1.put("retMsg", retMsg);
+			
+			String json = JSON.encode(map1);
+			log.info("----response--json:"+json);
+			
+			response.setCharacterEncoding("UTF-8");
+			response.setContentType("application/json; charset=utf-8");
+			response.getWriter().write(json);
+			
+			//添加日志信息
+			Map<String,Object> logMap = new HashMap<String,Object>();
+			logMap.put("url", "http://192.168.8.239:8080/TZAppConnector/manager/setPwdUr.action");  //请求命令Url
 			logMap.put("u_id", map.get("user_id"));  //编号(type=1指用户id、type=2指企业id) 
 			logMap.put("type", map.get("type"));  //1:个人2：企业
 			logMap.put("version", map.get("version"));  //APP版本

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EnterpriseTaskDaoMapper">
+	<resultMap type="com.tuzhi.app.entity.AppTask" id="resultTask"/>
+	<resultMap type="com.tuzhi.app.pojo.AppTaskInfo" id="resultTaskInfo"/>
+	
+	<!-- 企业发布任务（添加） -->
+  	<insert id="insertTask" parameterType="map" >
+		insert into app_task(
+		  <if test="title != null and title != ''">
+			title,
+		  </if>
+		  <if test="content != null and content != ''">
+			content,
+		  </if>
+		  <if test="order_code != null and order_code != ''">
+			order_code,
+		  </if>
+		  <if test="start_time != null and start_time != ''">
+			start_time,
+		  </if>
+		  <if test="end_time != null and end_time != ''">
+			end_time,
+		  </if>
+		  <if test="money != null and money != ''">
+			money,
+		  </if>
+		  <if test="is_urgent != null and is_urgent != ''">
+			is_urgent,
+		  </if>
+		  <if test="is_acceptace != null and is_acceptace != ''">
+			is_acceptace,
+		  </if>
+		  <if test="create_user_id != null and create_user_id != ''">
+			create_user_id,
+		  </if>
+		  <if test="create_per != null and create_per != ''">
+			create_per,
+		  </if>
+		  <if test="status != null and status != ''">
+			status,
+		  </if>
+		  <if test="field != null and field != ''">
+			field_id,
+		  </if>
+		  <if test="address_id != null and address_id != ''">
+			address_id,
+		  </if>
+		  <if test="desc != null and desc != ''">
+			[desc],
+		  </if>
+		    create_time
+		)values(
+		  <if test="title != null and title != ''">
+			#{title},
+		  </if>
+		  <if test="content != null and content != ''">
+			#{content},
+		  </if>
+		  <if test="order_code != null and order_code != ''">
+			#{order_code},
+		  </if>
+		  <if test="start_time != null and start_time != ''">
+			#{start_time},
+		  </if>
+		  <if test="end_time != null and end_time != ''">
+			#{end_time},
+		  </if>
+		  <if test="money != null and money != ''">
+			#{money},
+		  </if>
+		  <if test="is_urgent != null and is_urgent != ''">
+			#{is_urgent},
+		  </if>
+		  <if test="is_acceptace != null and is_acceptace != ''">
+			#{is_acceptace},
+		  </if>
+		  <if test="create_user_id != null and create_user_id != ''">
+			#{create_user_id},
+		  </if>
+		  <if test="create_per != null and create_per != ''">
+			#{create_per},
+		  </if>
+		  <if test="status != null and status != ''">
+			#{status},
+		  </if>
+		  <if test="field != null and field != ''">
+			#{field},
+		  </if>
+		  <if test="address_id != null and address_id != ''">
+			#{address_id},
+		  </if>
+		  <if test="desc != null and desc != ''">
+			#{desc},
+		  </if>
+		    getdate()
+		)
+  	</insert>
+	
+	<!-- 查询任务列表  userid＝－1查询所有任务  -->
+	<select id="getTask" parameterType="map" resultMap="resultTaskInfo">
+		select t.*,case gf.name 
+	       when '1' then '网络'
+	       when '2' then '服务器'
+	       when '3' then '监控'
+	       when '4' then '虚拟化'
+	       when '5' then '云'
+	       when '6' then '视频' 
+       		 end name,gf.name fieldid,ad.pro_name province,ad.city_name city,ad.dis_name district,ad.details address,tsk.cnt
+        		from app_task t 
+ 			left join app_address ad on t.address_id=ad.id
+ 			left join app_good_field gf on t.field_id=gf.id
+ 			left join (
+ 			           select tu.order_id,tu.user_id,count(*) cnt from app_task_user tu group by tu.order_id,tu.user_id
+ 			          )tsk on tsk.order_id=t.id
+ 			<if test=" user_id !='-1'.toString() ">
+ 				<if test="type=='1'.toString() ">
+ 			   		left join app_user_info us on tsk.user_id=us.id
+		    	</if>          
+ 				<if test="type=='2'.toString() ">
+ 			   		left join app_enterprises_info us on tsk.user_id=us.id
+		    	</if>
+ 			</if>          
+ 			where 1=1
+ 			<if test=" user_id !='-1'.toString() "> 
+		  		 <if test="user_id !=null and user_id !='' ">
+					and tsk.user_id=#{user_id}
+				 </if>
+				 <if test="token !=null and token !='' ">
+					and us.token=#{token}
+				 </if>
+				 <if test="task_id !=null and task_id !='' ">
+					and t.id=#{task_id}
+				 </if>
+			</if>	 
+		order by t.create_time desc
+	</select>
+	
+</mapper>
