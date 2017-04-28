@@ -63,7 +63,7 @@ public class CoursesAction extends HttpServlet {
 			//验证参数
 			List<CoursesInfo> ci = new ArrayList<CoursesInfo>();
 			if(StringUtil.isBlank(map.get("user_id")) || StringUtil.isBlank(map.get("page")) || StringUtil.isBlank(map.get("rows")) || 
-					StringUtil.isBlank(map.get("token")) || StringUtil.isBlank(map.get("title")) || StringUtil.isBlank(map.get("type")) || 
+					StringUtil.isBlank(map.get("token")) || StringUtil.isBlank(map.get("type")) || 
 					StringUtil.isBlank(map.get("course_type_id"))){
 				status = "15";
 				retMsg = "必要参数缺失";
