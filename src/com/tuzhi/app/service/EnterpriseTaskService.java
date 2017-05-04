@@ -61,8 +61,6 @@ public class EnterpriseTaskService implements IEnterpriseTaskService {
 			map.put("address_id", String.valueOf(ads.getId()));
 		}
 		
-		//发布者Id
-		map.put("create_per", map.get("e_id"));
 		//订单编号
 		map.put("order_code", "BH"+String.valueOf(System.currentTimeMillis()));
 		

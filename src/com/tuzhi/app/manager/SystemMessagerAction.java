@@ -2,18 +2,23 @@ package com.tuzhi.app.manager;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import net.arnx.jsonic.JSON;
+
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.tuzhi.app.entity.AppBanner;
 import com.tuzhi.app.entity.AppEnterprisesInfo;
 import com.tuzhi.app.entity.AppGoodField;
@@ -45,9 +50,11 @@ public class SystemMessagerAction extends HttpServlet {
 	 * 添加反馈意见
 	 */
 	public void feedback(){
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json; charset=utf-8");
 		try {
-			HttpServletRequest request = ServletActionContext.getRequest(); 
-			HttpServletResponse response = ServletActionContext.getResponse();
 			//读取请求内容
 			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(),"UTF-8"));
 			//定义Map
@@ -108,8 +115,6 @@ public class SystemMessagerAction extends HttpServlet {
 			String json = JSON.encode(resultMap);
 			log.info("----response--json:"+json);
 			
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("application/json; charset=utf-8");
 			response.getWriter().write(json);
 			
 			//添加日志信息
@@ -129,6 +134,13 @@ public class SystemMessagerAction extends HttpServlet {
 		} catch (Exception e) {
 			// TODO: handle exception
 			log.info("---feedback--Exception:"+e.getMessage());
+			try {
+				response.getWriter().write("{\"status\":\"29\",\"retMsg\":\"数据异常\"}");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				log.info("---IOException:"+e1.getMessage());
+			}
 		}
 	}
 	
@@ -136,9 +148,11 @@ public class SystemMessagerAction extends HttpServlet {
 	 * 消息列表
 	 */
 	public void message(){
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json; charset=utf-8");
 		try {
-			HttpServletRequest request = ServletActionContext.getRequest(); 
-			HttpServletResponse response = ServletActionContext.getResponse();
 			//读取请求内容
 			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(),"UTF-8"));
 			//定义Map
@@ -191,8 +205,6 @@ public class SystemMessagerAction extends HttpServlet {
 			String json = JSON.encode(map1);
 			log.info("----response--json:"+json);
 			
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("application/json; charset=utf-8");
 			response.getWriter().write(json);
 			
 			//添加日志信息
@@ -212,6 +224,13 @@ public class SystemMessagerAction extends HttpServlet {
 		} catch (Exception e) {
 			// TODO: handle exception
 			log.info("---message--Exception:"+e.getMessage());
+			try {
+				response.getWriter().write("{\"status\":\"29\",\"retMsg\":\"数据异常\"}");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				log.info("---IOException:"+e1.getMessage());
+			}
 		}
 	}
 	
@@ -220,9 +239,11 @@ public class SystemMessagerAction extends HttpServlet {
 	 * 系统消息详细
 	 */
 	public void messageDetail(){
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json; charset=utf-8");
 		try {
-			HttpServletRequest request = ServletActionContext.getRequest(); 
-			HttpServletResponse response = ServletActionContext.getResponse();
 			//读取请求内容
 			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(),"UTF-8"));
 			//定义Map
@@ -267,8 +288,6 @@ public class SystemMessagerAction extends HttpServlet {
 			String json = JSON.encode(map1);
 			log.info("----response--json:"+json);
 			
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("application/json; charset=utf-8");
 			response.getWriter().write(json);
 			
 			//添加日志信息
@@ -288,6 +307,13 @@ public class SystemMessagerAction extends HttpServlet {
 		} catch (Exception e) {
 			// TODO: handle exception
 			log.info("---messageDetail--Exception:"+e.getMessage());
+			try {
+				response.getWriter().write("{\"status\":\"29\",\"retMsg\":\"数据异常\"}");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				log.info("---IOException:"+e1.getMessage());
+			}
 		}
 	}
 	
@@ -295,9 +321,11 @@ public class SystemMessagerAction extends HttpServlet {
 	 * 获取所有领域
 	 */
 	public void allGoodField(){
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json; charset=utf-8");
 		try {
-			HttpServletRequest request = ServletActionContext.getRequest(); 
-			HttpServletResponse response = ServletActionContext.getResponse();
 			//读取请求内容
 			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(),"UTF-8"));
 			//定义Map
@@ -348,8 +376,6 @@ public class SystemMessagerAction extends HttpServlet {
 			String json = JSON.encode(map1);
 			log.info("----response--json:"+json);
 			
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("application/json; charset=utf-8");
 			response.getWriter().write(json);
 			
 			//添加日志信息
@@ -369,6 +395,13 @@ public class SystemMessagerAction extends HttpServlet {
 		} catch (Exception e) {
 			// TODO: handle exception
 			log.info("---allGoodField--Exception:"+e.getMessage());
+			try {
+				response.getWriter().write("{\"status\":\"29\",\"retMsg\":\"数据异常\"}");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				log.info("---IOException:"+e1.getMessage());
+			}
 		}
 	}
 	
@@ -376,9 +409,11 @@ public class SystemMessagerAction extends HttpServlet {
 	 * 获取广告图片
 	 */
 	public void myBanner(){
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json; charset=utf-8");
 		try {
-			HttpServletRequest request = ServletActionContext.getRequest(); 
-			HttpServletResponse response = ServletActionContext.getResponse();
 			//读取请求内容
 			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(),"UTF-8"));
 			//定义Map
@@ -431,8 +466,6 @@ public class SystemMessagerAction extends HttpServlet {
 			String json = JSON.encode(map1);
 			log.info("----response--json:"+json);
 			
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("application/json; charset=utf-8");
 			response.getWriter().write(json);
 			
 			//添加日志信息
@@ -452,6 +485,13 @@ public class SystemMessagerAction extends HttpServlet {
 		} catch (Exception e) {
 			// TODO: handle exception
 			log.info("---myBanner--Exception:"+e.getMessage());
+			try {
+				response.getWriter().write("{\"status\":\"29\",\"retMsg\":\"数据异常\"}");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				log.info("---IOException:"+e1.getMessage());
+			}
 		}
 	}
 	
@@ -464,11 +504,11 @@ public class SystemMessagerAction extends HttpServlet {
 	 * 上传图片
 	 */
 	public void upload(){
+		//HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json; charset=utf-8");
 		try {
-			//HttpServletRequest request = ServletActionContext.getRequest(); 
-			HttpServletResponse response = ServletActionContext.getResponse();
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("application/json; charset=utf-8");
 			
 			log.info("----fileName:"+fileName+"----template:"+template+",----file:"+img);
 			
@@ -565,6 +605,13 @@ public class SystemMessagerAction extends HttpServlet {
 		} catch (Exception e) {
 			// TODO: handle exception
 			log.info("---upload--Exception:"+e.getMessage());
+			try {
+				response.getWriter().write("{\"status\":\"29\",\"retMsg\":\"数据异常\"}");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				log.info("---IOException:"+e1.getMessage());
+			}
 		}
 	}
 

@@ -1,18 +1,23 @@
 package com.tuzhi.app.manager;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import net.arnx.jsonic.JSON;
+
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.tuzhi.app.entity.AppCertificate;
 import com.tuzhi.app.entity.AppEnterprisesInfo;
 import com.tuzhi.app.entity.AppGoodField;
@@ -40,9 +45,11 @@ public class UserInfoAction extends HttpServlet {
 	 * 注册
 	 */
 	public void register(){
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json; charset=utf-8");
 		try {
-			HttpServletRequest request = ServletActionContext.getRequest(); 
-			HttpServletResponse response = ServletActionContext.getResponse();
 			//读取请求内容
 			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(),"UTF-8"));
 			//定义Map
@@ -139,8 +146,6 @@ public class UserInfoAction extends HttpServlet {
 			String json = JSON.encode(resultMap);
 			log.info("----response--json:"+json);
 			
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("application/json; charset=utf-8");
 			response.getWriter().write(json);
 			
 			//添加日志信息
@@ -160,6 +165,13 @@ public class UserInfoAction extends HttpServlet {
 		} catch (Exception e) {
 			// TODO: handle exception
 			log.info("---register--Exception:"+e.getMessage());
+			try {
+				response.getWriter().write("{\"status\":\"29\",\"retMsg\":\"数据异常\"}");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				log.info("---IOException:"+e1.getMessage());
+			}
 		}
 	}
 	
@@ -167,9 +179,11 @@ public class UserInfoAction extends HttpServlet {
 	 * 登陆
 	 */
 	public void login(){
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json; charset=utf-8");
 		try {
-			HttpServletRequest request = ServletActionContext.getRequest(); 
-			HttpServletResponse response = ServletActionContext.getResponse();
 			//读取请求内容
 			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(),"UTF-8"));
 			//定义Map
@@ -327,8 +341,6 @@ public class UserInfoAction extends HttpServlet {
 			String json = JSON.encode(map1);
 			log.info("----response--json:"+json);
 		
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("application/json; charset=utf-8");
 			response.getWriter().write(json);
 			
 			//添加日志信息
@@ -348,6 +360,13 @@ public class UserInfoAction extends HttpServlet {
 		} catch (Exception e) {
 			// TODO: handle exception
 			log.info("---login--Exception:"+e.getMessage());
+			try {
+				response.getWriter().write("{\"status\":\"29\",\"retMsg\":\"数据异常\"}");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				log.info("---IOException:"+e1.getMessage());
+			}
 		}
 	}
 	
@@ -356,9 +375,11 @@ public class UserInfoAction extends HttpServlet {
 	 * 完善个人用户信息
 	 */
 	public void updateUserInfo(){
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json; charset=utf-8");
 		try {
-			HttpServletRequest request = ServletActionContext.getRequest(); 
-			HttpServletResponse response = ServletActionContext.getResponse();
 			//读取请求内容
 			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(),"UTF-8"));
 			
@@ -393,8 +414,6 @@ public class UserInfoAction extends HttpServlet {
 			String json = JSON.encode(map1);
 			log.info("----response--json:"+json);
 		
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("application/json; charset=utf-8");
 			response.getWriter().write(json);
 			
 			//添加日志信息
@@ -414,6 +433,13 @@ public class UserInfoAction extends HttpServlet {
 		} catch (Exception e) {
 			// TODO: handle exception
 			log.info("---updateUserInfo--Exception:"+e.getMessage());
+			try {
+				response.getWriter().write("{\"status\":\"29\",\"retMsg\":\"数据异常\"}");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				log.info("---IOException:"+e1.getMessage());
+			}
 		}
 	}
 	
@@ -421,9 +447,11 @@ public class UserInfoAction extends HttpServlet {
 	 * 获取用户信息
 	 */
 	public void getUserInfo(){
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json; charset=utf-8");
 		try {
-			HttpServletRequest request = ServletActionContext.getRequest(); 
-			HttpServletResponse response = ServletActionContext.getResponse();
 			//读取请求内容
 			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(),"UTF-8"));
 			//定义Map
@@ -544,8 +572,6 @@ public class UserInfoAction extends HttpServlet {
 			String json = JSON.encode(ufMap);
 			log.info("----response--json:"+json);
 		
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("application/json; charset=utf-8");
 			response.getWriter().write(json);
 			
 			//添加日志信息
@@ -565,6 +591,13 @@ public class UserInfoAction extends HttpServlet {
 		} catch (Exception e) {
 			// TODO: handle exception
 			log.info("------getUserInfo---Exception:"+e.getMessage());
+			try {
+				response.getWriter().write("{\"status\":\"29\",\"retMsg\":\"数据异常\"}");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				log.info("---IOException:"+e1.getMessage());
+			}
 		}
 	}
 	
@@ -573,9 +606,11 @@ public class UserInfoAction extends HttpServlet {
 	 * 完善企业信息
 	 */
 	public void updateEnterpriseInfo(){
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json; charset=utf-8");
 		try {
-			HttpServletRequest request = ServletActionContext.getRequest(); 
-			HttpServletResponse response = ServletActionContext.getResponse();
 			//读取请求内容
 			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(),"UTF-8"));
 			//定义Map
@@ -618,8 +653,6 @@ public class UserInfoAction extends HttpServlet {
 			String json = JSON.encode(map1);
 			log.info("----response--json:"+json);
 		
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("application/json; charset=utf-8");
 			response.getWriter().write(json);
 			
 			//添加日志信息
@@ -639,6 +672,13 @@ public class UserInfoAction extends HttpServlet {
 		} catch (Exception e) {
 			// TODO: handle exception
 			log.info("---updateEnterpriseInfo--Exception:"+e.getMessage());
+			try {
+				response.getWriter().write("{\"status\":\"29\",\"retMsg\":\"数据异常\"}");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				log.info("---IOException:"+e1.getMessage());
+			}
 		}
 	}
 	
@@ -646,9 +686,11 @@ public class UserInfoAction extends HttpServlet {
 	 * 获取企业信息
 	 */
 	public void getEnterpriseInfo(){
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json; charset=utf-8");
 		try {
-			HttpServletRequest request = ServletActionContext.getRequest(); 
-			HttpServletResponse response = ServletActionContext.getResponse();
 			//读取请求内容
 			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(),"UTF-8"));
 			//定义Map
@@ -701,8 +743,6 @@ public class UserInfoAction extends HttpServlet {
 			String json = JSON.encode(epMap);
 			log.info("----response--json:"+json);
 			
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("application/json; charset=utf-8");
 			response.getWriter().write(json);
 			
 			//添加日志信息
@@ -722,6 +762,13 @@ public class UserInfoAction extends HttpServlet {
 		} catch (Exception e) {
 			// TODO: handle exception
 			log.info("---getEnterpriseInfo--Exception:"+e.getMessage());
+			try {
+				response.getWriter().write("{\"status\":\"29\",\"retMsg\":\"数据异常\"}");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				log.info("---IOException:"+e1.getMessage());
+			}
 		}
 	}
 
@@ -730,9 +777,11 @@ public class UserInfoAction extends HttpServlet {
 	 * 修改密码
 	 */
 	public void updatePassword(){
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json; charset=utf-8");
 		try {
-			HttpServletRequest request = ServletActionContext.getRequest(); 
-			HttpServletResponse response = ServletActionContext.getResponse();
 			//读取请求内容
 			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(),"UTF-8"));
 			//定义Map
@@ -807,8 +856,6 @@ public class UserInfoAction extends HttpServlet {
 			String json = JSON.encode(map1);
 			log.info("----response--json:"+json);
 			
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("application/json; charset=utf-8");
 			response.getWriter().write(json);
 			
 			//添加日志信息
@@ -828,6 +875,13 @@ public class UserInfoAction extends HttpServlet {
 		} catch (Exception e) {
 			// TODO: handle exception
 			log.info("---updatePassword--Exception:"+e.getMessage());
+			try {
+				response.getWriter().write("{\"status\":\"29\",\"retMsg\":\"数据异常\"}");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				log.info("---IOException:"+e1.getMessage());
+			}
 		}
 	}
 	
@@ -836,9 +890,11 @@ public class UserInfoAction extends HttpServlet {
 	 * 找回密码
 	 */
 	public void setPwd(){
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json; charset=utf-8");
 		try {
-			HttpServletRequest request = ServletActionContext.getRequest(); 
-			HttpServletResponse response = ServletActionContext.getResponse();
 			//读取请求内容
 			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(),"UTF-8"));
 			//定义Map
@@ -894,8 +950,6 @@ public class UserInfoAction extends HttpServlet {
 			String json = JSON.encode(map1);
 			log.info("----response--json:"+json);
 			
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("application/json; charset=utf-8");
 			response.getWriter().write(json);
 			
 			//添加日志信息
@@ -915,6 +969,13 @@ public class UserInfoAction extends HttpServlet {
 		} catch (Exception e) {
 			// TODO: handle exception
 			log.info("---updatePassword--Exception:"+e.getMessage());
+			try {
+				response.getWriter().write("{\"status\":\"29\",\"retMsg\":\"数据异常\"}");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				log.info("---IOException:"+e1.getMessage());
+			}
 		}
 	}
 

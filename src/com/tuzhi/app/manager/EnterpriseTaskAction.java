@@ -1,18 +1,23 @@
 package com.tuzhi.app.manager;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import net.arnx.jsonic.JSON;
+
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.tuzhi.app.entity.AppEnterprisesInfo;
 import com.tuzhi.app.entity.AppGoodField;
 import com.tuzhi.app.pojo.AppTaskInfo;
@@ -42,9 +47,11 @@ public class EnterpriseTaskAction extends HttpServlet {
 	 * 企业发布任务（添加）
 	 */
 	public void addTask(){
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json; charset=utf-8");
 		try {
-			HttpServletRequest request = ServletActionContext.getRequest(); 
-			HttpServletResponse response = ServletActionContext.getResponse();
 			//读取请求内容
 			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(),"UTF-8"));
 			//定义Map
@@ -73,6 +80,8 @@ public class EnterpriseTaskAction extends HttpServlet {
 					if(gf.size()>0){
 						//发布者Id
 						map.put("create_user_id", String.valueOf(enfo.getId()));
+						//发布者
+						map.put("create_per", enfo.getName()==null?"":enfo.getName());
 						//添加发布任务
 						int resultStstu = enterpriseTaskService.insertTask(map);
 						if(resultStstu<=0){
@@ -96,8 +105,6 @@ public class EnterpriseTaskAction extends HttpServlet {
 			String json = JSON.encode(resultMap);
 			log.info("----response--json:"+json);
 			
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("application/json; charset=utf-8");
 			response.getWriter().write(json);
 			
 			//添加日志信息
@@ -117,6 +124,13 @@ public class EnterpriseTaskAction extends HttpServlet {
 		} catch (Exception e) {
 			// TODO: handle exception
 			log.info("---addTask--Exception:"+e.getMessage());
+			try {
+				response.getWriter().write("{\"status\":\"29\",\"retMsg\":\"数据异常\"}");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				log.info("---IOException:"+e1.getMessage());
+			}
 		}
 	}
 	
@@ -124,9 +138,11 @@ public class EnterpriseTaskAction extends HttpServlet {
 	 * 查询任务列表
 	 */
 	public void taskList(){
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json; charset=utf-8");
 		try {
-			HttpServletRequest request = ServletActionContext.getRequest(); 
-			HttpServletResponse response = ServletActionContext.getResponse();
 			//读取请求内容
 			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(),"UTF-8"));
 			//定义Map
@@ -189,8 +205,6 @@ public class EnterpriseTaskAction extends HttpServlet {
 			String json = JSON.encode(map1);
 			log.info("----response--json:"+json);
 			
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("application/json; charset=utf-8");
 			response.getWriter().write(json);
 			
 			//添加日志信息
@@ -210,6 +224,13 @@ public class EnterpriseTaskAction extends HttpServlet {
 		} catch (Exception e) {
 			// TODO: handle exception
 			log.info("---taskList--Exception:"+e.getMessage());
+			try {
+				response.getWriter().write("{\"status\":\"29\",\"retMsg\":\"数据异常\"}");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				log.info("---IOException:"+e1.getMessage());
+			}
 		}
 	}
 	
@@ -218,9 +239,11 @@ public class EnterpriseTaskAction extends HttpServlet {
 	 * 查询任务详细
 	 */
 	public void taskDetails(){
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json; charset=utf-8");
 		try {
-			HttpServletRequest request = ServletActionContext.getRequest(); 
-			HttpServletResponse response = ServletActionContext.getResponse();
 			//读取请求内容
 			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(),"UTF-8"));
 			//定义Map
@@ -266,8 +289,6 @@ public class EnterpriseTaskAction extends HttpServlet {
 			String json = JSON.encode(map1);
 			log.info("----response--json:"+json);
 			
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("application/json; charset=utf-8");
 			response.getWriter().write(json);
 			
 			//添加日志信息
@@ -287,6 +308,13 @@ public class EnterpriseTaskAction extends HttpServlet {
 		} catch (Exception e) {
 			// TODO: handle exception
 			log.info("---messageDetail--Exception:"+e.getMessage());
+			try {
+				response.getWriter().write("{\"status\":\"29\",\"retMsg\":\"数据异常\"}");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				log.info("---IOException:"+e1.getMessage());
+			}
 		}
 	}
 

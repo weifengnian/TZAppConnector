@@ -1,6 +1,7 @@
 package com.tuzhi.app.manager;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,9 +46,11 @@ public class CoursesAction extends HttpServlet {
 	 * 查询我的课程
 	 */
 	public void myCourses(){
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json; charset=utf-8");
 		try {
-			HttpServletRequest request = ServletActionContext.getRequest(); 
-			HttpServletResponse response = ServletActionContext.getResponse();
 			//读取请求内容
 			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(),"UTF-8"));
 			//定义Map
@@ -106,8 +109,6 @@ public class CoursesAction extends HttpServlet {
 			String json = JSON.encode(map1);
 			log.info("----response--json:"+json);
 			
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("application/json; charset=utf-8");
 			response.getWriter().write(json);
 			
 			//添加日志信息
@@ -127,6 +128,13 @@ public class CoursesAction extends HttpServlet {
 		} catch (Exception e) {
 			// TODO: handle exception
 			log.info("---myCourses--Exception:"+e.getMessage());
+			try {
+				response.getWriter().write("{\"status\":\"29\",\"retMsg\":\"数据异常\"}");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				log.info("---IOException:"+e1.getMessage());
+			}
 		}
 	}
 	
@@ -135,9 +143,11 @@ public class CoursesAction extends HttpServlet {
 	 * 课程详细
 	 */
 	public void courseDetails(){
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json; charset=utf-8");
 		try {
-			HttpServletRequest request = ServletActionContext.getRequest(); 
-			HttpServletResponse response = ServletActionContext.getResponse();
 			//读取请求内容
 			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(),"UTF-8"));
 			//定义Map
@@ -238,8 +248,6 @@ public class CoursesAction extends HttpServlet {
 			String json = JSON.encode(map1);
 			log.info("----response--json:"+json);
 			
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("application/json; charset=utf-8");
 			response.getWriter().write(json);
 			
 			//添加日志信息
@@ -259,6 +267,13 @@ public class CoursesAction extends HttpServlet {
 		} catch (Exception e) {
 			// TODO: handle exception
 			log.info("---courseDetails--Exception:"+e.getMessage());
+			try {
+				response.getWriter().write("{\"status\":\"29\",\"retMsg\":\"数据异常\"}");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				log.info("---IOException:"+e1.getMessage());
+			}
 		}
 	}
 
