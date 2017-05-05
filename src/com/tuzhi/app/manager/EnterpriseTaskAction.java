@@ -113,8 +113,8 @@ public class EnterpriseTaskAction extends HttpServlet {
 			logMap.put("u_id", map.get("e_id"));  //编号(type=1指用户id、type=2指企业id) 
 			logMap.put("type", "2");  //1:个人2：企业
 			logMap.put("version", map.get("version"));  //APP版本
-			logMap.put("req_content", map.toString()); //请求内容
-			logMap.put("resp_content", json); //相应内容
+			logMap.put("req_content", map.toString().length()>8000?map.toString().substring(0, 8000):map.toString()); //请求内容
+			logMap.put("resp_content", json.length()>8000?json.substring(0, 8000):json); //相应内容
 			logMap.put("token", map.get("token")); //系统唯一标识
 			logMap.put("result_code", status); //状态码
 			logMap.put("result_msg", retMsg); //状态码说明
@@ -213,8 +213,8 @@ public class EnterpriseTaskAction extends HttpServlet {
 			logMap.put("u_id", map.get("user_id"));  //编号(type=1指用户id、type=2指企业id) 
 			logMap.put("type", map.get("type"));  //1:个人2：企业
 			logMap.put("version", map.get("version"));  //APP版本
-			logMap.put("req_content", map.toString()); //请求内容
-			logMap.put("resp_content", json); //相应内容
+			logMap.put("req_content", map.toString().length()>8000?map.toString().substring(0, 8000):map.toString()); //请求内容
+			logMap.put("resp_content", json.length()>8000?json.substring(0, 8000):json); //相应内容
 			logMap.put("token", map.get("token")); //系统唯一标识
 			logMap.put("result_code", status); //状态码
 			logMap.put("result_msg", retMsg); //状态码说明
@@ -297,8 +297,8 @@ public class EnterpriseTaskAction extends HttpServlet {
 			logMap.put("u_id", "");  //编号(type=1指用户id、type=2指企业id) 
 			logMap.put("type", "");  //1:个人2：企业
 			logMap.put("version", map.get("version"));  //APP版本
-			logMap.put("req_content", map.toString()); //请求内容
-			logMap.put("resp_content", json); //相应内容
+			logMap.put("req_content", map.toString().length()>8000?map.toString().substring(0, 8000):map.toString()); //请求内容
+			logMap.put("resp_content", json.length()>8000?json.substring(0, 8000):json); //相应内容
 			logMap.put("token", map.get("token")); //系统唯一标识
 			logMap.put("result_code", status); //状态码
 			logMap.put("result_msg", retMsg); //状态码说明
