@@ -25,6 +25,7 @@ import com.tuzhi.app.service.IAppUserInfoService;
 import com.tuzhi.app.service.IEnterpriseTaskService;
 import com.tuzhi.app.service.ISystemMessagerService;
 import com.tuzhi.app.util.StringUtil;
+import com.tuzhi.app.util.TransUtil;
 /**
  * @Description: 
  * @company: 
@@ -107,19 +108,26 @@ public class EnterpriseTaskAction extends HttpServlet {
 			
 			response.getWriter().write(json);
 			
-			//添加日志信息
-			Map<String,Object> logMap = new HashMap<String,Object>();
-			logMap.put("url", "http://192.168.8.239:8080/TZAppConnector/manager/addTaskTsk.action");  //请求命令Url
-			logMap.put("u_id", map.get("e_id"));  //编号(type=1指用户id、type=2指企业id) 
-			logMap.put("type", "2");  //1:个人2：企业
-			logMap.put("version", map.get("version"));  //APP版本
-			logMap.put("req_content", map.toString().length()>8000?map.toString().substring(0, 8000):map.toString()); //请求内容
-			logMap.put("resp_content", json.length()>8000?json.substring(0, 8000):json); //相应内容
-			logMap.put("token", map.get("token")); //系统唯一标识
-			logMap.put("result_code", status); //状态码
-			logMap.put("result_msg", retMsg); //状态码说明
-			int resultLog = appUserInfoService.insertAppLog(logMap);
-			log.info("----resultLog:"+resultLog);
+			try {
+				if(TransUtil.LOG_FLAG){
+					//添加日志信息
+					Map<String,Object> logMap = new HashMap<String,Object>();
+					logMap.put("url", TransUtil.LOG_URL+"addTaskTsk.action");  //请求命令Url
+					logMap.put("u_id", map.get("e_id"));  //编号(type=1指用户id、type=2指企业id) 
+					logMap.put("type", "2");  //1:个人2：企业
+					logMap.put("version", map.get("version"));  //APP版本
+					logMap.put("req_content", map.toString().length()>8000?map.toString().substring(0, 8000):map.toString()); //请求内容
+					logMap.put("resp_content", json.length()>8000?json.substring(0, 8000):json); //相应内容
+					logMap.put("token", map.get("token")); //系统唯一标识
+					logMap.put("result_code", status); //状态码
+					logMap.put("result_msg", retMsg); //状态码说明
+					int resultLog = appUserInfoService.insertAppLog(logMap);
+					log.info("----resultLog:"+resultLog);
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+				log.info("--------add_log:"+e.getMessage());
+			}
 			return;
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -207,19 +215,26 @@ public class EnterpriseTaskAction extends HttpServlet {
 			
 			response.getWriter().write(json);
 			
-			//添加日志信息
-			Map<String,Object> logMap = new HashMap<String,Object>();
-			logMap.put("url", "http://192.168.8.239:8080/TZAppConnector/manager/taskListTsk.action");  //请求命令Url
-			logMap.put("u_id", map.get("user_id"));  //编号(type=1指用户id、type=2指企业id) 
-			logMap.put("type", map.get("type"));  //1:个人2：企业
-			logMap.put("version", map.get("version"));  //APP版本
-			logMap.put("req_content", map.toString().length()>8000?map.toString().substring(0, 8000):map.toString()); //请求内容
-			logMap.put("resp_content", json.length()>8000?json.substring(0, 8000):json); //相应内容
-			logMap.put("token", map.get("token")); //系统唯一标识
-			logMap.put("result_code", status); //状态码
-			logMap.put("result_msg", retMsg); //状态码说明
-			int resultLog = appUserInfoService.insertAppLog(logMap);
-			log.info("----resultLog:"+resultLog);
+			try {
+				if(TransUtil.LOG_FLAG){
+					//添加日志信息
+					Map<String,Object> logMap = new HashMap<String,Object>();
+					logMap.put("url", TransUtil.LOG_URL+"taskListTsk.action");  //请求命令Url
+					logMap.put("u_id", map.get("user_id"));  //编号(type=1指用户id、type=2指企业id) 
+					logMap.put("type", map.get("type"));  //1:个人2：企业
+					logMap.put("version", map.get("version"));  //APP版本
+					logMap.put("req_content", map.toString().length()>8000?map.toString().substring(0, 8000):map.toString()); //请求内容
+					logMap.put("resp_content", json.length()>8000?json.substring(0, 8000):json); //相应内容
+					logMap.put("token", map.get("token")); //系统唯一标识
+					logMap.put("result_code", status); //状态码
+					logMap.put("result_msg", retMsg); //状态码说明
+					int resultLog = appUserInfoService.insertAppLog(logMap);
+					log.info("----resultLog:"+resultLog);
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+				log.info("--------add_log:"+e.getMessage());
+			}
 			return;
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -291,19 +306,26 @@ public class EnterpriseTaskAction extends HttpServlet {
 			
 			response.getWriter().write(json);
 			
-			//添加日志信息
-			Map<String,Object> logMap = new HashMap<String,Object>();
-			logMap.put("url", "http://192.168.8.239:8080/TZAppConnector/manager/taskDetailsTsk.action");  //请求命令Url
-			logMap.put("u_id", "");  //编号(type=1指用户id、type=2指企业id) 
-			logMap.put("type", "");  //1:个人2：企业
-			logMap.put("version", map.get("version"));  //APP版本
-			logMap.put("req_content", map.toString().length()>8000?map.toString().substring(0, 8000):map.toString()); //请求内容
-			logMap.put("resp_content", json.length()>8000?json.substring(0, 8000):json); //相应内容
-			logMap.put("token", map.get("token")); //系统唯一标识
-			logMap.put("result_code", status); //状态码
-			logMap.put("result_msg", retMsg); //状态码说明
-			int resultLog = appUserInfoService.insertAppLog(logMap);
-			log.info("----resultLog:"+resultLog);
+			try {
+				if(TransUtil.LOG_FLAG){
+					//添加日志信息
+					Map<String,Object> logMap = new HashMap<String,Object>();
+					logMap.put("url", TransUtil.LOG_URL+"taskDetailsTsk.action");  //请求命令Url
+					logMap.put("u_id", "");  //编号(type=1指用户id、type=2指企业id) 
+					logMap.put("type", "");  //1:个人2：企业
+					logMap.put("version", map.get("version"));  //APP版本
+					logMap.put("req_content", map.toString().length()>8000?map.toString().substring(0, 8000):map.toString()); //请求内容
+					logMap.put("resp_content", json.length()>8000?json.substring(0, 8000):json); //相应内容
+					logMap.put("token", map.get("token")); //系统唯一标识
+					logMap.put("result_code", status); //状态码
+					logMap.put("result_msg", retMsg); //状态码说明
+					int resultLog = appUserInfoService.insertAppLog(logMap);
+					log.info("----resultLog:"+resultLog);
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+				log.info("--------add_log:"+e.getMessage());
+			}
 			return;
 		} catch (Exception e) {
 			// TODO: handle exception

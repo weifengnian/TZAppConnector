@@ -22,6 +22,9 @@ public class TransUtil {
 	public static final String LOAD_PATH = "http://192.168.8.239:8080"; //查看路径
 	
 	//是否记录日志
-	public static final boolean LGG_FLAG = true;
+	public static final boolean LOG_FLAG = true;
+	
+	//记录日志url
+	public static final String LOG_URL = "http://192.168.8.239:8080/TZAppConnector/manager/";
 
 }
