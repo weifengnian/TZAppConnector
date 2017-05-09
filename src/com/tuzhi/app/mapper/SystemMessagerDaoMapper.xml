@@ -52,7 +52,12 @@
 	<select id="getMessage" parameterType="map" resultMap="resultMessage">
 		select m.* from app_message m
           left join app_msg_receive r on m.id=r.msg_id
-          left join app_user_info u on r.u_id=u.id
+          <if test=" type =='1'.toString() ">
+          	  left join app_user_info u on r.u_id=u.id
+          </if>
+          <if test=" type =='2'.toString() ">
+          	  left join app_enterprises_info u on r.u_id=u.id
+          </if>
   		 where 1=1
   		 <if test="user_id !=null and user_id != ''">
 			and r.u_id = #{user_id}

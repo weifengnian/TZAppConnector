@@ -78,8 +78,8 @@ public class CoursesAction extends HttpServlet {
 				//消息列表
 				ci = coursesService.getMyCourses(map);
 				if(ci.size()<=0){
-					status = "26";
-					retMsg = "课程列表获取失败";
+					status = "0";
+					retMsg = "无课程信息";
 				}
 			}
 			
@@ -186,8 +186,8 @@ public class CoursesAction extends HttpServlet {
 					//查询课程章节
 					zj = coursesService.getChapter(map);
 					if(zj.size() <= 0){
-						status = "27";
-						retMsg = "课程详情获取失败";
+						status = "0";
+						retMsg = "无课程详情";
 					}
 					
 					//客户一旦请求课程明细，将改课程添加到我的课程中，  （这里先查询再添加）

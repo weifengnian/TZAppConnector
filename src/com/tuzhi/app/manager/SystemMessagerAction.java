@@ -184,8 +184,8 @@ public class SystemMessagerAction extends HttpServlet {
 				//消息列表
 				lm = systemMessagerService.getMessage(map);
 				if(lm.size()<=0){
-					status = "13";
-					retMsg = "消息列表获取失败";
+					status = "0";
+					retMsg = "无消息数据";
 				}
 			}
 			
@@ -282,8 +282,8 @@ public class SystemMessagerAction extends HttpServlet {
 				//消息列表
 				lm = systemMessagerService.getMessage(map);
 				if(lm.size() <= 0){
-					status = "14";
-					retMsg = "消息详情获取失败";
+					status = "0";
+					retMsg = "无消息详情";
 				}
 			}
 				
@@ -368,8 +368,8 @@ public class SystemMessagerAction extends HttpServlet {
 				//领域信息
 				gf = systemMessagerService.getAllField(map);
 				if(gf.size() <= 0){
-					status = "19";
-					retMsg = "领域信息获取失败";
+					status = "0";
+					retMsg = "无领域信息";
 				}
 			}
 				
@@ -466,8 +466,8 @@ public class SystemMessagerAction extends HttpServlet {
 				//消息列表
 				ab = systemMessagerService.getMyBanner(map);
 				if(ab.size() <= 0){
-					status = "20";
-					retMsg = "广告图片获取失败";
+					status = "0";
+					retMsg = "无广告图片";
 				}
 			}
 				

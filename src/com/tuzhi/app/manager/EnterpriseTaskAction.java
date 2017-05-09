@@ -176,8 +176,8 @@ public class EnterpriseTaskAction extends HttpServlet {
 				//消息列表
 				at = enterpriseTaskService.getTask(map);
 				if(at.size()<=0){
-					status = "22";
-					retMsg = "任务列表获取失败";
+					status = "0";
+					retMsg = "无任务信息";
 				}
 			}
 			
@@ -284,8 +284,8 @@ public class EnterpriseTaskAction extends HttpServlet {
 				map.remove("token");
 				at = enterpriseTaskService.getTask(map);
 				if(at.size() <= 0){
-					status = "23";
-					retMsg = "任务详情获取失败";
+					status = "0";
+					retMsg = "无任务详情";
 				}
 			}
 				
