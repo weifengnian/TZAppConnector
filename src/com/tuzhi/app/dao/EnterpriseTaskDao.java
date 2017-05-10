@@ -2,9 +2,12 @@ package com.tuzhi.app.dao;
 
 import java.util.List;
 import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
+
+import com.tuzhi.app.entity.AppTaskUser;
 import com.tuzhi.app.pojo.AppTaskInfo;
 import com.tuzhi.app.util.StringUtil;
 
@@ -28,10 +31,10 @@ public class EnterpriseTaskDao extends SqlSessionDaoSupport implements IEnterpri
 		// TODO Auto-generated method stub
 		
 		//userid＝－1查询所有任务
-		if("-1".equals(map.get("user_id"))){
-			map.remove("page");
-			map.remove("rows");
-		}
+//		if("-1".equals(map.get("user_id"))){
+//			map.remove("page");
+//			map.remove("rows");
+//		}
 		
 		int pagenum=1;
 		int pagesize=999999;
@@ -41,6 +44,18 @@ public class EnterpriseTaskDao extends SqlSessionDaoSupport implements IEnterpri
 			pagesize=Integer.parseInt(map.get("rows").toString());
 		RowBounds row = StringUtil.getRowBounds(pagenum, pagesize);
 		return getSqlSession().selectList("EnterpriseTaskDaoMapper.getTask",map,row);
+	}
+
+	@Override
+	public List<AppTaskUser> getOrders(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectList("EnterpriseTaskDaoMapper.getOrders",map);
+	}
+
+	@Override
+	public Integer addOrders(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return getSqlSession().insert("EnterpriseTaskDaoMapper.addOrders",map);
 	}
 
 }

@@ -5,6 +5,7 @@
 <mapper namespace="EnterpriseTaskDaoMapper">
 	<resultMap type="com.tuzhi.app.entity.AppTask" id="resultTask"/>
 	<resultMap type="com.tuzhi.app.pojo.AppTaskInfo" id="resultTaskInfo"/>
+	<resultMap type="com.tuzhi.app.entity.AppTaskUser" id="resultTaskUser"/>
 	
 	<!-- 企业发布任务（添加） -->
   	<insert id="insertTask" parameterType="map" >
@@ -134,8 +135,50 @@
 				 <if test="task_id !=null and task_id !='' ">
 					and t.id=#{task_id}
 				 </if>
+				 <if test="title !=null and title !='' ">
+					and t.title=#{title}
+				 </if>
 			</if>	 
 		order by t.create_time desc
 	</select>
+	
+	<!-- 查询该单是否被接  -->
+	<select id="getOrders" parameterType="map" resultMap="resultTaskUser">
+		select t.* from app_task_user t where 1=1 and t.order_id=#{task_id}
+		 order by t.create_time desc
+	</select>
+	
+	<!-- 添加接单信息   -->
+  	<insert id="addOrders" parameterType="map" >
+		insert into app_task_user(
+		  <if test="task_id != null and task_id != ''">
+			order_id,
+		  </if>
+		  <if test="user_id != null and user_id != ''">
+			user_id,
+		  </if>
+		  <if test="update_time != null and update_time != ''">
+			update_time,
+		  </if>
+		  <if test="status != null and status != ''">
+			status,
+		  </if>
+		    create_time
+		)values(
+		  <if test="task_id != null and task_id != ''">
+			#{task_id},
+		  </if>
+		  <if test="user_id != null and user_id != ''">
+			#{user_id},
+		  </if>
+		  <if test="update_time != null and update_time != ''">
+			#{update_time},
+		  </if>
+		  <if test="status != null and status != ''">
+			#{status},
+		  </if>
+		    getdate()
+		)
+  	</insert>
 	
 </mapper>

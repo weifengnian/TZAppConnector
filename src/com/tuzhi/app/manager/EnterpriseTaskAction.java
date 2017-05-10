@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import com.tuzhi.app.entity.AppEnterprisesInfo;
 import com.tuzhi.app.entity.AppGoodField;
+import com.tuzhi.app.entity.AppTaskUser;
 import com.tuzhi.app.pojo.AppTaskInfo;
 import com.tuzhi.app.service.IAppUserInfoService;
 import com.tuzhi.app.service.IEnterpriseTaskService;
@@ -330,6 +331,193 @@ public class EnterpriseTaskAction extends HttpServlet {
 		} catch (Exception e) {
 			// TODO: handle exception
 			log.info("---messageDetail--Exception:"+e.getMessage());
+			try {
+				response.getWriter().write("{\"status\":\"29\",\"retMsg\":\"数据异常\"}");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				log.info("---IOException:"+e1.getMessage());
+			}
+		}
+	}
+	
+	
+	/**
+	 * 接单
+	 */
+	public void orders(){
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json; charset=utf-8");
+		try {
+			//读取请求内容
+			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(),"UTF-8"));
+			//定义Map
+			Map<String,String> map = new HashMap<String,String>();
+			
+			//处理JSON字符串
+			StringUtil.getJsonStr(br,map);
+			log.info("----request--map:"+map);
+			
+			String status = "0";
+			String retMsg = "成功";
+			
+			//验证参数 
+			if(StringUtil.isBlank(map.get("user_id")) || StringUtil.isBlank(map.get("token")) || StringUtil.isBlank(map.get("task_id"))){
+				status = "15";
+				retMsg = "必要参数缺失";
+			}else if(map.get("user_id").length()>10 || map.get("task_id").length()>10){
+				status = "16";
+				retMsg = "必要参数输入有误";
+			}else{
+				//查询该单是否被接
+				List<AppTaskUser> tu = enterpriseTaskService.getOrders(map);
+				if(tu.size()<=0){
+					Map<String,String> mp = new HashMap<String,String>();
+					mp.put("task_id", map.get("task_id"));
+					List<AppTaskInfo> at = enterpriseTaskService.getTask(mp);
+					if(at.size()>0){
+						//添加接单信息
+						int num = enterpriseTaskService.addOrders(map);
+						if(num<=0){
+							status = "31";
+							retMsg = "任务接收失败";
+						}
+					}else{
+						status = "32";
+						retMsg = "任务编号无效";
+					}
+				}else{
+					status = "30";
+					retMsg = "任务已被处理";
+				}
+			}
+			
+			Map<String,Object> map1 = new HashMap<String,Object>();
+			map1.put("status", status);
+			map1.put("retMsg", retMsg);
+			
+			String json = JSON.encode(map1);
+			log.info("----response--json:"+json);
+			
+			response.getWriter().write(json);
+			
+			try {
+				if(TransUtil.LOG_FLAG){
+					//添加日志信息
+					Map<String,Object> logMap = new HashMap<String,Object>();
+					logMap.put("url", TransUtil.LOG_URL+"ordersTsk.action");  //请求命令Url
+					logMap.put("u_id", map.get("user_id"));  //编号(type=1指用户id、type=2指企业id) 
+					logMap.put("type", "");  //1:个人2：企业
+					logMap.put("version", map.get("version"));  //APP版本
+					logMap.put("req_content", map.toString().length()>8000?map.toString().substring(0, 8000):map.toString()); //请求内容
+					logMap.put("resp_content", json.length()>8000?json.substring(0, 8000):json); //相应内容
+					logMap.put("token", map.get("token")); //系统唯一标识
+					logMap.put("result_code", status); //状态码
+					logMap.put("result_msg", retMsg); //状态码说明
+					int resultLog = appUserInfoService.insertAppLog(logMap);
+					log.info("----resultLog:"+resultLog);
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+				log.info("--------add_log:"+e.getMessage());
+			}
+			return;
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info("---orders--Exception:"+e.getMessage());
+			try {
+				response.getWriter().write("{\"status\":\"29\",\"retMsg\":\"数据异常\"}");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				log.info("---IOException:"+e1.getMessage());
+			}
+		}
+	}
+	
+	
+	/**
+	 * 选人
+	 */
+	public void pick(){
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json; charset=utf-8");
+		try {
+			//读取请求内容
+			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(),"UTF-8"));
+			//定义Map
+			Map<String,String> map = new HashMap<String,String>();
+			
+			//处理JSON字符串
+			StringUtil.getJsonStr(br,map);
+			log.info("----request--map:"+map);
+			
+			String status = "0";
+			String retMsg = "成功";
+			
+			//验证参数 
+			List<AppTaskInfo> at = new ArrayList<AppTaskInfo>();
+			if(StringUtil.isBlank(map.get("task_id"))){
+				status = "15";
+				retMsg = "必要参数缺失";
+			}else if(map.get("task_id").length()>10){
+				status = "16";
+				retMsg = "必要参数输入有误";
+			}else{
+				//任务详细 （注意这里要去掉token）
+				map.remove("token");
+				at = enterpriseTaskService.getTask(map);
+				if(at.size() <= 0){
+					status = "0";
+					retMsg = "无任务详情";
+				}
+			}
+			
+			Map<String,Object> map2 = new HashMap<String,Object>();
+			map2.put("title", at.size()==0?"":at.get(0).getTitle()==null?"":at.get(0).getTitle());
+			map2.put("content", at.size()==0?"":at.get(0).getContent()==null?"":at.get(0).getContent());
+			map2.put("order_id", at.size()==0?"":at.get(0).getId()==0?"":at.get(0).getId());
+			map2.put("order_state", at.size()==0?"":at.get(0).getStatus()==0?"":at.get(0).getStatus());
+			map2.put("actor_num", at.size()==0?"":at.get(0).getCnt()==null?"":at.get(0).getCnt());
+			
+			Map<String,Object> map1 = new HashMap<String,Object>();
+			map1.put("status", status);
+			map1.put("retMsg", retMsg);
+			map1.put("data", map2);
+			
+			String json = JSON.encode(map1);
+			log.info("----response--json:"+json);
+			
+			response.getWriter().write(json);
+			
+			try {
+				if(TransUtil.LOG_FLAG){
+					//添加日志信息
+					Map<String,Object> logMap = new HashMap<String,Object>();
+					logMap.put("url", TransUtil.LOG_URL+"pickTsk.action");  //请求命令Url
+					logMap.put("u_id", map.get("e_id"));  //编号(type=1指用户id、type=2指企业id) 
+					logMap.put("type", "");  //1:个人2：企业
+					logMap.put("version", map.get("version"));  //APP版本
+					logMap.put("req_content", map.toString().length()>8000?map.toString().substring(0, 8000):map.toString()); //请求内容
+					logMap.put("resp_content", json.length()>8000?json.substring(0, 8000):json); //相应内容
+					logMap.put("token", map.get("token")); //系统唯一标识
+					logMap.put("result_code", status); //状态码
+					logMap.put("result_msg", retMsg); //状态码说明
+					int resultLog = appUserInfoService.insertAppLog(logMap);
+					log.info("----resultLog:"+resultLog);
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+				log.info("--------add_log:"+e.getMessage());
+			}
+			return;
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info("---pick--Exception:"+e.getMessage());
 			try {
 				response.getWriter().write("{\"status\":\"29\",\"retMsg\":\"数据异常\"}");
 			} catch (IOException e1) {

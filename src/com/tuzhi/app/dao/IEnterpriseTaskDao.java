@@ -2,6 +2,8 @@ package com.tuzhi.app.dao;
 
 import java.util.List;
 import java.util.Map;
+
+import com.tuzhi.app.entity.AppTaskUser;
 import com.tuzhi.app.pojo.AppTaskInfo;
 
 /**
@@ -26,5 +28,19 @@ public interface IEnterpriseTaskDao {
 	 * @return
 	 */
 	public List<AppTaskInfo> getTask(Map<String,String> map);
+	
+	/**
+	 * 查询该单是否被接
+	 * @param map
+	 * @return
+	 */
+	public List<AppTaskUser> getOrders(Map<String,String> map);
+	
+	/**
+	 * 添加接单信息
+	 * @param map
+	 * @return
+	 */
+	public Integer addOrders(Map<String,String> map);
 	
 }

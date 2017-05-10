@@ -7,6 +7,7 @@ import java.util.Map;
 import com.tuzhi.app.dao.IAppUserInfoDao;
 import com.tuzhi.app.dao.IEnterpriseTaskDao;
 import com.tuzhi.app.entity.AppAddress;
+import com.tuzhi.app.entity.AppTaskUser;
 import com.tuzhi.app.pojo.AppTaskInfo;
 import com.tuzhi.app.util.StringUtil;
 
@@ -71,6 +72,18 @@ public class EnterpriseTaskService implements IEnterpriseTaskService {
 	public List<AppTaskInfo> getTask(Map<String, String> map) {
 		// TODO Auto-generated method stub
 		return enterpriseTaskDao.getTask(map);
+	}
+	
+	@Override
+	public List<AppTaskUser> getOrders(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return enterpriseTaskDao.getOrders(map);
+	}
+	
+	@Override
+	public Integer addOrders(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return enterpriseTaskDao.addOrders(map);
 	}
 
 }

@@ -24,10 +24,10 @@ public class CoursesDao extends SqlSessionDaoSupport implements ICoursesDao {
 		// TODO Auto-generated method stub
 		
 		//userid＝－1查询所有课程
-		if("-1".equals(map.get("user_id"))){
-			map.remove("page");
-			map.remove("rows");
-		}
+//		if("-1".equals(map.get("user_id"))){
+//			map.remove("page");
+//			map.remove("rows");
+//		}
 		
 		int pagenum=1;
 		int pagesize=999999;
