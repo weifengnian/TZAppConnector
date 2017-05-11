@@ -102,7 +102,8 @@
 	
 	<!-- 查询任务列表  userid＝－1查询所有任务  -->
 	<select id="getTask" parameterType="map" resultMap="resultTaskInfo">
-		select t.*,case gf.name 
+	  select top (convert(int,#{rows})) temp.* from (
+		select row_number() over (order by t.create_time desc) as RowNumber, t.*,case gf.name 
 	       when '1' then '网络'
 	       when '2' then '服务器'
 	       when '3' then '监控'
@@ -139,7 +140,7 @@
 					and t.title=#{title}
 				 </if>
 			</if>	 
-		order by t.create_time desc
+		) as temp where RowNumber > convert(int,#{rows})*(convert(int,#{page})-1) order by temp.create_time desc
 	</select>
 	
 	<!-- 查询该单是否被接  -->

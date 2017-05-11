@@ -50,7 +50,8 @@
 	
 	<!-- 查询消息 -->
 	<select id="getMessage" parameterType="map" resultMap="resultMessage">
-		select m.* from app_message m
+	 select top (convert(int,#{rows})) temp.* from (
+		select row_number() over (order by m.sendtime desc) as RowNumber,m.* from app_message m
           left join app_msg_receive r on m.id=r.msg_id
           <if test=" type =='1'.toString() ">
           	  left join app_user_info u on r.u_id=u.id
@@ -71,15 +72,17 @@
 		 <if test="token !=null and token != ''">
 			and  u.token=#{token}
 		 </if>
-		order by m.sendtime desc
+		) as temp where RowNumber > convert(int,#{rows})*(convert(int,#{page})-1) order by temp.sendtime desc
 	</select>
 	
 	<!-- 获取所有领域 -->
 	<select id="getAllField" parameterType="map" resultMap="resultGoodField">
-		select f.* from app_good_field f where 1=1
+	 select top (convert(int,#{rows})) temp.* from (
+		select row_number() over (order by f.id asc) as RowNumber,f.* from app_good_field f where 1=1
 			<if test="id !=null and id != ''">
 				and f.id = #{id}
 			</if>
+		) as temp where RowNumber > convert(int,#{rows})*(convert(int,#{page})-1) order by temp.id asc	
 	</select>
 	
 	<!-- 获取广告图片 -->
