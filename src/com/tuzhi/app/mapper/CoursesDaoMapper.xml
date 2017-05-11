@@ -25,8 +25,11 @@
 				 <if test="type !=null and type !='' ">
 					and acu.type=#{type}
 				 </if>
-				 <if test="course_type_id !=null and course_type_id !='' ">
+				 <if test="course_type_id !=null and course_type_id !='' and course_type_id !='1000'.toString() ">
 					and ct.id=#{course_type_id}
+				 </if>
+				 <if test=" course_type_id =='1000'.toString() ">
+					and c.sastutas='1'
 				 </if>
 			</if>	 
 		) as temp where RowNumber > convert(int,#{rows})*(convert(int,#{page})-1) order by temp.create_time desc

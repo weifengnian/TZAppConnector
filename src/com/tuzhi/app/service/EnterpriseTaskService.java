@@ -8,6 +8,7 @@ import com.tuzhi.app.dao.IAppUserInfoDao;
 import com.tuzhi.app.dao.IEnterpriseTaskDao;
 import com.tuzhi.app.entity.AppAddress;
 import com.tuzhi.app.entity.AppTaskUser;
+import com.tuzhi.app.pojo.AppPickPeople;
 import com.tuzhi.app.pojo.AppTaskInfo;
 import com.tuzhi.app.util.StringUtil;
 
@@ -84,6 +85,11 @@ public class EnterpriseTaskService implements IEnterpriseTaskService {
 	public Integer addOrders(Map<String, String> map) {
 		// TODO Auto-generated method stub
 		return enterpriseTaskDao.addOrders(map);
+	}
+	@Override
+	public List<AppPickPeople> getPick(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return enterpriseTaskDao.getPick(map);
 	}
 
 }

@@ -529,7 +529,7 @@ public class UserInfoAction extends HttpServlet {
 			adrMap.put("id", uf==null?"":uf.getAddressid()==0?"":uf.getAddressid());
 			adrMap.put("pro_id", uf==null?"":uf.getPro_id()==null?"":uf.getPro_id());
 			adrMap.put("pro_name", uf==null?"":uf.getPro_name()==null?"":uf.getPro_name());
-			adrMap.put("city_id", uf==null?"":uf.getCard_id()==0?"":uf.getCard_id());
+			adrMap.put("city_id", uf==null?"":uf.getCity_id()==null?"":uf.getCity_id());
 			adrMap.put("city_name", uf==null?"":uf.getCity_name()==null?"":uf.getCity_name());
 			adrMap.put("dis_id", uf==null?"":uf.getDis_id()==null?"":uf.getDis_id());
 			adrMap.put("dis_name", uf==null?"":uf.getDis_name()==null?"":uf.getDis_name());

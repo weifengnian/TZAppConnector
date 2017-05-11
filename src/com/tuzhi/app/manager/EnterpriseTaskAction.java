@@ -18,9 +18,11 @@ import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.tuzhi.app.entity.AppAddress;
 import com.tuzhi.app.entity.AppEnterprisesInfo;
 import com.tuzhi.app.entity.AppGoodField;
 import com.tuzhi.app.entity.AppTaskUser;
+import com.tuzhi.app.pojo.AppPickPeople;
 import com.tuzhi.app.pojo.AppTaskInfo;
 import com.tuzhi.app.service.IAppUserInfoService;
 import com.tuzhi.app.service.IEnterpriseTaskService;
@@ -460,34 +462,69 @@ public class EnterpriseTaskAction extends HttpServlet {
 			String retMsg = "成功";
 			
 			//验证参数 
-			List<AppTaskInfo> at = new ArrayList<AppTaskInfo>();
-			if(StringUtil.isBlank(map.get("task_id"))){
+			List<AppPickPeople> at = new ArrayList<AppPickPeople>();
+			if(StringUtil.isBlank(map.get("e_id")) || StringUtil.isBlank(map.get("task_id"))){
 				status = "15";
 				retMsg = "必要参数缺失";
-			}else if(map.get("task_id").length()>10){
+			}else if(map.get("task_id").length()>10 || map.get("e_id").length()>10){
 				status = "16";
 				retMsg = "必要参数输入有误";
 			}else{
-				//任务详细 （注意这里要去掉token）
-				map.remove("token");
-				at = enterpriseTaskService.getTask(map);
+				//任务 （可以选择的人员）
+				at = enterpriseTaskService.getPick(map);
 				if(at.size() <= 0){
 					status = "0";
-					retMsg = "无任务详情";
+					retMsg = "无人员可选";
 				}
 			}
 			
-			Map<String,Object> map2 = new HashMap<String,Object>();
-			map2.put("title", at.size()==0?"":at.get(0).getTitle()==null?"":at.get(0).getTitle());
-			map2.put("content", at.size()==0?"":at.get(0).getContent()==null?"":at.get(0).getContent());
-			map2.put("order_id", at.size()==0?"":at.get(0).getId()==0?"":at.get(0).getId());
-			map2.put("order_state", at.size()==0?"":at.get(0).getStatus()==0?"":at.get(0).getStatus());
-			map2.put("actor_num", at.size()==0?"":at.get(0).getCnt()==null?"":at.get(0).getCnt());
+			List<Map<String,Object>> listMapAt = new ArrayList<Map<String,Object>>();
+			int num = 0;
+			if(at.size()==0){
+				num = -1;
+			}
+			for (int i = num; i < at.size(); i++) {
+				Map<String,Object> map2 = new HashMap<String,Object>();
+				map2.put("user_id", at.size()==0?"":at.get(0).getUser_id()==null?"":at.get(0).getUser_id());
+				map2.put("user_name", at.size()==0?"":at.get(0).getUser_name()==null?"":at.get(0).getUser_name());
+				map2.put("url", at.size()==0?"":at.get(0).getUrl()==null?"":at.get(0).getUrl());
+				map2.put("auth_time", at.size()==0?"":at.get(0).getAuth_time()==null?"":at.get(0).getAuth_time());
+				map2.put("field", at.size()==0?"":at.get(0).getField()==null?"":at.get(0).getField());
+			
+				//查用户接单地址
+				Map<String,String> arsMap = new HashMap<String,String>();
+				arsMap.put("user_id", String.valueOf(map2.get("user_id")));
+			    List<AppAddress> la = appUserInfoService.getAddressList(arsMap);
+			    List<Map<String,Object>> listMapLa = new ArrayList<Map<String,Object>>();
+			    int cnt = 0;
+				if(la.size()==0){
+					cnt = -1;
+				}
+				for (int j = cnt; j < la.size(); j++) {
+					Map<String,Object> adrMap = new HashMap<String,Object>();
+					adrMap.put("id", la==null?"":la.get(j).getId()==0?"":la.get(j).getId());
+					adrMap.put("pro_id", la.size()==0?"":la.get(j).getPro_id()==null?"":la.get(j).getPro_id());
+					adrMap.put("pro_name", la.size()==0?"":la.get(j).getPro_name()==null?"":la.get(j).getPro_name());
+					adrMap.put("city_id", la.size()==0?"":la.get(j).getCity_id()==null?"":la.get(j).getCity_id());
+					adrMap.put("city_name", la.size()==0?"":la.get(j).getCity_name()==null?"":la.get(j).getCity_name());
+					adrMap.put("dis_id", la.size()==0?"":la.get(j).getDis_id()==null?"":la.get(j).getDis_id());
+					adrMap.put("dis_name", la.size()==0?"":la.get(j).getDis_name()==null?"":la.get(j).getDis_name());
+					adrMap.put("street_id", la.size()==0?"":la.get(j).getStreet_id()==null?"":la.get(j).getStreet_id());
+					adrMap.put("street_name", la.size()==0?"":la.get(j).getStreet_name()==null?"":la.get(j).getStreet_name());
+					adrMap.put("details", la.size()==0?"":la.get(j).getDetails()==null?"":la.get(j).getDetails());
+					listMapLa.add(adrMap);
+				}
+				map2.put("order_address", listMapLa);
+				listMapAt.add(map2);
+			}
+			
+			Map<String,Object> fdMap1 = new HashMap<String,Object>();
+			fdMap1.put("list", listMapAt);
 			
 			Map<String,Object> map1 = new HashMap<String,Object>();
 			map1.put("status", status);
 			map1.put("retMsg", retMsg);
-			map1.put("data", map2);
+			map1.put("data", fdMap1);
 			
 			String json = JSON.encode(map1);
 			log.info("----response--json:"+json);

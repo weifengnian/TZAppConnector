@@ -179,4 +179,11 @@ public interface IAppUserInfoDao {
 	 * @return
 	 */
 	public Integer insertAppLog(Map<String,Object> map);
+	
+	/**
+	 * 查询用户接单地址
+	 * @param map
+	 * @return
+	 */
+	public List<AppAddress> getAddressList(Map<String,String> map);
 }

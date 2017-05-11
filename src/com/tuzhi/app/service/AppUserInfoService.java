@@ -216,4 +216,9 @@ public class AppUserInfoService implements IAppUserInfoService {
 		// TODO Auto-generated method stub
 		return appUserInfoDao.insertAppLog(map);
 	}
+	@Override
+	public List<AppAddress> getAddressList(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return appUserInfoDao.getAddressList(map);
+	}
 }

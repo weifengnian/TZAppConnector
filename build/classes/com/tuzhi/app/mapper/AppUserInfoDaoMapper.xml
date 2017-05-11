@@ -323,6 +323,13 @@
 		 	and a.only_id=#{only_id}
 		 </if>
   	</select>
+  	
+  	<!-- 查询地址集合  -->
+  	<select id="getAddressList" parameterType="map" resultMap="addressInfo">
+		select a.* from app_address a 
+         left join app_user_order_address o on a.id=o.address_id
+           where o.user_id=#{user_id}
+  	</select>
 	
 	<!-- 修改地址 -->
   	<update id="updateAddress" parameterType="map" >

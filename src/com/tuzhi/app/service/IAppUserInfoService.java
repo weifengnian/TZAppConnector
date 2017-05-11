@@ -3,6 +3,7 @@ package com.tuzhi.app.service;
 import java.util.List;
 import java.util.Map;
 
+import com.tuzhi.app.entity.AppAddress;
 import com.tuzhi.app.entity.AppCertificate;
 import com.tuzhi.app.entity.AppEnterprisesInfo;
 import com.tuzhi.app.entity.AppGoodField;
@@ -79,4 +80,11 @@ public interface IAppUserInfoService {
 	 * @return
 	 */
 	public Integer insertAppLog(Map<String,Object> map);
+	
+	/**
+	 * 查询用户接单地址
+	 * @param map
+	 * @return
+	 */
+	public List<AppAddress> getAddressList(Map<String,String> map);
 }

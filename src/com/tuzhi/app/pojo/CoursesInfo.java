@@ -20,6 +20,7 @@ public class CoursesInfo {
 	private String create_time; //创建时间
 	private String update_time; //修改时间
 	private String desc; //备注
+	private String sastutas; //课程状态
 
 	private String ctname; //课程类型
 	private String study_num; //课程参与人数
@@ -145,5 +146,11 @@ public class CoursesInfo {
 	}
 	public void setClass_time(String class_time) {
 		this.class_time = class_time;
+	}
+	public String getSastutas() {
+		return sastutas;
+	}
+	public void setSastutas(String sastutas) {
+		this.sastutas = sastutas;
 	}
 }

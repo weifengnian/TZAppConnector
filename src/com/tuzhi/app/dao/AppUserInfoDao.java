@@ -158,5 +158,11 @@ public class AppUserInfoDao extends SqlSessionDaoSupport implements IAppUserInfo
 		// TODO Auto-generated method stub
 		return getSqlSession().insert("AppUserInfoDaoMapper.insertAppLog",map);
 	}
+
+	@Override
+	public List<AppAddress> getAddressList(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectList("AppUserInfoDaoMapper.getAddressList",map);
+	}
 	
 }

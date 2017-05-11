@@ -5,6 +5,7 @@
 <mapper namespace="EnterpriseTaskDaoMapper">
 	<resultMap type="com.tuzhi.app.entity.AppTask" id="resultTask"/>
 	<resultMap type="com.tuzhi.app.pojo.AppTaskInfo" id="resultTaskInfo"/>
+	<resultMap type="com.tuzhi.app.pojo.AppPickPeople" id="resultPickPeople"/>
 	<resultMap type="com.tuzhi.app.entity.AppTaskUser" id="resultTaskUser"/>
 	
 	<!-- 企业发布任务（添加） -->
@@ -181,5 +182,29 @@
 		    getdate()
 		)
   	</insert>
+  	
+  	<!-- 查询符合接单人员  -->
+	<select id="getPick" parameterType="map" resultMap="resultPickPeople">
+		select t.*,case g.name 
+	       when '1' then '网络'
+	       when '2' then '服务器'
+	       when '3' then '监控'
+	       when '4' then '虚拟化'
+	       when '5' then '云'
+	       when '6' then '视频' 
+       		 end field from app_task t
+		left join app_enterprises_info f on t.create_per=f.id
+		left join app_good_field g on t.field_id=g.id
+          where 1=1 
+          <if test="e_id != null and e_id != ''">
+			 and t.create_per=#{e_id}
+		  </if>
+		  <if test="task_id != null and task_id != ''">
+			and t.id=#{task_id}
+		  </if>
+		  <if test="token != null and token != ''">
+			and f.token=#{token}
+		  </if>
+	</select>
 	
 </mapper>

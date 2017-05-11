@@ -2,8 +2,11 @@ package com.tuzhi.app.dao;
 
 import java.util.List;
 import java.util.Map;
+
 import org.mybatis.spring.support.SqlSessionDaoSupport;
+
 import com.tuzhi.app.entity.AppTaskUser;
+import com.tuzhi.app.pojo.AppPickPeople;
 import com.tuzhi.app.pojo.AppTaskInfo;
 import com.tuzhi.app.util.StringUtil;
 
@@ -51,6 +54,12 @@ public class EnterpriseTaskDao extends SqlSessionDaoSupport implements IEnterpri
 	public Integer addOrders(Map<String, String> map) {
 		// TODO Auto-generated method stub
 		return getSqlSession().insert("EnterpriseTaskDaoMapper.addOrders",map);
+	}
+
+	@Override
+	public List<AppPickPeople> getPick(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectList("EnterpriseTaskDaoMapper.getPick",map);
 	}
 
 }
