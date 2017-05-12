@@ -485,11 +485,11 @@ public class EnterpriseTaskAction extends HttpServlet {
 			}
 			for (int i = num; i < at.size(); i++) {
 				Map<String,Object> map2 = new HashMap<String,Object>();
-				map2.put("user_id", at.size()==0?"":at.get(0).getUser_id()==null?"":at.get(0).getUser_id());
-				map2.put("user_name", at.size()==0?"":at.get(0).getUser_name()==null?"":at.get(0).getUser_name());
-				map2.put("url", at.size()==0?"":at.get(0).getUrl()==null?"":at.get(0).getUrl());
-				map2.put("auth_time", at.size()==0?"":at.get(0).getAuth_time()==null?"":at.get(0).getAuth_time());
-				map2.put("field", at.size()==0?"":at.get(0).getField()==null?"":at.get(0).getField());
+				map2.put("user_id", at.size()==0?"":at.get(i).getUser_id()==null?"":at.get(i).getUser_id());
+				map2.put("user_name", at.size()==0?"":at.get(i).getUser_name()==null?"":at.get(i).getUser_name());
+				map2.put("url", at.size()==0?"":at.get(i).getUrl()==null?"":at.get(i).getUrl());
+				map2.put("auth_time", at.size()==0?"":at.get(i).getAuth_time()==null?"":at.get(i).getAuth_time());
+				map2.put("field", at.size()==0?"":at.get(i).getField()==null?"":at.get(i).getField());
 			
 				//查用户接单地址
 				Map<String,String> arsMap = new HashMap<String,String>();
@@ -502,7 +502,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 				}
 				for (int j = cnt; j < la.size(); j++) {
 					Map<String,Object> adrMap = new HashMap<String,Object>();
-					adrMap.put("id", la==null?"":la.get(j).getId()==0?"":la.get(j).getId());
+					adrMap.put("id", la.size()==0?"":la.get(j).getId()==0?"":la.get(j).getId());
 					adrMap.put("pro_id", la.size()==0?"":la.get(j).getPro_id()==null?"":la.get(j).getPro_id());
 					adrMap.put("pro_name", la.size()==0?"":la.get(j).getPro_name()==null?"":la.get(j).getPro_name());
 					adrMap.put("city_id", la.size()==0?"":la.get(j).getCity_id()==null?"":la.get(j).getCity_id());

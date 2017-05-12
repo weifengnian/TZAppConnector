@@ -66,11 +66,10 @@ public class CoursesAction extends HttpServlet {
 		
 			//验证参数
 			List<CoursesInfo> ci = new ArrayList<CoursesInfo>();
-			if(StringUtil.isBlank(map.get("user_id")) || StringUtil.isBlank(map.get("page")) || StringUtil.isBlank(map.get("rows")) || 
-					StringUtil.isBlank(map.get("token")) || StringUtil.isBlank(map.get("type"))){
+			if(StringUtil.isBlank(map.get("page")) || StringUtil.isBlank(map.get("rows"))){
 				status = "15";
 				retMsg = "必要参数缺失";
-			}else if((!"1".equals(map.get("type")) && !"2".equals(map.get("type"))) || map.get("user_id").length()>10 || map.get("course_type_id").length()>10 ){
+			}else if(map.get("user_id").length()>10 || map.get("course_type_id").length()>10 ){
 				status = "16";
 				retMsg = "必要参数输入有误";
 			}else{

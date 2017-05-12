@@ -185,19 +185,22 @@
   	
   	<!-- 查询符合接单人员  -->
 	<select id="getPick" parameterType="map" resultMap="resultPickPeople">
-		select t.*,case g.name 
+		select t.*, case g.name 
 	       when '1' then '网络'
 	       when '2' then '服务器'
 	       when '3' then '监控'
 	       when '4' then '虚拟化'
 	       when '5' then '云'
 	       when '6' then '视频' 
-       		 end field from app_task t
-		left join app_enterprises_info f on t.create_per=f.id
+       		 end field,i.id user_id,i.name user_name,i.icon_url url,i.auth_create_time auth_time
+              from app_task t
+		left join app_enterprises_info f on t.create_user_id=f.id
 		left join app_good_field g on t.field_id=g.id
+        left join app_user_field uf on g.id=uf.field_id
+        left join app_user_info i on uf.user_id=i.id
           where 1=1 
           <if test="e_id != null and e_id != ''">
-			 and t.create_per=#{e_id}
+			 and t.create_user_id=#{e_id}
 		  </if>
 		  <if test="task_id != null and task_id != ''">
 			and t.id=#{task_id}

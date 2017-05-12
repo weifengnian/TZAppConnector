@@ -13,11 +13,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
-import net.sf.json.JSONObject;
+import org.apache.log4j.Logger;
 
-import org.apache.ibatis.session.RowBounds;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.sf.json.JSONObject;
 
 /**
  * @Description: 
@@ -28,7 +26,7 @@ import org.slf4j.LoggerFactory;
  */
 public class StringUtil {
 	
-	private final static Logger log = LoggerFactory.getLogger(StringUtil.class);
+	private final static Logger log =  Logger.getLogger(StringUtil.class);
 	
 	//获取前台传输的JSON字符串
 	@SuppressWarnings("rawtypes")
@@ -184,32 +182,4 @@ public class StringUtil {
 		return file;
 	}
 	
-	/**
-	 * 分页
-	 * @param PageNum
-	 * @param PageSize
-	 * @return
-	 */
-	public static RowBounds getRowBounds(int PageNum, int PageSize)
-	{
-		int offset;
-		int limit;
-
-		if (PageNum == 0)
-		{
-			offset = 0;
-			//limit = Integer.MAX_VALUE;
-			limit = PageSize;
-		}
-		else
-		{
-			offset = (PageNum - 1) * PageSize;
-			//limit = offset + PageSize;
-			limit = PageSize;
-		}
-
-		RowBounds rowBounds = new RowBounds(offset, limit);
-		return rowBounds;
-	}
-
 }

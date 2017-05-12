@@ -12,26 +12,27 @@
 			 left join app_courses_type ct on c.courses_type_id=ct.id
 			 inner join(
 			           select cu.courses_id,cu.type,COUNT(*) cnt from app_courses_user cu
-			           <if test=" user_id !='-1'.toString() ">
+			           <if test=" user_id !='-1'.toString() and course_type_id !='-1'.toString() ">
 			              where cu.user_id=#{user_id}
 			           </if>
 			           group by cu.courses_id,cu.type
 			          )acu on c.id=acu.courses_id
 			 where 1=1 
- 			<if test=" user_id !='-1'.toString() ">
+ 			<if test=" user_id !='-1'.toString() and course_type_id !='-1'.toString() ">
 		  		 <if test="title !=null and title !='' ">
 					and c.name=#{title}
 				 </if>
 				 <if test="type !=null and type !='' ">
 					and acu.type=#{type}
 				 </if>
-				 <if test="course_type_id !=null and course_type_id !='' and course_type_id !='1000'.toString() ">
-					and ct.id=#{course_type_id}
+				 <if test=" status !=null and status ">
+					and c.sastutas=#{status}
 				 </if>
-				 <if test=" course_type_id =='1000'.toString() ">
-					and c.sastutas='1'
-				 </if>
-			</if>	 
+			</if>
+			<if test="course_type_id =='-1'.toString() ">
+				and (acu.type='1' or acu.type='2')
+			 </if>
+				 
 		) as temp where RowNumber > convert(int,#{rows})*(convert(int,#{page})-1) order by temp.create_time desc
 	</select>
 	
