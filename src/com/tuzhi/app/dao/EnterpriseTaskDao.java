@@ -55,6 +55,12 @@ public class EnterpriseTaskDao extends SqlSessionDaoSupport implements IEnterpri
 		// TODO Auto-generated method stub
 		return getSqlSession().insert("EnterpriseTaskDaoMapper.addOrders",map);
 	}
+	
+	@Override
+	public Integer updateOrders(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return getSqlSession().update("EnterpriseTaskDaoMapper.updateOrders",map);
+	}
 
 	@Override
 	public List<AppPickPeople> getPick(Map<String, String> map) {

@@ -45,6 +45,13 @@ public interface IEnterpriseTaskDao {
 	public Integer addOrders(Map<String,String> map);
 	
 	/**
+	 * 修改接单信息
+	 * @param map
+	 * @return
+	 */
+	public Integer updateOrders(Map<String,String> map);
+	
+	/**
 	 *任务 （可以选择的人员）
 	 * @param map
 	 * @return

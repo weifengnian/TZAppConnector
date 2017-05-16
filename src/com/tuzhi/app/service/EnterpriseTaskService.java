@@ -86,6 +86,13 @@ public class EnterpriseTaskService implements IEnterpriseTaskService {
 		// TODO Auto-generated method stub
 		return enterpriseTaskDao.addOrders(map);
 	}
+	
+	@Override
+	public Integer updateOrders(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return enterpriseTaskDao.updateOrders(map);
+	}
+	
 	@Override
 	public List<AppPickPeople> getPick(Map<String, String> map) {
 		// TODO Auto-generated method stub

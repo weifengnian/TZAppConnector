@@ -373,6 +373,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 				status = "16";
 				retMsg = "必要参数输入有误";
 			}else{
+				map.put("status", map.get("type"));
 				//查询该单是否被接
 				List<AppTaskUser> tu = enterpriseTaskService.getOrders(map);
 				if(tu.size()<=0){
