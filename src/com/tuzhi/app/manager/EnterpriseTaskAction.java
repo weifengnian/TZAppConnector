@@ -381,11 +381,20 @@ public class EnterpriseTaskAction extends HttpServlet {
 					mp.put("task_id", map.get("task_id"));
 					List<AppTaskInfo> at = enterpriseTaskService.getTask(mp);
 					if(at.size()>0){
-						//添加接单信息
-						int num = enterpriseTaskService.addOrders(map);
-						if(num<=0){
-							status = "31";
-							retMsg = "任务接收失败";
+						//0报名，1接单
+						if("0".equals(map.get("status"))){
+							//添加接单信息
+							int num = enterpriseTaskService.addOrders(map);
+							if(num<=0){
+								status = "31";
+								retMsg = "任务报名失败";
+							}
+						}else{
+							int num = enterpriseTaskService.updateOrders(map);
+							if(num<=0){
+								status = "33";
+								retMsg = "失败";
+							}
 						}
 					}else{
 						status = "32";
