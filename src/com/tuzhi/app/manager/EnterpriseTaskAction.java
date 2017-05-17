@@ -186,9 +186,9 @@ public class EnterpriseTaskAction extends HttpServlet {
 			
 			List<Map<String,Object>> listMap = new ArrayList<Map<String,Object>>();
 			int num = 0;
-			if(at.size()==0){
-				num = -1;
-			}
+//			if(at.size()==0){
+//				num = -1;
+//			}
 			for (int i = num; i < at.size(); i++) {
 				Map<String,Object> map3 = new HashMap<String,Object>();
 				map3.put("task_id", at.size()==0?"":at.get(i).getId()==0?"":at.get(i).getId());
@@ -481,9 +481,9 @@ public class EnterpriseTaskAction extends HttpServlet {
 			
 			List<Map<String,Object>> listMapAt = new ArrayList<Map<String,Object>>();
 			int num = 0;
-			if(at.size()==0){
-				num = -1;
-			}
+//			if(at.size()==0){
+//				num = -1;
+//			}
 			for (int i = num; i < at.size(); i++) {
 				Map<String,Object> map2 = new HashMap<String,Object>();
 				map2.put("user_id", at.size()==0?"":at.get(i).getUser_id()==null?"":at.get(i).getUser_id());
@@ -498,9 +498,9 @@ public class EnterpriseTaskAction extends HttpServlet {
 			    List<AppAddress> la = appUserInfoService.getAddressList(arsMap);
 			    List<Map<String,Object>> listMapLa = new ArrayList<Map<String,Object>>();
 			    int cnt = 0;
-				if(la.size()==0){
-					cnt = -1;
-				}
+//				if(la.size()==0){
+//					cnt = -1;
+//				}
 				for (int j = cnt; j < la.size(); j++) {
 					Map<String,Object> adrMap = new HashMap<String,Object>();
 					adrMap.put("id", la.size()==0?"":la.get(j).getId()==0?"":la.get(j).getId());

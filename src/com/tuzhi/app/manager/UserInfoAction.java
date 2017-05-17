@@ -548,9 +548,9 @@ public class UserInfoAction extends HttpServlet {
 			//领域信息
 			List<Map<String,Object>> fdListMap = new ArrayList<Map<String,Object>>();
 			int num1 = 0;
-			if(fd.size()==0){
-				num1 = -1;
-			}
+//			if(fd.size()==0){
+//				num1 = -1;
+//			}
 			for (int i = num1; i < fd.size(); i++) {
 				Map<String,Object> fdMap = new HashMap<String,Object>();
 				fdMap.put("id", fd.size()==0?"":fd.get(i).getId()==0?"":fd.get(i).getId());
@@ -565,9 +565,9 @@ public class UserInfoAction extends HttpServlet {
 			//资质证书
 			List<Map<String,Object>> cfListMap = new ArrayList<Map<String,Object>>();
 			int num2 = 0;
-			if(fd.size()==0){
-				num2 = -1;
-			}
+//			if(fd.size()==0){
+//				num2 = -1;
+//			}
 			for (int i = num2; i < cf.size(); i++) {
 				Map<String,Object> cfMap = new HashMap<String,Object>();
 				cfMap.put("id", cf.size()==0?"":cf.get(i).getId()==0?"":cf.get(i).getId());

@@ -191,9 +191,9 @@ public class SystemMessagerAction extends HttpServlet {
 			
 			List<Map<String,Object>> listMap = new ArrayList<Map<String,Object>>();
 			int num = 0;
-			if(lm.size()==0){
-				num = -1;
-			}
+//			if(lm.size()==0){
+//				num = -1;
+//			}
 			for (int i = num; i < lm.size(); i++) {
 				Map<String,Object> map3 = new HashMap<String,Object>();
 				map3.put("msg_id", lm.size()==0?"":lm.get(i).getId()==0?"":lm.get(i).getId());
@@ -375,9 +375,9 @@ public class SystemMessagerAction extends HttpServlet {
 				
 			List<Map<String,Object>> listMap = new ArrayList<Map<String,Object>>();
 			int num = 0;
-			if(gf.size()==0){
-				num = -1;
-			}
+//			if(gf.size()==0){
+//				num = -1;
+//			}
 			for (int i = num; i < gf.size(); i++) {
 				Map<String,Object> map3 = new HashMap<String,Object>();
 				map3.put("filed_id", gf.size()==0?"":gf.get(i).getId()==0?"":gf.get(i).getId());
@@ -473,9 +473,9 @@ public class SystemMessagerAction extends HttpServlet {
 				
 			List<Map<String,Object>> listMap = new ArrayList<Map<String,Object>>();
 			int num = 0;
-			if(ab.size()==0){
-				num = -1;
-			}
+//			if(ab.size()==0){
+//				num = -1;
+//			}
 			for (int i = num; i < ab.size(); i++) {
 				Map<String,Object> map3 = new HashMap<String,Object>();
 				map3.put("banner_id", ab.size()==0?"":ab.get(i).getId()==0?"":ab.get(i).getId());

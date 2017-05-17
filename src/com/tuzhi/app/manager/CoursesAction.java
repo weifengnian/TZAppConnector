@@ -83,9 +83,9 @@ public class CoursesAction extends HttpServlet {
 			
 			List<Map<String,Object>> listMap = new ArrayList<Map<String,Object>>();
 			int num = 0;
-			if(ci.size()==0){
-				num = -1;
-			}
+//			if(ci.size()==0){
+//				num = -1;
+//			}
 			for (int i = num; i < ci.size(); i++) {
 				Map<String,Object> map3 = new HashMap<String,Object>();
 				map3.put("course_id", ci.size()==0?"":ci.get(i).getId()==0?"":ci.get(i).getId());
@@ -212,9 +212,9 @@ public class CoursesAction extends HttpServlet {
 				
 			List<Map<String,Object>> listMapZj = new ArrayList<Map<String,Object>>();
 			int num = 0;
-			if(zj.size()==0){
-				num = -1;
-			}
+//			if(zj.size()==0){
+//				num = -1;
+//			}
 			for (int i = num; i < zj.size(); i++) {
 				Map<String,Object> map3 = new HashMap<String,Object>();
 				map3.put("chapter_id", zj.size()==0?"":zj.get(i).getChapter_id()==null?"":zj.get(i).getChapter_id());
@@ -228,9 +228,9 @@ public class CoursesAction extends HttpServlet {
 					//定义课时ListMap
 					List<Map<String,Object>> listMapKs = new ArrayList<Map<String,Object>>();
 					int cnt = 0;
-					if(ks.size()==0){
-						cnt = -1;
-					}
+//					if(ks.size()==0){
+//						cnt = -1;
+//					}
 					for (int j = cnt; j < ks.size(); j++) {
 						Map<String,Object> ksMap = new HashMap<String,Object>();
 						ksMap.put("class_id", ks.size()==0?"":ks.get(j).getClass_id()==null?"":ks.get(j).getClass_id());
