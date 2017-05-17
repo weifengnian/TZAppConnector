@@ -545,13 +545,13 @@ public class SystemMessagerAction extends HttpServlet {
 		response.setContentType("application/json; charset=utf-8");
 		try {
 			
-			log.info("----fileName:"+fileName+"----template:"+template+",----file:"+img);
+			log.info("----fileName:"+fileName+"----template:"+template+",----file:"+img+",----template:"+template);
 			
 			String status = "0";
 			String retMsg = "成功";
 			
 			//判断功能模板，1、用户，2、企业，3、身份证，4资质证书
-			if(!"1".equals(template) && !"2".equals(template) && !"3".equals(template) && !"4".equals(template)){
+			if(!"1".equals(template) && !"2".equals(template) && !"3".equals(template) && !"4".equals(template) && !"5".equals(template)){
 				Map<String,Object> resultMap = new HashMap<String,Object>();
 				resultMap.put("status", "17");
 				resultMap.put("retMsg", "图片类型输入有误");
