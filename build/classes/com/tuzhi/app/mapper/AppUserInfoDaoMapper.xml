@@ -10,6 +10,8 @@
 	<resultMap type="com.tuzhi.app.entity.AppCertificate" id="certificate"/>
 	<resultMap type="com.tuzhi.app.entity.AppCard" id="cardInfo"/>
 	<resultMap type="com.tuzhi.app.entity.AppAddress" id="addressInfo"/>
+	<resultMap type="com.tuzhi.app.entity.Appquestion" id="appquestion"/>
+	<resultMap type="com.tuzhi.app.entity.Appquestionreply" id="appquestionreply"/>
 	
 	<!-- 查询个人用户详细信息 -->
 	<select id="getAppUser" parameterType="map" resultMap="detailInfo">
@@ -176,6 +178,9 @@
           </if>
 		  <if test="logo_url !=null and logo_url !='' ">
               local_url=#{logo_url},
+          </if>
+		  <if test="logo !=null and logo !='' ">
+              icon_url=#{logo},
           </if>
 			  update_time=getdate()
 			
@@ -509,6 +514,81 @@
           </if>
           <if test="result_msg !=null and result_msg !='' ">
              #{result_msg},
+          </if>
+		     getdate()
+		  )   
+  	</insert>
+  	
+  	<!-- 查询问题  -->
+  	<select id="getAppquestion" parameterType="map" resultMap="appquestion">
+		select q.* from app_question q 
+		where 1=1 
+		 <if test="question_id !=null and question_id !='' ">
+             and q.id=#{question_id}
+         </if>
+  	</select>
+  	
+  	<!-- 查询问题回复内容  -->
+  	<select id="getAppquestionreply" parameterType="map" resultMap="appquestionreply">
+		select a.* from app_question_reply a 
+           where 1=1 
+           <if test="id !=null and id !='' ">
+             and a.id=#{id}
+         </if>
+  	</select>
+  	
+  	<!-- 添加问题回复 -->
+  	<insert id="addAppquestionreply" parameterType="map" >
+		insert into app_question_reply(
+		  <if test="content !=null and content !='' ">
+             content,
+          </if>
+		  <if test="user_id !=null and user_id !='' ">
+             user_id,
+          </if>
+		  <if test="user_name !=null and user_name !='' ">
+             user_name,
+          </if>
+		  <if test="question_id !=null and question_id !='' ">
+             question_id,
+          </if>
+		  <if test="status !=null and status !='' ">
+             status,
+          </if>
+		  <if test="type !=null and type !='' ">
+             type,
+          </if>
+		  <if test="courses_id !=null and courses_id !='' ">
+             courses_id,
+          </if>
+          <if test="forum_id !=null and forum_id !='' ">
+             forum_id,
+          </if>
+		    update_time
+		)values(
+		  <if test="content !=null and content !='' ">
+             #{content},
+          </if>
+		  <if test="user_id !=null and user_id !='' ">
+             #{user_id},
+          </if>
+		  <if test="user_name !=null and user_name !='' ">
+             #{user_name},
+          </if>
+		  <if test="question_id !=null and question_id !='' ">
+             #{question_id},
+          </if>
+		  <if test="status !=null and status !='' ">
+             #{status},
+          </if>
+          <if test="type !=null and type !='' ">
+             #{type},
+          </if>
+		  <if test="courses_id !=null and courses_id !='' ">
+             #{courses_id},
+          </if>
+          <if test="forum_id !=null and forum_id !='' ">
+             #{forum_id},
           </if>
 		     getdate()
 		  )   

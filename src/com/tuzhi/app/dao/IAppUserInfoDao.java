@@ -8,6 +8,8 @@ import com.tuzhi.app.entity.AppCard;
 import com.tuzhi.app.entity.AppCertificate;
 import com.tuzhi.app.entity.AppEnterprisesInfo;
 import com.tuzhi.app.entity.AppGoodField;
+import com.tuzhi.app.entity.Appquestion;
+import com.tuzhi.app.entity.Appquestionreply;
 import com.tuzhi.app.pojo.AppUserDetailInfo;
 
 /**
@@ -186,4 +188,25 @@ public interface IAppUserInfoDao {
 	 * @return
 	 */
 	public List<AppAddress> getAddressList(Map<String,String> map);
+	
+	/**
+	 * 查询问题
+	 * @param map
+	 * @return
+	 */
+	public List<Appquestion> getAppquestion(Map<String,String> map);
+	
+	/**
+	 * 问题回复
+	 * @param map
+	 * @return
+	 */
+	public Integer addAppquestionreply(Map<String,String> map);
+	
+	/**
+	 * 查询回复内容
+	 * @param map
+	 * @return
+	 */
+	public List<Appquestionreply> getAppquestionreply(Map<String,String> map);
 }

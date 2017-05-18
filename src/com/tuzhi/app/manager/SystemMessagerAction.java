@@ -533,7 +533,7 @@ public class SystemMessagerAction extends HttpServlet {
 	
 	private String fileName; //文件名称
 	private String version; //版本号
-	private String template; //功能模板，1、用户，2、企业，3、身份证，4资质证书
+	private String template; //功能模板，1、用户，2、企业，3、身份证，4资质证书,5营业执照
 	private File img; //文件流(图片)
 	/**
 	 * 上传图片
@@ -549,6 +549,8 @@ public class SystemMessagerAction extends HttpServlet {
 			
 			String status = "0";
 			String retMsg = "成功";
+			
+//			img = new File("C:\\abc.png");
 			
 			//判断功能模板，1、用户，2、企业，3、身份证，4资质证书
 			if(!"1".equals(template) && !"2".equals(template) && !"3".equals(template) && !"4".equals(template) && !"5".equals(template)){
@@ -593,31 +595,48 @@ public class SystemMessagerAction extends HttpServlet {
 				load_path.append("/picture/3/"+date+"/");
 			
 			//资质证书
-			}else{
+			}else if("4".equals(template)){
 				upload_path.append("\\picture\\4\\"+date+"\\");
 				load_path.append("/picture/4/"+date+"/");
+				
+			//5营业执照	
+			}else{
+				upload_path.append("\\picture\\5\\"+date+"\\");
+				load_path.append("/picture/5/"+date+"/");
 			}
 			
-			//目标文件
+			//http访问目标文件
 			String targetDirectory = TransUtil.UPLOAD_PATH+upload_path.toString();
+			//本地目标文件
+			String local_Directory = "C:"+upload_path.toString();
 			
-			//建立文件夹
+			//建立http可访问文件夹
 			StringUtil.createDirectory(targetDirectory);
+			//创建本地文件夹
+			StringUtil.createDirectory(local_Directory);
 			
+			//生成图片名称
 			String directory = String.valueOf(System.currentTimeMillis());
 			
+			//创建http可访问文件目录
 			File filepath = new File(targetDirectory+"\\"+directory+".jpg");
+			//创建本地文件目录
+			File local_filepath = new File(local_Directory+"\\"+directory+".jpg");
 			
-			//file = new File("C:\\abc.png");
-			
+			//拷贝文件到http可访问目录
 			StringUtil.copy(img, filepath);
+			//拷贝文件到本地目录
+			StringUtil.copy(img, local_filepath);
 			
 			Map<String,Object> resultMap = new HashMap<String,Object>();
 			resultMap.put("status", status);
 			resultMap.put("retMsg", retMsg);
 			resultMap.put("url", TransUtil.LOAD_PATH+load_path.toString()+directory+".jpg");
+			resultMap.put("local_url", local_Directory+directory+".jpg");
+			
 			log.info("----upload_path:"+filepath);
 			log.info("----load_path:"+TransUtil.LOAD_PATH+load_path.toString()+directory+".jpg");
+			
 			String json = JSON.encode(resultMap);
 			log.info("----response--json:"+json);
 			

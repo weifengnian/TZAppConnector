@@ -230,6 +230,7 @@ public class UserInfoAction extends HttpServlet {
 				
 				map3.put("user_id", "");
 				map3.put("user_name", "");
+				map3.put("nick_name", "");
 				map3.put("phone", "");
 				map3.put("logo_url", "");
 				
@@ -250,6 +251,7 @@ public class UserInfoAction extends HttpServlet {
 					}
 					map3.put("user_id", ud.getId()==0?"":ud.getId());
 					map3.put("user_name", ud.getName()==null?"":ud.getName());
+					map3.put("nick_name", ud.getNick_name()==null?"":ud.getNick_name());
 					map3.put("phone", ud.getMobile_phone()==null?"":ud.getMobile_phone());
 					map3.put("logo_url", ud.getLocal_url()==null?"":ud.getLocal_url());
 					map3.put("type", "1");
@@ -275,6 +277,7 @@ public class UserInfoAction extends HttpServlet {
 					}
 					map3.put("user_id", ep==null?"":ep.getId()==0?"":ep.getId());
 					map3.put("user_name", ep==null?"":ep.getName()==null?"":ep.getName());
+					map3.put("nick_name", ep==null?"":ep.getLogin_name()==null?"":ep.getLogin_name());
 					map3.put("phone", ep==null?"":ep.getMobile_phone()==null?"":ep.getMobile_phone());
 					map3.put("logo_url", ep==null?"":ep.getEnterprise_url()==null?"":ep.getEnterprise_url());
 					map3.put("type", ep==null?"":"2");
