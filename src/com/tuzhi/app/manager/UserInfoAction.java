@@ -253,7 +253,7 @@ public class UserInfoAction extends HttpServlet {
 					map3.put("user_name", ud.getName()==null?"":ud.getName());
 					map3.put("nick_name", ud.getNick_name()==null?"":ud.getNick_name());
 					map3.put("phone", ud.getMobile_phone()==null?"":ud.getMobile_phone());
-					map3.put("logo_url", ud.getLocal_url()==null?"":ud.getLocal_url());
+					map3.put("logo_url", ud.getIcon_url()==null?"":ud.getIcon_url());
 					map3.put("type", "1");
 					
 					map2.put("user_Info", map3);
@@ -588,7 +588,7 @@ public class UserInfoAction extends HttpServlet {
 			ufdMap.put("name", uf==null?"":uf.getName()==null?"":uf.getName());
 			ufdMap.put("nick_name", uf==null?"":uf.getNick_name()==null?"":uf.getNick_name());
 			ufdMap.put("sex", uf==null?"":uf.getSex()==0?"":uf.getSex());
-			ufdMap.put("logo", uf==null?"":uf.getLocal_url()==null?"":uf.getLocal_url());
+			ufdMap.put("logo", uf==null?"":uf.getIcon_url()==null?"":uf.getIcon_url());
 			ufdMap.put("money", uf==null?"":uf.getMoney());
 			ufdMap.put("integral", uf==null?"":uf.getIntegral());
 			ufdMap.put("is_auth", uf==null?"":uf.getIs_auth());
