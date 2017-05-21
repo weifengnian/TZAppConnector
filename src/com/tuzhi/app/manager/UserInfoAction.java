@@ -18,6 +18,7 @@ import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.tuzhi.app.entity.AppAddress;
 import com.tuzhi.app.entity.AppCertificate;
 import com.tuzhi.app.entity.AppEnterprisesInfo;
 import com.tuzhi.app.entity.AppGoodField;
@@ -430,6 +431,7 @@ public class UserInfoAction extends HttpServlet {
 				retMsg = "该用户已不存在";
 			}else{
 				//完善个人用户信息
+				map.put("status", "10");  //用户状态（-1:黑名单1:正常,10待认证）
 				int resultStstu = appUserInfoService.updateAppUser(map);
 				if(resultStstu<=0){
 					status = "07";
@@ -505,6 +507,8 @@ public class UserInfoAction extends HttpServlet {
 			List<AppGoodField> fd = new ArrayList<AppGoodField>();
 			//获取用户资质证书
 			List<AppCertificate> cf = new ArrayList<AppCertificate>();
+			//获取用户接单地址
+			List<AppAddress> ad = new ArrayList<AppAddress>();
 			//获取用户信息(地址and身份证图片)
 			AppUserDetailInfo uf = null;
 			
@@ -520,33 +524,44 @@ public class UserInfoAction extends HttpServlet {
 				if(uf!=null){
 					fd = appUserInfoService.getGoodField(map);
 					cf = appUserInfoService.getCertificate(map);
+					ad = appUserInfoService.getAddressList(map);
 				}else{
 					status = "09";
 					retMsg = "该用户已不存在";
 				}
 			}
 			
-			//用户地址信息
-			Map<String,Object> adrListMap = new HashMap<String,Object>();
-			Map<String,Object> adrMap = new HashMap<String,Object>();
-			adrMap.put("id", uf==null?"":uf.getAddressid()==0?"":uf.getAddressid());
-			adrMap.put("pro_id", uf==null?"":uf.getPro_id()==null?"":uf.getPro_id());
-			adrMap.put("pro_name", uf==null?"":uf.getPro_name()==null?"":uf.getPro_name());
-			adrMap.put("city_id", uf==null?"":uf.getCity_id()==null?"":uf.getCity_id());
-			adrMap.put("city_name", uf==null?"":uf.getCity_name()==null?"":uf.getCity_name());
-			adrMap.put("dis_id", uf==null?"":uf.getDis_id()==null?"":uf.getDis_id());
-			adrMap.put("dis_name", uf==null?"":uf.getDis_name()==null?"":uf.getDis_name());
-			adrMap.put("street_id", uf==null?"":uf.getStreet_id()==null?"":uf.getStreet_id());
-			adrMap.put("street_name", uf==null?"":uf.getStreet_name()==null?"":uf.getStreet_name());
-			adrMap.put("details", uf==null?"":uf.getDetails()==null?"":uf.getDetails());
-			adrListMap.put("list", adrMap);
+			//用户接单地址信息
+			List<Map<String,Object>> adrListMap = new ArrayList<Map<String,Object>>();
+			int num0 = 0;
+//			if(ad.size()==0){
+//				num0 = -1;
+//			}
+			for (int i = num0; i < ad.size(); i++) {
+				Map<String,Object> adrMap = new HashMap<String,Object>();
+				adrMap.put("id", ad.size()==0?"":ad.get(i).getId()==0?"":ad.get(i).getId());
+				adrMap.put("pro_id", ad.size()==0?"":ad.get(i).getPro_id()==null?"":ad.get(i).getPro_id());
+				adrMap.put("pro_name", ad.size()==0?"":ad.get(i).getPro_name()==null?"":ad.get(i).getPro_name());
+				adrMap.put("city_id", ad.size()==0?"":ad.get(i).getCity_id()==null?"":ad.get(i).getCity_id());
+				adrMap.put("city_name", ad.size()==0?"":ad.get(i).getCity_name()==null?"":ad.get(i).getCity_name());
+				adrMap.put("dis_id", ad.size()==0?"":ad.get(i).getDis_id()==null?"":ad.get(i).getDis_id());
+				adrMap.put("dis_name", ad.size()==0?"":ad.get(i).getDis_name()==null?"":ad.get(i).getDis_name());
+				adrMap.put("street_id", ad.size()==0?"":ad.get(i).getStreet_id()==null?"":ad.get(i).getStreet_id());
+				adrMap.put("street_name", ad.size()==0?"":ad.get(i).getStreet_name()==null?"":ad.get(i).getStreet_name());
+				adrMap.put("details", ad.size()==0?"":ad.get(i).getDetails()==null?"":ad.get(i).getDetails());
+				adrListMap.add(adrMap);
+			}
+			Map<String,Object> adMap1 = new HashMap<String,Object>();
+			adMap1.put("list", adrListMap);
 			
 			//用户身份信息
 			Map<String,Object> crdMap = new HashMap<String,Object>();
 			crdMap.put("id", uf==null?"":uf.getCardid()==0?"":uf.getCardid());
 			crdMap.put("number", uf==null?"":uf.getNumber()==null?"":uf.getNumber());
 			crdMap.put("upper_url", uf==null?"":uf.getUpper_url()==null?"":uf.getUpper_url());
+			crdMap.put("up_local_url", uf==null?"":uf.getLocal_upper_url()==null?"":uf.getLocal_upper_url());
 			crdMap.put("below_url", uf==null?"":uf.getBelow_url()==null?"":uf.getBelow_url());
+			crdMap.put("down_local_url", uf==null?"":uf.getLocal_below_url()==null?"":uf.getLocal_below_url());
 			
 			//领域信息
 			List<Map<String,Object>> fdListMap = new ArrayList<Map<String,Object>>();
@@ -576,6 +591,8 @@ public class UserInfoAction extends HttpServlet {
 				cfMap.put("id", cf.size()==0?"":cf.get(i).getId()==0?"":cf.get(i).getId());
 				cfMap.put("certificate_name", cf.size()==0?"":cf.get(i).getCertificate_name()==null?"":cf.get(i).getCertificate_name());
 				cfMap.put("certificate_url", cf.size()==0?"":cf.get(i).getCertificate_url()==null?"":cf.get(i).getCertificate_url());
+				cfMap.put("certificate_local_url", cf.size()==0?"":cf.get(i).getLocal_url()==null?"":cf.get(i).getLocal_url());
+				cfMap.put("is_auth", cf.size()==0?"":cf.get(i).getIs_auth()==null?"":cf.get(i).getIs_auth());
 				cfListMap.add(cfMap);
 			}
 			Map<String,Object> cfMap1 = new HashMap<String,Object>();
@@ -596,7 +613,7 @@ public class UserInfoAction extends HttpServlet {
 			ufdMap.put("create_time", uf==null?"":uf.getCreate_time()==null?"":uf.getCreate_time());
 			ufdMap.put("update_time", uf==null?"":uf.getUpdate_time()==null?"":uf.getUpdate_time());
 			ufdMap.put("graduation_time", uf==null?"":uf.getGraduation_time()==null?"":uf.getGraduation_time());
-			ufdMap.put("order_address", adrListMap);
+			ufdMap.put("order_address", adMap1);
 			ufdMap.put("good_field", fdMap1);
 			ufdMap.put("qualification_certificate", cfMap1);
 			ufdMap.put("card", crdMap);
@@ -780,6 +797,7 @@ public class UserInfoAction extends HttpServlet {
 			epMap.put("e_name", ep==null?"":ep.getName()==null?"":ep.getName());
 			epMap.put("business_code", ep==null?"":ep.getBusiness_code()==null?"":ep.getBusiness_code());
 			epMap.put("business_img", ep==null?"":ep.getBusiness_url()==null?"":ep.getBusiness_url());
+			epMap.put("business_local_url", ep==null?"":ep.getLocal_business_url()==null?"":ep.getLocal_business_url());
 			epMap.put("logo", ep==null?"":ep.getEnterprise_url()==null?"":ep.getEnterprise_url());
 			epMap.put("mobile_phone", ep==null?"":ep.getMobile_phone()==null?"":ep.getMobile_phone());
 			epMap.put("telephone", ep==null?"":ep.getTelephone()==null?"":ep.getTelephone());

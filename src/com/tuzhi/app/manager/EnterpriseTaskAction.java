@@ -300,6 +300,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 			map2.put("order_state", at.size()==0?"":at.get(0).getStatus()==0?"":at.get(0).getStatus());
 			map2.put("actor_num", at.size()==0?"":at.get(0).getCnt()==null?"":at.get(0).getCnt());
 			
+			
 			Map<String,Object> map1 = new HashMap<String,Object>();
 			map1.put("status", status);
 			map1.put("retMsg", retMsg);

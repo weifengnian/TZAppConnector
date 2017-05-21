@@ -47,7 +47,9 @@
 	
 	<!-- 查询个人用户资质证书信息 -->
 	<select id="getCertificate" parameterType="map" resultMap="certificate">
-		select c.* from app_user_certificate u
+		select c.id,c.certificate_name,c.certificate_url,c.local_url,c.level,c.create_time,c.auth_time,c.only_id,
+            case c.is_auth when '0' then '未提交' when '1' then '已审核通过' when '10' then '审核中' when '-1' then '审核未通过' end is_auth 
+                 from app_user_certificate u
 			left join app_certificate c on u.certificate_id=c.id
 			left join app_user_info ui on u.user_id=ui.id 
               where 1=1
@@ -182,6 +184,9 @@
 		  <if test="logo !=null and logo !='' ">
               icon_url=#{logo},
           </if>
+		  <if test="status !=null and status !='' ">
+              status=#{status},
+          </if>
 			  update_time=getdate()
 			
 		where 1=1
@@ -231,6 +236,9 @@
 		  <if test="business_img !=null and business_img !='' ">
               business_url=#{business_img},
           </if>
+		  <if test="business_local_url !=null and business_local_url !='' ">
+              local_business_url=#{business_local_url},
+          </if>
 		  <if test="logo !=null and logo !='' ">
               enterprise_url=#{logo},
           </if>
@@ -265,7 +273,16 @@
   	
 	<!-- 修改用户身份证书信息（根据身份证号修改） -->
   	<update id="updateCardInfo" parameterType="map" >
-		update app_card set upper_url=#{upper_url},below_url=#{below_url}  where numer=#{number}
+		update app_card set 
+		  <if test="local_upper_url !=null and local_upper_url !='' ">
+             local_upper_url=#{local_upper_url},
+          </if>
+          <if test="local_below_url !=null and local_below_url !='' ">
+             local_below_url=#{local_below_url},
+          </if>
+		     upper_url=#{upper_url},
+		     below_url=#{below_url}  
+		where numer=#{number}
   	</update>
 	
 	<!-- 添加用户身份证书信息 -->

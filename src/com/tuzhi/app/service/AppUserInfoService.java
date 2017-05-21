@@ -97,6 +97,7 @@ public class AppUserInfoService implements IAppUserInfoService {
 			
 			String[] cn = map.get("certificate_name").split(",");
 			String[] cf = map.get("qualification_certificate").split(",");
+			String[] lcf = map.get("local_qualification_certificate").split(",");
 			
 			if(cn.length==cf.length){
 				//删除用户资质证书
@@ -110,6 +111,9 @@ public class AppUserInfoService implements IAppUserInfoService {
 					cfMap.put("certificate_name", cn[i]);  
 					//证书url
 					cfMap.put("qualification_certificate", cf[i]);
+					//本地url
+					cfMap.put("local_url", lcf[i]);
+					//自定义标识
 					cfMap.put("only_id", StringUtil.getShortUUID());
 					//添加证书
 					num = appUserInfoDao.addCertificate(cfMap); 
@@ -133,10 +137,13 @@ public class AppUserInfoService implements IAppUserInfoService {
 		if(!StringUtil.isBlank(map.get("card_img")) && !StringUtil.isBlank(map.get("card"))){
 			int num = 0;
 			String cd[] = map.get("card_img").split(",");
+			String lcd[] = map.get("local_card_img").split(",");
 			Map<String,String> cdMap = new HashMap<String,String>();
 			cdMap.put("number", map.get("card"));
 			cdMap.put("upper_url", cd[0]);
 			cdMap.put("below_url", cd[1]);
+			cdMap.put("local_upper_url", lcd[0]);
+			cdMap.put("local_below_url", lcd[1]);
 			crd = appUserInfoDao.getCardInfo(cdMap);
 			if(crd==null){
 				//添加

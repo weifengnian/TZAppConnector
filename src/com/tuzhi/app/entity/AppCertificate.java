@@ -14,7 +14,7 @@ public class AppCertificate {
 	private String certificate_url; //证书url 
 	private String local_url; //本地地址
 	private String level; //证书等级
-	private int is_auth; //是否审核	0:未提交	1:已审核通过   10:审核中	-1:审核未通过
+	private String is_auth; //是否审核	0:未提交	1:已审核通过   10:审核中	-1:审核未通过
 	private String create_time; //创建时间
 	private String auth_time; //审核时间
 	private String only_id; //唯一标识，用来获取id
@@ -49,10 +49,10 @@ public class AppCertificate {
 	public void setLevel(String level) {
 		this.level = level;
 	}
-	public int getIs_auth() {
+	public String getIs_auth() {
 		return is_auth;
 	}
-	public void setIs_auth(int is_auth) {
+	public void setIs_auth(String is_auth) {
 		this.is_auth = is_auth;
 	}
 	public String getCreate_time() {
