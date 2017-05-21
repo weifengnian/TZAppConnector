@@ -6,6 +6,7 @@ import java.util.Map;
 import com.tuzhi.app.entity.AppTaskUser;
 import com.tuzhi.app.pojo.AppPickPeople;
 import com.tuzhi.app.pojo.AppTaskInfo;
+import com.tuzhi.app.pojo.TaskUser;
 
 /**
  * @Description: 
@@ -29,6 +30,13 @@ public interface IEnterpriseTaskDao {
 	 * @return
 	 */
 	public List<AppTaskInfo> getTask(Map<String,String> map);
+	
+	/**
+	 * 查询任务参与人员
+	 * @param map
+	 * @return
+	 */
+	public List<TaskUser> getTaskUser(Map<String,String> map);
 	
 	/**
 	 * 查询该单是否被接

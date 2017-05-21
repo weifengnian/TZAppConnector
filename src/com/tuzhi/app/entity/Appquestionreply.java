@@ -1,5 +1,12 @@
 package com.tuzhi.app.entity;
 
+/**
+ * @Description: 
+ * @company: 
+ * @author: weifengnian
+ * @Data: 2017年5月21日	
+ * @Copyright:
+ */
 public class Appquestionreply {
 	
 	private int id; //	

@@ -25,6 +25,7 @@ import com.tuzhi.app.entity.AppTaskUser;
 import com.tuzhi.app.entity.Appquestion;
 import com.tuzhi.app.pojo.AppPickPeople;
 import com.tuzhi.app.pojo.AppTaskInfo;
+import com.tuzhi.app.pojo.TaskUser;
 import com.tuzhi.app.service.IAppUserInfoService;
 import com.tuzhi.app.service.IEnterpriseTaskService;
 import com.tuzhi.app.service.ISystemMessagerService;
@@ -291,7 +292,46 @@ public class EnterpriseTaskAction extends HttpServlet {
 					status = "0";
 					retMsg = "无任务详情";
 				}
+				List<Map<String,Object>> listMap = new ArrayList<Map<String,Object>>();
+				int num = 0;
+//				if(at.size()==0){
+//					num = -1;
+//				}
+				for (int i = num; i < at.size(); i++) {
+					Map<String,Object> map3 = new HashMap<String,Object>();
+					map3.put("task_id", at.size()==0?"":at.get(i).getId()==0?"":at.get(i).getId());
+					map3.put("task_start_date", at.size()==0?"":at.get(i).getStart_time()==null?"":at.get(i).getStart_time());
+					map3.put("task_end_date", at.size()==0?"":at.get(i).getEnd_time()==null?"":at.get(i).getEnd_time());
+					map3.put("sender", at.size()==0?"":at.get(i).getCreate_per()==null?"":at.get(i).getCreate_per());
+					map3.put("release_time", at.size()==0?"":at.get(i).getCreate_time()==null?"":at.get(i).getCreate_time());
+					map3.put("title", at.size()==0?"":at.get(i).getTitle()==null?"":at.get(i).getTitle());
+					map3.put("money", at.size()==0?"":at.get(i).getMoney()==0?"":at.get(i).getMoney());
+					map3.put("province", at.size()==0?"":at.get(i).getProvince()==null?"":at.get(i).getProvince());
+					map3.put("city", at.size()==0?"":at.get(i).getCity()==null?"":at.get(i).getCity());
+					map3.put("district", at.size()==0?"":at.get(i).getDistrict()==null?"":at.get(i).getDistrict());
+					map3.put("address", at.size()==0?"":at.get(i).getAddress()==null?"":at.get(i).getAddress());
+					map3.put("field", at.size()==0?"":at.get(i).getName()==null?"":at.get(i).getName());
+					listMap.add(map3);
+				}
+				Map<String,Object> map2 = new HashMap<String,Object>();
+				map2.put("list", listMap);
 			}
+			
+			List<TaskUser> tu = enterpriseTaskService.getTaskUser(map);
+			List<Map<String,Object>> listMap = new ArrayList<Map<String,Object>>();
+			int num = 0;
+//			if(tu.size()==0){
+//			num = -1;
+//		}
+			for (int i = num; i < tu.size(); i++) {
+				Map<String,Object> map3 = new HashMap<String,Object>();
+				map3.put("user_id", tu.size()==0?"":tu.get(i).getUser_id()==0?"":tu.get(i).getUser_id());
+				map3.put("user_name", tu.size()==0?"":tu.get(i).getUser_name()==null?"":tu.get(i).getUser_name());
+				map3.put("url",  tu.size()==0?"":tu.get(i).getUrl()==null?"":tu.get(i).getUrl());
+				listMap.add(map3);
+			}
+			Map<String,Object> map4 = new HashMap<String,Object>();
+			map4.put("list", listMap);
 				
 			Map<String,Object> map2 = new HashMap<String,Object>();
 			map2.put("title", at.size()==0?"":at.get(0).getTitle()==null?"":at.get(0).getTitle());
@@ -299,7 +339,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 			map2.put("order_id", at.size()==0?"":at.get(0).getId()==0?"":at.get(0).getId());
 			map2.put("order_state", at.size()==0?"":at.get(0).getStatus()==0?"":at.get(0).getStatus());
 			map2.put("actor_num", at.size()==0?"":at.get(0).getCnt()==null?"":at.get(0).getCnt());
-			
+			map2.put("people", map4);
 			
 			Map<String,Object> map1 = new HashMap<String,Object>();
 			map1.put("status", status);

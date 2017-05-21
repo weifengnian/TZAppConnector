@@ -7,6 +7,7 @@
 	<resultMap type="com.tuzhi.app.pojo.AppTaskInfo" id="resultTaskInfo"/>
 	<resultMap type="com.tuzhi.app.pojo.AppPickPeople" id="resultPickPeople"/>
 	<resultMap type="com.tuzhi.app.entity.AppTaskUser" id="resultTaskUser"/>
+	<resultMap type="com.tuzhi.app.pojo.TaskUser" id="resultTUser"/>
 	
 	<!-- 企业发布任务（添加） -->
   	<insert id="insertTask" parameterType="map" >
@@ -148,6 +149,26 @@
 				 </if>
 			</if>	 
 		) as temp where RowNumber > convert(int,#{rows})*(convert(int,#{page})-1) order by temp.create_time desc
+	</select>
+	
+	<!-- 查询任务人员列表  -->
+	<select id="getTaskUser" parameterType="map" resultMap="resultTUser">
+	  select us.id user_id,us.name user_name
+	    <if test="type=='1'.toString() ">
+	    	,us.icon_url url
+		</if>
+	    <if test="type=='2'.toString() ">
+	    	,us.enterprise_url url
+		</if>
+	   from app_task t
+	        left join app_task_user tu on t.id=tu.order_id
+	    <if test="type=='1'.toString() ">
+	    	left join app_user_info us on tu.user_id=us.id
+		</if>
+	    <if test="type=='2'.toString() ">
+	    	left join app_enterprises_info us on tu.user_id=us.id
+		</if>
+	      where t.id=#{task_id}
 	</select>
 	
 	<!-- 查询该单是否被接  -->

@@ -8,6 +8,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import com.tuzhi.app.entity.AppTaskUser;
 import com.tuzhi.app.pojo.AppPickPeople;
 import com.tuzhi.app.pojo.AppTaskInfo;
+import com.tuzhi.app.pojo.TaskUser;
 import com.tuzhi.app.util.StringUtil;
 
 /**
@@ -42,6 +43,12 @@ public class EnterpriseTaskDao extends SqlSessionDaoSupport implements IEnterpri
 			map.put("rows", "999999");
 		}
 		return getSqlSession().selectList("EnterpriseTaskDaoMapper.getTask",map);
+	}
+	
+	@Override
+	public List<TaskUser> getTaskUser(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectList("EnterpriseTaskDaoMapper.getTaskUser",map);
 	}
 
 	@Override
