@@ -16,7 +16,7 @@
 	<!-- 查询个人用户详细信息 -->
 	<select id="getAppUser" parameterType="map" resultMap="detailInfo">
 		select u.*,d.id addressid,d.pro_id,d.pro_name,d.city_id,d.city_name,d.dis_id,d.dis_name,d.street_id,
-		  d.street_name,d.details,ca.id cardid,ca.numer number,ca.upper_url,ca.below_url from app_user_info u 
+		  d.street_name,d.details,ca.id cardid,ca.numer number,ca.upper_url,ca.below_url,ca.local_upper_url,ca.local_below_url from app_user_info u 
             left join app_address d on u.address_id=d.id
             left join app_card ca on u.card_id=ca.id
             where 1=1
@@ -187,6 +187,9 @@
 		  <if test="status !=null and status !='' ">
               status=#{status},
           </if>
+		  <if test="is_auth !=null and is_auth !='' ">
+              is_auth=#{is_auth},
+          </if>
 			  update_time=getdate()
 			
 		where 1=1
@@ -253,6 +256,9 @@
           </if>
           <if test="desc !=null and desc !='' ">
               [desc]=#{desc},
+          </if>
+          <if test="is_auth !=null and is_auth !='' ">
+              is_auth=#{is_auth},
           </if>
 			update_time=getdate()
 			

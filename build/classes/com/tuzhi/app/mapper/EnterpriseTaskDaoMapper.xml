@@ -163,10 +163,10 @@
 	   from app_task t
 	        left join app_task_user tu on t.id=tu.order_id
 	    <if test="type=='1'.toString() ">
-	    	left join app_user_info us on tu.user_id=us.id
+	    	inner join app_user_info us on tu.user_id=us.id
 		</if>
 	    <if test="type=='2'.toString() ">
-	    	left join app_enterprises_info us on tu.user_id=us.id
+	    	inner join app_enterprises_info us on tu.user_id=us.id
 		</if>
 	      where t.id=#{task_id}
 	</select>

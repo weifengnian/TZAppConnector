@@ -317,7 +317,8 @@ public class EnterpriseTaskAction extends HttpServlet {
 				map2.put("list", listMap);
 			}
 			
-			List<TaskUser> tu = enterpriseTaskService.getTaskUser(map);
+			List<TaskUser> tu = new ArrayList<TaskUser>();
+			tu = enterpriseTaskService.getTaskUser(map);
 			List<Map<String,Object>> listMap = new ArrayList<Map<String,Object>>();
 			int num = 0;
 //			if(tu.size()==0){
