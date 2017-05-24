@@ -26,6 +26,7 @@ public class AppTaskInfo {
 	private int field_id; //关联领域
 	private int address_id; //关联地址
 	private String desc; //备注
+	private String time;
 
 	//领域信息
 	private String name; //领域名称
@@ -222,5 +223,13 @@ public class AppTaskInfo {
 
 	public void setCnt(String cnt) {
 		this.cnt = cnt;
+	}
+
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
 	}
 }

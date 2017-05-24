@@ -173,7 +173,8 @@
 	
 	<!-- 查询该单是否被接  -->
 	<select id="getOrders" parameterType="map" resultMap="resultTaskUser">
-		select t.* from app_task_user t where 1=1 and t.order_id=#{task_id} and t.status in ('1','2','3')
+<!-- 		select t.* from app_task_user t where 1=1 and t.order_id=#{task_id} and t.status in ('1','2','3') -->
+		select t.* from app_task_user t where 1=1 and t.order_id=#{task_id} and t.user_id=#{user_id}
 		 order by t.create_time desc
 	</select>
 	
@@ -223,7 +224,7 @@
 			status=#{status},
 		  </if>
 			update_time=getdate()
-		  where order_id = #{task_id}
+		  where order_id = #{task_id} and user_id=#{user_id}
   	</update>
   	
   	<!-- 查询符合接单人员  -->

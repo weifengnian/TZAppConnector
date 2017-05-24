@@ -205,6 +205,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 				map3.put("district", at.size()==0?"":at.get(i).getDistrict()==null?"":at.get(i).getDistrict());
 				map3.put("address", at.size()==0?"":at.get(i).getAddress()==null?"":at.get(i).getAddress());
 				map3.put("field", at.size()==0?"":at.get(i).getName()==null?"":at.get(i).getName());
+				map3.put("time", at.size()==0?"":at.get(i).getName()==null?"":at.get(i).getName());
 				listMap.add(map3);
 			}
 			Map<String,Object> map2 = new HashMap<String,Object>();
@@ -409,7 +410,8 @@ public class EnterpriseTaskAction extends HttpServlet {
 			String retMsg = "成功";
 			
 			//验证参数 
-			if(StringUtil.isBlank(map.get("user_id")) || StringUtil.isBlank(map.get("token")) || StringUtil.isBlank(map.get("task_id"))){
+			if(StringUtil.isBlank(map.get("user_id")) || StringUtil.isBlank(map.get("token")) 
+					|| StringUtil.isBlank(map.get("task_id")) || StringUtil.isBlank(map.get("type"))){
 				status = "15";
 				retMsg = "必要参数缺失";
 			}else if(map.get("user_id").length()>10 || map.get("task_id").length()>10){
@@ -417,37 +419,47 @@ public class EnterpriseTaskAction extends HttpServlet {
 				retMsg = "必要参数输入有误";
 			}else{
 				map.put("status", map.get("type"));
-				//查询该单是否被接
-				List<AppTaskUser> tu = enterpriseTaskService.getOrders(map);
-				if(tu.size()<=0){
-					Map<String,String> mp = new HashMap<String,String>();
-					mp.put("task_id", map.get("task_id"));
-					List<AppTaskInfo> at = enterpriseTaskService.getTask(mp);
-					if(at.size()>0){
-						//0报名，1接单
-						if("0".equals(map.get("status"))){
-							//添加接单信息
-							int num = enterpriseTaskService.addOrders(map);
-							if(num<=0){
-								status = "31";
-								retMsg = "任务报名失败";
-							}
+
+				Map<String,String> mp = new HashMap<String,String>();
+				mp.put("task_id", map.get("task_id"));
+				List<AppTaskInfo> at = enterpriseTaskService.getTask(mp);
+				if(at.size()>0){
+					//查询该单是否被接
+					List<AppTaskUser> tu = enterpriseTaskService.getOrders(map);
+					if(tu.size()<=0){
+						//添加报名信息
+						int num = enterpriseTaskService.addOrders(map);
+						if(num<=0){
+							status = "31";
+							retMsg = "任务报名失败";
+						}
+					}else{
+						if("0".equals(tu.get(0).getStatus()) && "0".equals(map.get("status"))){
+							status = "36";
+							retMsg = "已报名成功，不可重复报名";
+						}else if("1".equals(tu.get(0).getStatus()) && "1".equals(map.get("status"))){
+							status = "37";
+							retMsg = "该任务已接收，不可重复接收";
+						}else if("2".equals(tu.get(0).getStatus()) && "2".equals(map.get("status"))){
+							status = "38";
+							retMsg = "任务已完成";
+						}else if("3".equals(tu.get(0).getStatus()) && "3".equals(map.get("status"))){
+							status = "39";
+							retMsg = "任务已关闭";
 						}else{
+							//修改订单状态，1已接收，2已完成，3已关闭
 							int num = enterpriseTaskService.updateOrders(map);
 							if(num<=0){
 								status = "33";
 								retMsg = "失败";
-							}
+							}	
 						}
-					}else{
-						status = "32";
-						retMsg = "任务编号无效";
 					}
 				}else{
-					status = "30";
-					retMsg = "任务已被处理";
+					status = "32";
+					retMsg = "任务编号无效";
 				}
-			}
+			}	
 			
 			Map<String,Object> map1 = new HashMap<String,Object>();
 			map1.put("status", status);
