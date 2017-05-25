@@ -9,12 +9,24 @@ import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
+import cn.jiguang.common.resp.APIConnectionException;
+import cn.jiguang.common.resp.APIRequestException;
+import cn.jpush.api.JPushClient;
+import cn.jpush.api.push.PushResult;
+import cn.jpush.api.push.model.Message;
+import cn.jpush.api.push.model.Platform;
+import cn.jpush.api.push.model.PushPayload;
+import cn.jpush.api.push.model.Message.Builder;
+import cn.jpush.api.push.model.audience.Audience;
+import cn.jpush.api.push.model.notification.Notification;
+import net.arnx.jsonic.JSON;
 import net.sf.json.JSONObject;
 
 /**
@@ -180,6 +192,96 @@ public class StringUtil {
 			file.mkdirs();
 		}
 		return file;
+	}
+	
+	public static String goodField(String str){
+		String field = "";
+		switch(str){
+			case "1":
+				field = "网络";
+				break;
+			case "2":
+				field = "服务器";
+				break;
+			case "3":
+				field = "监控";
+				break;
+			case "4":
+				field = "虚拟化";
+				break;
+			case "5":
+				field = "云";
+				break;
+			case "6":
+				field = "视频";
+				break;
+			default:
+				field = "未知";
+				break;
+		}
+		return field;
+	}
+	
+	public static void sendTask(Map<String, String> map){
+		Map<String, String> sendMap = new HashMap<String, String>();
+		sendMap.put("task_id",  map.get("task_id"));
+		sendMap.put("task_start_date",  map.get("start_time"));
+		sendMap.put("task_end_date",  map.get("end_time"));
+		sendMap.put("sender",  map.get("create_per"));
+		sendMap.put("release_time",  getDisplayYMDHMS());
+		sendMap.put("title",  map.get("title"));
+		sendMap.put("money",  map.get("money"));
+		sendMap.put("address", map.get("address"));
+		sendMap.put("field", goodField(map.get("field")));
+		String json = JSON.encode(sendMap);
+		
+		
+		int num = 0;
+		StringBuffer bf = new StringBuffer();
+		for (int i = 0; i < 2; i++) {
+			num++;
+			bf.append(",\""+num+"\"");
+		}
+		sendPush(bf.toString().substring(1),sendMap.get("title"),json);
+	}
+	
+	public static void main(String[] args) {
+		int num = 0;
+		StringBuffer bf = new StringBuffer();
+		for (int i = 0; i < 2; i++) {
+			num++;
+			bf.append(",\""+num+"\"");
+		}
+		System.out.println(bf.toString().substring(1));
+		//sendPush(bf.toString().substring(1),"123","测试数据");
+	}
+	
+	public static void sendPush(String alias,String title,String content) {
+		log.info("--alias:"+alias+",--title:"+title+",--content:"+content);
+		String masterSecret = "db3823ab049847e1c9c35bb1";
+		String appKey = "0a8593ed96f4032f3a67c831";
+		JPushClient jpushClient = new JPushClient(masterSecret, appKey);
+		PushPayload payload = buildPushObject_audienceOne(alias,title,content);
+		try {
+			PushResult result = jpushClient.sendPush(payload);
+			log.info("--resultJpush:"+result);
+		} catch (APIConnectionException e) {
+			log.info("--APIConnectionException:"+e.getMessage());
+			e.printStackTrace();
+		} catch (APIRequestException e) {
+			log.info("--APIRequestException:"+e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	public static PushPayload buildPushObject_audienceOne(String alias,String title,String content) {
+//		alias = "\"63\",\"13\"";
+		Builder msg = Message.newBuilder();
+		msg.setMsgContent(content);
+		return PushPayload.newBuilder().setPlatform(Platform.all())
+				.setAudience(Audience.alias(alias))
+				.setMessage(Message.newBuilder().setMsgContent(content).setTitle(title).build())
+				.setNotification(Notification.alert(content)).build();
 	}
 	
 }
