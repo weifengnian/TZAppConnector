@@ -387,9 +387,18 @@ public class EnterpriseTaskAction extends HttpServlet {
 		}
 	}
 	
+	public static void main(String[] args) {
+	   String d1 = "2014-03-01"; 
+       String d2 = "2014-03-02"; 
+       if(d1.compareTo(d2)<0){
+    	   System.out.println("--0"+d1.compareTo(d2));  
+       }else{
+    	   System.out.println(d1.compareTo(d2));
+       }
+	}
 	
 	/**
-	 * 接单
+	 * 报名、接单
 	 */
 	public void orders(){
 		HttpServletRequest request = ServletActionContext.getRequest(); 
@@ -424,35 +433,42 @@ public class EnterpriseTaskAction extends HttpServlet {
 				mp.put("task_id", map.get("task_id"));
 				List<AppTaskInfo> at = enterpriseTaskService.getTask(mp);
 				if(at.size()>0){
-					//查询该单是否被接
-					List<AppTaskUser> tu = enterpriseTaskService.getOrders(map);
-					if(tu.size()<=0){
-						//添加报名信息
-						int num = enterpriseTaskService.addOrders(map);
-						if(num<=0){
-							status = "31";
-							retMsg = "任务报名失败";
-						}
+					if("2".equals(at.get(0).getStatus())){
+						status = "37";
+						retMsg = "任务已被接收";
+					}else if("3".equals(at.get(0).getStatus())){
+						status = "38";
+						retMsg = "任务已被完成";
+					}else if("4".equals(at.get(0).getStatus())){
+						status = "39";
+						retMsg = "企业已取消该任务";
+					}else if("5".equals(at.get(0).getStatus()) || at.get(0).getEnd_time().compareTo(StringUtil.getDisplayYMDHMS())<0){
+						map.put("status", "5");
+						enterpriseTaskService.updateTask(map);
+						status = "40";
+						retMsg = "任务已过期";
 					}else{
-						if("0".equals(tu.get(0).getStatus()) && "0".equals(map.get("status"))){
-							status = "36";
-							retMsg = "已报名成功，不可重复报名";
-						}else if("1".equals(tu.get(0).getStatus()) && "1".equals(map.get("status"))){
-							status = "37";
-							retMsg = "该任务已接收，不可重复接收";
-						}else if("2".equals(tu.get(0).getStatus()) && "2".equals(map.get("status"))){
-							status = "38";
-							retMsg = "任务已完成";
-						}else if("3".equals(tu.get(0).getStatus()) && "3".equals(map.get("status"))){
-							status = "39";
-							retMsg = "任务已关闭";
-						}else{
-							//修改订单状态，1已接收，2已完成，3已关闭
-							int num = enterpriseTaskService.updateOrders(map);
+						//查询该用户是否报名或者接单
+						List<AppTaskUser> tu = enterpriseTaskService.getOrders(map);
+						if(tu.size()<=0){
+							//添加(并修改订单状态，service层)
+							int num = enterpriseTaskService.addOrders(map);
 							if(num<=0){
 								status = "33";
 								retMsg = "失败";
-							}	
+							}
+						}else{
+							if("1".equals(tu.get(0).getStatus())){
+								status = "36";
+								retMsg = "已报名成功，不可重复报名";
+							}else{
+								//更新用户任务状态(并修改订单状态，service层)
+								int num = enterpriseTaskService.updateOrders(map);
+								if(num<=0){
+									status = "33";
+									retMsg = "失败";
+								}
+							}
 						}
 					}
 				}else{

@@ -65,4 +65,11 @@ public interface IEnterpriseTaskService {
 	 * @return
 	 */
 	public List<AppPickPeople> getPick(Map<String,String> map);
+	
+	/**
+	 * 修改任务状态
+	 * @param map
+	 * @return
+	 */
+	public Integer updateTask(Map<String,String> map);
 }

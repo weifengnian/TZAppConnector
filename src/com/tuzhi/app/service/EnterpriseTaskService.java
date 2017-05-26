@@ -64,8 +64,11 @@ public class EnterpriseTaskService implements IEnterpriseTaskService {
 			map.put("address_id", String.valueOf(ads.getId()));
 		}
 		
-		//订单编号
+		//任务编号
 		map.put("order_code", "BH"+String.valueOf(System.currentTimeMillis()));
+		//任务状态（添加任务状态默认为1，  5任务过期，4任务取消，3任务完成，2接单(工作种)，1报名中(报名)）
+		map.put("status", "1");
+		
 		//添加
 		int num = enterpriseTaskDao.insertTask(map);
 		if(num>0){
@@ -76,8 +79,9 @@ public class EnterpriseTaskService implements IEnterpriseTaskService {
 			if(taskInfo!=null){
 				//添加企业任务关联人员
 				taskMap.remove("order_code");
-				taskMap.put("", String.valueOf(taskInfo.getId()));
-				taskMap.put("", map.get("create_user_id"));
+				taskMap.put("order_id", String.valueOf(taskInfo.getId()));
+				taskMap.put("user_id", map.get("create_user_id"));
+				taskMap.put("status", "1");
 				num = enterpriseTaskDao.addTaskUser(taskMap);
 			}
 		}
@@ -106,19 +110,32 @@ public class EnterpriseTaskService implements IEnterpriseTaskService {
 	@Override
 	public Integer addOrders(Map<String, String> map) {
 		// TODO Auto-generated method stub
-		return enterpriseTaskDao.addOrders(map);
+		int num = enterpriseTaskDao.updateTask(map);
+		if(num>0){
+			num = enterpriseTaskDao.addOrders(map);
+		}
+		return num;
 	}
 	
 	@Override
 	public Integer updateOrders(Map<String, String> map) {
 		// TODO Auto-generated method stub
-		return enterpriseTaskDao.updateOrders(map);
+		int num = enterpriseTaskDao.updateTask(map);
+		if(num>0){
+			num = enterpriseTaskDao.updateOrders(map);
+		}
+		return num;
 	}
 	
 	@Override
 	public List<AppPickPeople> getPick(Map<String, String> map) {
 		// TODO Auto-generated method stub
 		return enterpriseTaskDao.getPick(map);
+	}
+	@Override
+	public Integer updateTask(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return enterpriseTaskDao.updateTask(map);
 	}
 
 }

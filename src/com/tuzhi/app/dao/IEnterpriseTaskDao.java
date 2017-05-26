@@ -80,4 +80,11 @@ public interface IEnterpriseTaskDao {
 	 */
 	public Integer addTaskUser(Map<String,String> map);
 	
+	/**
+	 * 修改任务状态
+	 * @param map
+	 * @return
+	 */
+	public Integer updateTask(Map<String,String> map);
+	
 }
