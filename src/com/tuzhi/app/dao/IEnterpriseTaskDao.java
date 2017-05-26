@@ -66,4 +66,18 @@ public interface IEnterpriseTaskDao {
 	 */
 	public List<AppPickPeople> getPick(Map<String,String> map);
 	
+	/**
+	 * 查询企业发布单条任务
+	 * @param map
+	 * @return
+	 */
+	public AppTaskInfo getEnterpriseTask(Map<String,String> map);
+	
+	/**
+	 * 添加企业任务关联人员
+	 * @param map
+	 * @return
+	 */
+	public Integer addTaskUser(Map<String,String> map);
+	
 }

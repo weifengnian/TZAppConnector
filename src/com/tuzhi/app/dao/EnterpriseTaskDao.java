@@ -75,4 +75,16 @@ public class EnterpriseTaskDao extends SqlSessionDaoSupport implements IEnterpri
 		return getSqlSession().selectList("EnterpriseTaskDaoMapper.getPick",map);
 	}
 
+	@Override
+	public AppTaskInfo getEnterpriseTask(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne("EnterpriseTaskDaoMapper.getEnterpriseTask",map);
+	}
+
+	@Override
+	public Integer addTaskUser(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return getSqlSession().insert("EnterpriseTaskDaoMapper.addTaskUser",map);
+	}
+
 }

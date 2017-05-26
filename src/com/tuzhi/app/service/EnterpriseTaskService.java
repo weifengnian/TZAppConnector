@@ -66,8 +66,23 @@ public class EnterpriseTaskService implements IEnterpriseTaskService {
 		
 		//订单编号
 		map.put("order_code", "BH"+String.valueOf(System.currentTimeMillis()));
+		//添加
+		int num = enterpriseTaskDao.insertTask(map);
+		if(num>0){
+			Map<String,String> taskMap = new HashMap<String,String>();
+			taskMap.put("order_code", map.get("order_code"));
+			//查询任务编号
+			AppTaskInfo taskInfo = enterpriseTaskDao.getEnterpriseTask(taskMap);
+			if(taskInfo!=null){
+				//添加企业任务关联人员
+				taskMap.remove("order_code");
+				taskMap.put("", String.valueOf(taskInfo.getId()));
+				taskMap.put("", map.get("create_user_id"));
+				num = enterpriseTaskDao.addTaskUser(taskMap);
+			}
+		}
 		
-		return enterpriseTaskDao.insertTask(map);
+		return num;
 	}
 
 	@Override
