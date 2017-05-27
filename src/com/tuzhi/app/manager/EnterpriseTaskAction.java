@@ -205,7 +205,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 				map3.put("district", at.size()==0?"":at.get(i).getDistrict()==null?"":at.get(i).getDistrict());
 				map3.put("address", at.size()==0?"":at.get(i).getAddress()==null?"":at.get(i).getAddress());
 				map3.put("field", at.size()==0?"":at.get(i).getName()==null?"":at.get(i).getName());
-				map3.put("time", at.size()==0?"":at.get(i).getName()==null?"":at.get(i).getName());
+				map3.put("time", at.size()==0?"":at.get(i).getTime()==null?"":at.get(i).getTime());
 				listMap.add(map3);
 			}
 			Map<String,Object> map2 = new HashMap<String,Object>();
@@ -321,11 +321,13 @@ public class EnterpriseTaskAction extends HttpServlet {
 			List<TaskUser> tu = new ArrayList<TaskUser>();
 			tu = enterpriseTaskService.getTaskUser(map);
 			List<Map<String,Object>> listMap = new ArrayList<Map<String,Object>>();
+			int actor_num = 0; //订单参与人数
 			int num = 0;
 //			if(tu.size()==0){
 //			num = -1;
 //		}
 			for (int i = num; i < tu.size(); i++) {
+				actor_num++;
 				Map<String,Object> map3 = new HashMap<String,Object>();
 				map3.put("user_id", tu.size()==0?"":tu.get(i).getUser_id()==0?"":tu.get(i).getUser_id());
 				map3.put("user_name", tu.size()==0?"":tu.get(i).getUser_name()==null?"":tu.get(i).getUser_name());
@@ -339,8 +341,8 @@ public class EnterpriseTaskAction extends HttpServlet {
 			map2.put("title", at.size()==0?"":at.get(0).getTitle()==null?"":at.get(0).getTitle());
 			map2.put("content", at.size()==0?"":at.get(0).getContent()==null?"":at.get(0).getContent());
 			map2.put("order_id", at.size()==0?"":at.get(0).getId()==0?"":at.get(0).getId());
-			map2.put("order_state", at.size()==0?"":at.get(0).getStatus()==0?"":at.get(0).getStatus());
-			map2.put("actor_num", at.size()==0?"":at.get(0).getCnt()==null?"":at.get(0).getCnt());
+			map2.put("order_state", at.size()==0?"0":at.get(0).getStatus()==0?"0":at.get(0).getStatus());
+			map2.put("actor_num", actor_num);
 			map2.put("people", map4);
 			
 			Map<String,Object> map1 = new HashMap<String,Object>();
@@ -433,16 +435,16 @@ public class EnterpriseTaskAction extends HttpServlet {
 				mp.put("task_id", map.get("task_id"));
 				List<AppTaskInfo> at = enterpriseTaskService.getTask(mp);
 				if(at.size()>0){
-					if("2".equals(at.get(0).getStatus())){
+					if(2==at.get(0).getStatus()){
 						status = "37";
 						retMsg = "任务已被接收";
-					}else if("3".equals(at.get(0).getStatus())){
+					}else if(3==at.get(0).getStatus()){
 						status = "38";
 						retMsg = "任务已被完成";
-					}else if("4".equals(at.get(0).getStatus())){
+					}else if(4==at.get(0).getStatus()){
 						status = "39";
 						retMsg = "企业已取消该任务";
-					}else if("5".equals(at.get(0).getStatus()) || at.get(0).getEnd_time().compareTo(StringUtil.getDisplayYMDHMS())<0){
+					}else if(at.get(0).getStatus()==5 || at.get(0).getEnd_time().compareTo(StringUtil.getDisplayYMDHMS())<0){
 						map.put("status", "5");
 						enterpriseTaskService.updateTask(map);
 						status = "40";
@@ -458,7 +460,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 								retMsg = "失败";
 							}
 						}else{
-							if("1".equals(tu.get(0).getStatus())){
+							if(tu.get(0).getStatus()==1){
 								status = "36";
 								retMsg = "已报名成功，不可重复报名";
 							}else{

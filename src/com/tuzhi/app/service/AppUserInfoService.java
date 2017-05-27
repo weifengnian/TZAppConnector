@@ -115,6 +115,8 @@ public class AppUserInfoService implements IAppUserInfoService {
 					cfMap.put("local_url", lcf[i]);
 					//自定义标识
 					cfMap.put("only_id", StringUtil.getShortUUID());
+					//用户状态（0:未提交1:已认证 10:认证中/待实名-1:认证未通过(人工)-2:认证未通过(机器)
+					cfMap.put("is_auth", "10");  
 					//添加证书
 					num = appUserInfoDao.addCertificate(cfMap); 
 					if(num>0){

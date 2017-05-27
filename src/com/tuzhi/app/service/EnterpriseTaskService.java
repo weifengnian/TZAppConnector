@@ -82,6 +82,7 @@ public class EnterpriseTaskService implements IEnterpriseTaskService {
 				taskMap.put("order_id", String.valueOf(taskInfo.getId()));
 				taskMap.put("user_id", map.get("create_user_id"));
 				taskMap.put("status", "1");
+				taskMap.put("type", "2");
 				num = enterpriseTaskDao.addTaskUser(taskMap);
 			}
 		}

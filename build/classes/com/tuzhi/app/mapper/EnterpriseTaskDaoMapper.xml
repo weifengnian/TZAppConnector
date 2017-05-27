@@ -134,7 +134,7 @@
 	       when '4' then '虚拟化'
 	       when '5' then '云'
 	       when '6' then '视频' 
-       		 end name,gf.name fieldid,ad.pro_name province,ad.city_name city,ad.dis_name district,ad.details address,tsk.cnt
+       		 end name,gf.name fieldid,ad.pro_name province,ad.city_name city,ad.dis_name district,ad.details address
         		from app_task t 
  			left join app_address ad on t.address_id=ad.id
  			left join app_good_field gf on t.field_id=gf.id
@@ -190,7 +190,7 @@
 	<!-- 查询该单是否被接  -->
 	<select id="getOrders" parameterType="map" resultMap="resultTaskUser">
 <!-- 		select t.* from app_task_user t where 1=1 and t.order_id=#{task_id} and t.status in ('1','2','3') -->
-		select t.* from app_task_user t where 1=1 and t.order_id=#{task_id} and t.user_id=#{user_id}
+		select t.* from app_task_user t where 1=1 and t.order_id=#{task_id} and t.user_id=#{user_id} and (t.[type]!=2 or t.[type] is null)
 		 order by t.create_time desc
 	</select>
 	
@@ -243,8 +243,35 @@
 		  where order_id = #{task_id} and user_id=#{user_id}
   	</update>
   	
-  	<!-- 查询符合接单人员  -->
+  	<!-- 查询已经报名人员  -->
 	<select id="getPick" parameterType="map" resultMap="resultPickPeople">
+		select t.*, case g.name 
+	       when '1' then '网络'
+	       when '2' then '服务器'
+	       when '3' then '监控'
+	       when '4' then '虚拟化'
+	       when '5' then '云'
+	       when '6' then '视频' 
+       		 end field,i.id user_id,i.name user_name,i.icon_url url,i.auth_create_time auth_time
+              from app_task t
+        left join app_task_user tu on t.id=tu.order_id  
+        left join app_user_info i on tu.user_id=i.id    
+		left join app_enterprises_info f on t.create_user_id=f.id
+		left join app_good_field g on t.field_id=g.id
+          where 1=1 and tu.[status]='1' and (tu.[type]!=2 or tu.[type] is null)
+          <if test="e_id != null and e_id != ''">
+			 and t.create_user_id=#{e_id}
+		  </if>
+		  <if test="task_id != null and task_id != ''">
+			and t.id=#{task_id}
+		  </if>
+		  <if test="token != null and token != ''">
+			and f.token=#{token}
+		  </if>
+	</select>
+	
+	<!-- 查询符合接单人员  -->
+	<select id="getOrderUser" parameterType="map" resultMap="resultPickPeople">
 		select t.*, case g.name 
 	       when '1' then '网络'
 	       when '2' then '服务器'
@@ -285,6 +312,9 @@
 	    <if test="status != null and status != ''">
 		  status,
 		</if>
+	    <if test="type != null and type != ''">
+		  type,
+		</if>
 		  create_time
 	  )values(
 	    <if test="order_id != null and order_id != ''">
@@ -298,6 +328,9 @@
 		</if>
 	    <if test="status != null and status != ''">
 		  #{status},
+		</if>
+		<if test="type != null and type != ''">
+		  #{type},
 		</if>
 		getdate()
 	  )
