@@ -65,6 +65,10 @@ public class EnterpriseTaskAction extends HttpServlet {
 			//处理JSON字符串
 			StringUtil.getJsonStr(br,map);
 			log.info("----request--map:"+map);
+			map.put("create_time", StringUtil.getDisplayYMDHMS());
+			
+			//任务编号
+			int taskId = 0;
 			
 			String status = "0";
 			String retMsg = "成功";
@@ -89,8 +93,8 @@ public class EnterpriseTaskAction extends HttpServlet {
 						//发布者
 						map.put("create_per", enfo.getName()==null?"":enfo.getName());
 						//添加发布任务
-						int resultStstu = enterpriseTaskService.insertTask(map);
-						if(resultStstu<=0){
+						taskId = enterpriseTaskService.insertTask(map);
+						if(taskId<=0){
 							status = "21";
 							retMsg = "任务发布失败";
 						}
@@ -112,6 +116,17 @@ public class EnterpriseTaskAction extends HttpServlet {
 			log.info("----response--json:"+json);
 			
 			response.getWriter().write(json);
+			
+			//推送消息(推送给当前任务领域的所有人员，并且是实名制人员)
+			if("0".equals(status)){
+				Map<String,String> umap = new HashMap<String,String>();
+				umap.put("task_id", String.valueOf(taskId));
+				List<AppPickPeople> apl = enterpriseTaskService.getOrderUser(umap);
+				log.info("--sendTask--apl:"+apl.size());
+				if(apl.size()>0){
+					StringUtil.sendTask(String.valueOf(taskId),map,apl);
+				}
+			}
 			
 			try {
 				if(TransUtil.LOG_FLAG){
@@ -460,7 +475,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 								retMsg = "失败";
 							}
 						}else{
-							if(tu.get(0).getStatus()==1){
+							if(tu.get(0).getStatus()==1 && "1".equals(map.get("type"))){
 								status = "36";
 								retMsg = "已报名成功，不可重复报名";
 							}else{
@@ -485,8 +500,34 @@ public class EnterpriseTaskAction extends HttpServlet {
 			
 			String json = JSON.encode(map1);
 			log.info("----response--json:"+json);
-			
 			response.getWriter().write(json);
+			
+			//判断用户是否接单，如果是接单则推送一条消息
+			if("2".equals(map.get("type")) && "0".equals(status)){
+				Map<String,String> taskMap = new HashMap<String,String>();
+				taskMap.put("id", map.get("task_id"));
+				//查询任务内容
+				AppTaskInfo taskInfo = enterpriseTaskService.getEnterpriseTask(taskMap);
+				if(taskInfo != null){
+					AppPickPeople app = new AppPickPeople();
+					app.setUser_id(map.get("user_id"));
+					List<AppPickPeople> apl = new ArrayList<AppPickPeople>();
+					apl.add(app);
+					
+					//定义Map
+					Map<String,String> Pushmap = new HashMap<String,String>();
+					Pushmap.put("start_time", taskInfo.getStart_time());
+					Pushmap.put("end_time", taskInfo.getEnd_time());
+					Pushmap.put("create_per", taskInfo.getCreate_per());
+					Pushmap.put("create_time", taskInfo.getCreate_time());
+					Pushmap.put("title", taskInfo.getTitle());
+					Pushmap.put("money", String.valueOf(taskInfo.getMoney()));
+					Pushmap.put("address", taskInfo.getAddress());
+					Pushmap.put("field", taskInfo.getFieldid());
+					
+					StringUtil.sendTask(map.get("task_id"),Pushmap,apl);
+				}
+			}
 			
 			try {
 				if(TransUtil.LOG_FLAG){

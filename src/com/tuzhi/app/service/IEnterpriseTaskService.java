@@ -32,6 +32,13 @@ public interface IEnterpriseTaskService {
 	public List<AppTaskInfo> getTask(Map<String,String> map);
 	
 	/**
+	 * 查询企业发布单条任务
+	 * @param map
+	 * @return
+	 */
+	public AppTaskInfo getEnterpriseTask(Map<String,String> map);
+	
+	/**
 	 * 查询任务参与人员
 	 * @param map
 	 * @return
@@ -72,4 +79,11 @@ public interface IEnterpriseTaskService {
 	 * @return
 	 */
 	public Integer updateTask(Map<String,String> map);
+	
+	/**
+	 * 查询符合接单人员（可推送人员）
+	 * @param map
+	 * @return
+	 */
+	public List<AppPickPeople> getOrderUser(Map<String,String> map);
 }

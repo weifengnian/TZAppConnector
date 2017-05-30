@@ -11,10 +11,13 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
+
+import com.tuzhi.app.pojo.AppPickPeople;
 
 import cn.jiguang.common.resp.APIConnectionException;
 import cn.jiguang.common.resp.APIRequestException;
@@ -222,27 +225,32 @@ public class StringUtil {
 		return field;
 	}
 	
-	public static void sendTask(Map<String, String> map){
-		Map<String, String> sendMap = new HashMap<String, String>();
-		sendMap.put("task_id",  map.get("task_id"));
-		sendMap.put("task_start_date",  map.get("start_time"));
-		sendMap.put("task_end_date",  map.get("end_time"));
-		sendMap.put("sender",  map.get("create_per"));
-		sendMap.put("release_time",  getDisplayYMDHMS());
-		sendMap.put("title",  map.get("title"));
-		sendMap.put("money",  map.get("money"));
-		sendMap.put("address", map.get("address"));
-		sendMap.put("field", goodField(map.get("field")));
-		String json = JSON.encode(sendMap);
-		
-		
-		int num = 0;
-		StringBuffer bf = new StringBuffer();
-		for (int i = 0; i < 2; i++) {
-			num++;
-			bf.append(",\""+num+"\"");
+	public static void sendTask(String taskId,Map<String, String> map,List<AppPickPeople> apl){
+		try {
+			Map<String, String> sendMap = new HashMap<String, String>();
+			sendMap.put("task_id",  taskId);
+			sendMap.put("task_start_date",  map.get("start_time")==null?"":map.get("start_time"));
+			sendMap.put("task_end_date",  map.get("end_time")==null?"":map.get("end_time"));
+			sendMap.put("sender",  map.get("create_per")==null?"":map.get("create_per"));
+			sendMap.put("release_time",  map.get("create_time")==null?"":map.get("create_time"));
+			sendMap.put("title",  map.get("title")==null?"":map.get("title"));
+			sendMap.put("money",  map.get("money")==null?"":map.get("money"));
+			sendMap.put("address", map.get("address")==null?"":map.get("address"));
+			sendMap.put("field", goodField(map.get("field")==null?"":map.get("field")));
+			String json = JSON.encode(sendMap);
+			
+			StringBuffer bf = new StringBuffer();
+			for (int i = 0; i < apl.size(); i++) {
+				bf.append(","+apl.get(i).getUser_id()+"");
+			}
+			
+			String[] alias =  bf.toString().substring(1).split(",");
+			sendPush(alias,sendMap.get("title"),json);
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info("----------sendTask--Exception:"+e.getMessage());
 		}
-		sendPush(bf.toString().substring(1),sendMap.get("title"),json);
 	}
 	
 	public static void main(String[] args) {
@@ -250,19 +258,33 @@ public class StringUtil {
 		StringBuffer bf = new StringBuffer();
 		for (int i = 0; i < 2; i++) {
 			num++;
-			bf.append(",\""+num+"\"");
+			bf.append(","+num+"");
 		}
 		System.out.println(bf.toString().substring(1));
-		//sendPush(bf.toString().substring(1),"123","测试数据");
+		
+		String s = bf.toString().substring(1);
+		String[] string = s.split(",") ;
+//		System.out.println(string[0]);
+//		
+//		String[] str = {"13","16"};
+//		
+//		String[] abc = null;
+//		abc[0] = "a";
+//		abc[1] = "b";
+//		abc[2] = "c";
+//		for (int i = 0; i < abc.length; i++) {
+//			System.out.println(abc[i]);
+//		}
+		//sendPush(string,"123","测试数据");
 	}
 	
-	public static void sendPush(String alias,String title,String content) {
-		log.info("--alias:"+alias+",--title:"+title+",--content:"+content);
-		String masterSecret = "db3823ab049847e1c9c35bb1";
-		String appKey = "0a8593ed96f4032f3a67c831";
-		JPushClient jpushClient = new JPushClient(masterSecret, appKey);
-		PushPayload payload = buildPushObject_audienceOne(alias,title,content);
+	public static void sendPush(String[] alias,String title,String content) {
 		try {
+			log.info("--alias:"+alias+",--title:"+title+",--content:"+content);
+			String masterSecret = "db3823ab049847e1c9c35bb1";
+			String appKey = "0a8593ed96f4032f3a67c831";
+			JPushClient jpushClient = new JPushClient(masterSecret, appKey);
+			PushPayload payload = buildPushObject_audienceOne(alias,title,content);
 			PushResult result = jpushClient.sendPush(payload);
 			log.info("--resultJpush:"+result);
 		} catch (APIConnectionException e) {
@@ -274,8 +296,7 @@ public class StringUtil {
 		}
 	}
 	
-	public static PushPayload buildPushObject_audienceOne(String alias,String title,String content) {
-//		alias = "\"63\",\"13\"";
+	public static PushPayload buildPushObject_audienceOne(String[] alias,String title,String content) {
 		Builder msg = Message.newBuilder();
 		msg.setMsgContent(content);
 		return PushPayload.newBuilder().setPlatform(Platform.all())

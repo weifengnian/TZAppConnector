@@ -69,6 +69,8 @@ public class EnterpriseTaskService implements IEnterpriseTaskService {
 		//任务状态（添加任务状态默认为1，  5任务过期，4任务取消，3任务完成，2接单(工作种)，1报名中(报名)）
 		map.put("status", "1");
 		
+		//任务id
+		int taskId = 0;
 		//添加
 		int num = enterpriseTaskDao.insertTask(map);
 		if(num>0){
@@ -84,10 +86,13 @@ public class EnterpriseTaskService implements IEnterpriseTaskService {
 				taskMap.put("status", "1");
 				taskMap.put("type", "2");
 				num = enterpriseTaskDao.addTaskUser(taskMap);
+				if(num>0){
+					taskId = taskInfo.getId();
+				}
 			}
 		}
 		
-		return num;
+		return taskId;
 	}
 
 	@Override
@@ -137,6 +142,16 @@ public class EnterpriseTaskService implements IEnterpriseTaskService {
 	public Integer updateTask(Map<String, String> map) {
 		// TODO Auto-generated method stub
 		return enterpriseTaskDao.updateTask(map);
+	}
+	@Override
+	public List<AppPickPeople> getOrderUser(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return enterpriseTaskDao.getOrderUser(map);
+	}
+	@Override
+	public AppTaskInfo getEnterpriseTask(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return enterpriseTaskDao.getEnterpriseTask(map);
 	}
 
 }

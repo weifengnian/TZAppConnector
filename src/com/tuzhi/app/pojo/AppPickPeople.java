@@ -18,6 +18,8 @@ public class AppPickPeople {
 	private String street_id; //街道编号”,
 	private String street_name; //街道名称”,
 	private String details; //地址详细”
+	
+	
 	public String getUser_id() {
 		return user_id;
 	}

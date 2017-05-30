@@ -87,4 +87,11 @@ public interface IEnterpriseTaskDao {
 	 */
 	public Integer updateTask(Map<String,String> map);
 	
+	/**
+	 * 查询符合接单人员（可推送人员）
+	 * @param map
+	 * @return
+	 */
+	public List<AppPickPeople> getOrderUser(Map<String,String> map);
+	
 }

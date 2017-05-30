@@ -104,7 +104,7 @@
 		  <if test="time != null and time != ''">
 			#{time},
 		  </if>
-		    getdate()
+		    #{create_time}
 		)
   	</insert>
   	
@@ -270,7 +270,7 @@
 		  </if>
 	</select>
 	
-	<!-- 查询符合接单人员  -->
+	<!-- 查询符合接单人员（可推送人员）  -->
 	<select id="getOrderUser" parameterType="map" resultMap="resultPickPeople">
 		select t.*, case g.name 
 	       when '1' then '网络'
