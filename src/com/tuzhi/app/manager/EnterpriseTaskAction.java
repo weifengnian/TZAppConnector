@@ -52,6 +52,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 	/**
 	 * 企业发布任务（添加）
 	 */
+	@SuppressWarnings("unused")
 	public void addTask(){
 		HttpServletRequest request = ServletActionContext.getRequest(); 
 		HttpServletResponse response = ServletActionContext.getResponse();
@@ -124,6 +125,13 @@ public class EnterpriseTaskAction extends HttpServlet {
 				List<AppPickPeople> apl = enterpriseTaskService.getOrderUser(umap);
 				log.info("--sendTask--apl:"+apl.size());
 				if(apl.size()>0){
+					for (int i = 0; i < apl.size(); i++) {
+						Map<String,String> taskMap = new HashMap<String,String>();
+						taskMap.put("order_id", String.valueOf(taskId));
+						taskMap.put("user_id", apl.get(i).getUser_id());
+						taskMap.put("status", "0");
+						int num = enterpriseTaskService.addTaskUser(taskMap);
+					}
 					StringUtil.sendTask(String.valueOf(taskId),map,apl);
 				}
 			}

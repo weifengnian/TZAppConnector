@@ -86,4 +86,11 @@ public interface IEnterpriseTaskService {
 	 * @return
 	 */
 	public List<AppPickPeople> getOrderUser(Map<String,String> map);
+	
+	/**
+	 * 添加企业任务关联人员
+	 * @param map
+	 * @return
+	 */
+	public Integer addTaskUser(Map<String,String> map);
 }
