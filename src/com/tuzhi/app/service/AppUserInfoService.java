@@ -100,10 +100,11 @@ public class AppUserInfoService implements IAppUserInfoService {
 			String[] lcf = map.get("local_qualification_certificate").split(",");
 			
 			if(cn.length==cf.length){
+				int num = 0;
 				//删除用户资质证书
 				//int num = appUserInfoDao.deleteCertificate(map);
 				//删除用户与证书关联表
-				int num = appUserInfoDao.deleteUserCertificate(map);
+				//int num = appUserInfoDao.deleteUserCertificate(map);
 				for (int i = 0; i < cf.length; i++) {
 					Map<String,String> cfMap = new HashMap<String,String>();
 					cfMap.put("user_id", map.get("user_id"));
@@ -157,11 +158,13 @@ public class AppUserInfoService implements IAppUserInfoService {
 				//修改
 				num = appUserInfoDao.updateCardInfo(cdMap);
 			}
+			
+			//如果修改了，身份信息，则需要重新认证
+			map.put("is_auth", "10");  //用户状态（0:未提交1:已认证 10:认证中/待实名-1:认证未通过(人工)-2:认证未通过(机器)
 		}
 		if(crd != null){
 			map.put("card_id", String.valueOf(crd.getId()));
 		}
-		
 		
 		//修改用户接单地址（注意，这里使用先通过id查询,存在就修改，否则添加）
 		if(!StringUtil.isBlank(map.get("order_address"))){

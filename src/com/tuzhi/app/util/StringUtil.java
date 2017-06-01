@@ -301,8 +301,17 @@ public class StringUtil {
 		msg.setMsgContent(content);
 		return PushPayload.newBuilder().setPlatform(Platform.all())
 				.setAudience(Audience.alias(alias))
-				.setMessage(Message.newBuilder().setMsgContent(content).setTitle(title).build())
+				.setMessage(Message.newBuilder().setTitle(title).build())
 				.setNotification(Notification.alert(content)).build();
 	}
+	
+//	public static PushPayload buildPushObject_audienceOne(String[] alias,String title,String content) {
+//		Builder msg = Message.newBuilder();
+//		msg.setMsgContent(content);
+//		return PushPayload.newBuilder().setPlatform(Platform.all())
+//				.setAudience(Audience.alias(alias))
+//				.setMessage(Message.newBuilder().setMsgContent(content).setTitle(title).build())
+//				.setNotification(Notification.alert(content)).build();
+//	}
 	
 }

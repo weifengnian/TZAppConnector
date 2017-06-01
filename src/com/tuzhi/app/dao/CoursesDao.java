@@ -31,7 +31,13 @@ public class CoursesDao extends SqlSessionDaoSupport implements ICoursesDao {
 		if(StringUtil.isBlank(map.get("rows"))){
 			map.put("rows", "999999");
 		}
-		return getSqlSession().selectList("CoursesDaoMapper.getMyCourses",map);
+		if("-1".equals(map.get("user_id"))){
+			return getSqlSession().selectList("CoursesDaoMapper.getMyCourses1",map);
+		}else if("-1".equals(map.get("course_type_id"))){
+			return getSqlSession().selectList("CoursesDaoMapper.getMyCourses2",map);
+		}else{
+			return getSqlSession().selectList("CoursesDaoMapper.getMyCourses",map);
+		}
 	}
 	
 

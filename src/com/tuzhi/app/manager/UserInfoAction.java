@@ -431,7 +431,9 @@ public class UserInfoAction extends HttpServlet {
 				retMsg = "该用户已不存在";
 			}else{
 				//完善个人用户信息
-				map.put("is_auth", "10");  //用户状态（0:未提交1:已认证 10:认证中/待实名-1:认证未通过(人工)-2:认证未通过(机器)
+				if(!"1".equals(userInfo.getIs_auth()) && !"-1".equals(userInfo.getIs_auth()) && !"-2".equals(userInfo.getIs_auth())){
+					map.put("is_auth", "10");  //用户状态（0:未提交1:已认证 10:认证中/待实名-1:认证未通过(人工)-2:认证未通过(机器)
+				}
 				int resultStstu = appUserInfoService.updateAppUser(map);
 				if(resultStstu<=0){
 					status = "07";
@@ -699,7 +701,9 @@ public class UserInfoAction extends HttpServlet {
 					retMsg = "该用户已不存在";
 				}else{
 					//完善企业信息
-					map.put("is_auth", "10");  //用户状态（0:未提交1:已认证 10:认证中/待实名-1:认证未通过(人工)-2:认证未通过(机器)
+					if(!"1".equals(ep.getIs_auth()) && !"-1".equals(ep.getIs_auth()) && !"-2".equals(ep.getIs_auth())){
+						map.put("is_auth", "10");  //用户状态（0:未提交1:已认证 10:认证中/待实名-1:认证未通过(人工)-2:认证未通过(机器)
+					}
 					int resultStatus = appUserInfoService.updateEnterprises(map);
 					if(resultStatus<=0){
 						status = "08";

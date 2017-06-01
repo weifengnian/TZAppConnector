@@ -309,6 +309,13 @@ public class EnterpriseTaskAction extends HttpServlet {
 				status = "16";
 				retMsg = "必要参数输入有误";
 			}else{
+				//查任务状态，根据任务状态来判断，任务详情获取那些人
+				Map<String,String> mp = new HashMap<String,String>();
+				mp.put("task_id", map.get("task_id"));
+				List<AppTaskInfo> atf = enterpriseTaskService.getTask(mp);
+				if(atf.size()>0){
+					map.put("status", String.valueOf(at.get(0).getStatus()));
+				}
 				//任务详细 （注意这里要去掉token）
 				map.remove("token");
 				at = enterpriseTaskService.getTask(map);

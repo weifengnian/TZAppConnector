@@ -154,6 +154,9 @@
 		  		 <if test="user_id !=null and user_id !='' ">
 					and tsk.user_id=#{user_id}
 				 </if>
+				 <if test="status !=null and status !='' ">
+					and tsk.status=#{status}
+				 </if>
 				 <if test="token !=null and token !='' ">
 					and us.token=#{token}
 				 </if>
