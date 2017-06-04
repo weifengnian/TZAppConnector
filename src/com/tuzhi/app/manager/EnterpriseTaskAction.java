@@ -314,7 +314,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 				mp.put("task_id", map.get("task_id"));
 				List<AppTaskInfo> atf = enterpriseTaskService.getTask(mp);
 				if(atf.size()>0){
-					map.put("status", String.valueOf(at.get(0).getStatus()));
+					map.put("status", String.valueOf(atf.get(0).getStatus()));
 				}
 				//任务详细 （注意这里要去掉token）
 				map.remove("token");

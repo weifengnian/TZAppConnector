@@ -266,7 +266,7 @@ public class StringUtil {
 		String[] string = s.split(",") ;
 //		System.out.println(string[0]);
 //		
-//		String[] str = {"13","16"};
+		String[] str = {"13","16"};
 //		
 //		String[] abc = null;
 //		abc[0] = "a";
@@ -275,7 +275,7 @@ public class StringUtil {
 //		for (int i = 0; i < abc.length; i++) {
 //			System.out.println(abc[i]);
 //		}
-		//sendPush(string,"123","测试数据");
+		sendPush(str,"推送标题001","收到推送请回答");
 	}
 	
 	public static void sendPush(String[] alias,String title,String content) {
@@ -301,8 +301,8 @@ public class StringUtil {
 		msg.setMsgContent(content);
 		return PushPayload.newBuilder().setPlatform(Platform.all())
 				.setAudience(Audience.alias(alias))
-				.setMessage(Message.newBuilder().setTitle(title).build())
-				.setNotification(Notification.alert(content)).build();
+				.setMessage(Message.newBuilder().setMsgContent(content).setTitle(title).build())
+				.setNotification(Notification.alert(title)).build();
 	}
 	
 //	public static PushPayload buildPushObject_audienceOne(String[] alias,String title,String content) {

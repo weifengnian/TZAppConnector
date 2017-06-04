@@ -515,7 +515,7 @@ public class UserInfoAction extends HttpServlet {
 			AppUserDetailInfo uf = null;
 			
 			//验证参数
-			if(StringUtil.isBlank(map.get("user_id")) || StringUtil.isBlank(map.get("token"))){
+			if(StringUtil.isBlank(map.get("user_id"))){
 				status = "15";
 				retMsg = "必要参数缺失";
 			}else if(map.get("user_id").length()>10){
@@ -687,7 +687,7 @@ public class UserInfoAction extends HttpServlet {
 			String retMsg = "成功";
 			
 			//验证参数
-			if(StringUtil.isBlank(map.get("e_id")) || StringUtil.isBlank(map.get("token"))){
+			if(StringUtil.isBlank(map.get("e_id"))){
 				status = "15";
 				retMsg = "必要参数缺失";
 			}else if(map.get("e_id").length()>10){

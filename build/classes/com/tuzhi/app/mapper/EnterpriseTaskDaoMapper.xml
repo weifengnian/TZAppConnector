@@ -139,7 +139,7 @@
  			left join app_address ad on t.address_id=ad.id
  			left join app_good_field gf on t.field_id=gf.id
  			left join (
- 			           select tu.order_id,tu.user_id,count(*) cnt from app_task_user tu group by tu.order_id,tu.user_id
+ 			           select tu.order_id,tu.user_id,count(*) cnt,tu.[status] from app_task_user tu group by tu.order_id,tu.user_id,tu.[status]
  			          )tsk on tsk.order_id=t.id
  			<if test=" user_id !='-1'.toString() ">
  				<if test="type=='1'.toString() ">
@@ -187,7 +187,10 @@
 	    <if test="type=='2'.toString() ">
 	    	inner join app_enterprises_info us on tu.user_id=us.id
 		</if>
-	      where t.id=#{task_id}
+	      where t.id=#{task_id} 
+	       <if test=" status !=null and status !='' ">
+	    	 and tu.status=#{status}
+		   </if>
 	</select>
 	
 	<!-- 查询该单是否被接  -->
