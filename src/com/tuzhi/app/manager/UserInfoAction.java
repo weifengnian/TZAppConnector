@@ -252,7 +252,7 @@ public class UserInfoAction extends HttpServlet {
 					}
 					map3.put("user_id", ud.getId()==0?"":ud.getId());
 					map3.put("user_name", ud.getName()==null?"":ud.getName());
-					map3.put("nick_name", ud.getNick_name()==null?"":ud.getNick_name());
+					map3.put("nick_name", ud.getNike_name()==null?"":ud.getNike_name());
 					map3.put("phone", ud.getMobile_phone()==null?"":ud.getMobile_phone());
 					map3.put("logo_url", ud.getIcon_url()==null?"":ud.getIcon_url());
 					map3.put("type", "1");
@@ -431,7 +431,7 @@ public class UserInfoAction extends HttpServlet {
 				retMsg = "该用户已不存在";
 			}else{
 				//完善个人用户信息
-				if(!"1".equals(userInfo.getIs_auth()) && !"-1".equals(userInfo.getIs_auth()) && !"-2".equals(userInfo.getIs_auth())){
+				if(1!=userInfo.getIs_auth() &&  -1!=userInfo.getIs_auth() && -2!=userInfo.getIs_auth()){
 					map.put("is_auth", "10");  //用户状态（0:未提交1:已认证 10:认证中/待实名-1:认证未通过(人工)-2:认证未通过(机器)
 				}
 				int resultStstu = appUserInfoService.updateAppUser(map);
@@ -605,7 +605,7 @@ public class UserInfoAction extends HttpServlet {
 			ufdMap.put("id", uf==null?"":uf.getId()==0?"":uf.getId());
 			ufdMap.put("phone", uf==null?"":uf.getMobile_phone()==null?"":uf.getMobile_phone());
 			ufdMap.put("name", uf==null?"":uf.getName()==null?"":uf.getName());
-			ufdMap.put("nick_name", uf==null?"":uf.getNick_name()==null?"":uf.getNick_name());
+			ufdMap.put("nick_name", uf==null?"":uf.getNike_name()==null?"":uf.getNike_name());
 			ufdMap.put("sex", uf==null?"":uf.getSex()==0?"":uf.getSex());
 			ufdMap.put("logo", uf==null?"":uf.getIcon_url()==null?"":uf.getIcon_url());
 			ufdMap.put("money", uf==null?"":uf.getMoney());
@@ -701,7 +701,7 @@ public class UserInfoAction extends HttpServlet {
 					retMsg = "该用户已不存在";
 				}else{
 					//完善企业信息
-					if(!"1".equals(ep.getIs_auth()) && !"-1".equals(ep.getIs_auth()) && !"-2".equals(ep.getIs_auth())){
+					if(1!=ep.getIs_auth() && -1!=ep.getIs_auth() && -2!=ep.getIs_auth()){
 						map.put("is_auth", "10");  //用户状态（0:未提交1:已认证 10:认证中/待实名-1:认证未通过(人工)-2:认证未通过(机器)
 					}
 					int resultStatus = appUserInfoService.updateEnterprises(map);

@@ -11,7 +11,7 @@ public class AppUserDetailInfo {
 	
 	private int id; //
 	private String name; //真实名
-	private String nick_name; //昵称
+	private String nike_name; //昵称
 	private String password; //密码
 	private String icon_url; //头像
 	private String local_url; //本地地址
@@ -62,11 +62,11 @@ public class AppUserDetailInfo {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getNick_name() {
-		return nick_name;
+	public String getNike_name() {
+		return nike_name;
 	}
-	public void setNick_name(String nick_name) {
-		this.nick_name = nick_name;
+	public void setNike_name(String nike_name) {
+		this.nike_name = nike_name;
 	}
 	public String getPassword() {
 		return password;

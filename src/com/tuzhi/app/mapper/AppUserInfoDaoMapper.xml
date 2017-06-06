@@ -163,6 +163,9 @@
 		  <if test="user_name !=null and user_name !='' ">
               name=#{user_name},
           </if> 
+		  <if test="nick_name !=null and nick_name !='' ">
+              nike_name=#{nick_name},
+          </if> 
 		  <if test="card_id !=null and card_id !='' ">
               card_id=#{card_id},
           </if>
