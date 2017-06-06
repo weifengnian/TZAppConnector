@@ -283,13 +283,13 @@ public class StringUtil {
 		sendMap.put("task_start_date",  "2");
 		sendMap.put("sender",  "3");
 		sendMap.put("release_time",  "4");
-		sendMap.put("title",  "ios今日推送标题007");
+		sendMap.put("title",  "今日推送002");
 		sendMap.put("money",  "5");
 		sendMap.put("address", "6");
 		sendMap.put("field", "7");
 		String json = JSON.encode(sendMap);
 		
-		sendPush(str,"ios今日推送标题007",json);
+		sendPush(str,"今日推送002",json);
 	}
 	
 	public static void sendPush(String[] alias,String title,String content) {
@@ -299,12 +299,14 @@ public class StringUtil {
 			String appKey = "0a8593ed96f4032f3a67c831";
 			JPushClient jpushClient = new JPushClient(masterSecret, appKey);
 //			PushPayload payload = buildPushObject_audienceOne(alias,title,content);
+			
+			//安卓和ios
 //			PushPayload payload = buildPushObject_(alias,title,content);
 			
 			//安卓
-//			PushPayload payload = buildPushObject_android_tag_alertWithTitle(alias,content,title);
+			PushPayload payload = buildPushObject_android_tag_alertWithTitle(alias,content,title);
 			
-			PushPayload payload = buildPushObject_ios(alias,title,content);
+//			PushPayload payload = buildPushObject_ios(alias,title,content);
 			
 			
 			PushResult result = jpushClient.sendPush(payload);
@@ -324,7 +326,7 @@ public class StringUtil {
 		return PushPayload.newBuilder().setPlatform(Platform.all())
 				.setAudience(Audience.alias(alias))
 				.setMessage(Message.newBuilder().setMsgContent(content).setTitle(title).build())
-				.setNotification(Notification.alert(content)).build();
+				.build();
 	}
 	
 //	public static PushPayload buildPushObject_audienceOne(String[] alias,String title,String content) {
