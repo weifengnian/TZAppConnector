@@ -625,6 +625,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 			for (int i = num; i < at.size(); i++) {
 				Map<String,Object> map2 = new HashMap<String,Object>();
 				map2.put("user_id", at.size()==0?"":at.get(i).getUser_id()==null?"":at.get(i).getUser_id());
+				map2.put("token", at.size()==0?"":at.get(i).getToken()==null?"":at.get(i).getToken());
 				map2.put("user_name", at.size()==0?"":at.get(i).getUser_name()==null?"":at.get(i).getUser_name());
 				map2.put("url", at.size()==0?"":at.get(i).getUrl()==null?"":at.get(i).getUrl());
 				map2.put("auth_time", at.size()==0?"":at.get(i).getAuth_time()==null?"":at.get(i).getAuth_time());

@@ -3,6 +3,7 @@ package com.tuzhi.app.pojo;
 public class AppPickPeople {
 	
 	private String user_id; // "用户编号",
+	private String token; //token,
 	private String user_name; // "名称",
 	private String url; // "头像url",
 	private String auth_time; //”认证时间”,
@@ -109,5 +110,11 @@ public class AppPickPeople {
 	}
 	public void setDetails(String details) {
 		this.details = details;
+	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
 	}
 }

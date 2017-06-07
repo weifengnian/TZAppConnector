@@ -258,7 +258,7 @@
 	       when '4' then '虚拟化'
 	       when '5' then '云'
 	       when '6' then '视频' 
-       		 end field,i.id user_id,i.name user_name,i.icon_url url,i.auth_create_time auth_time
+       		 end field,i.id user_id,i.token token,i.name user_name,i.icon_url url,i.auth_create_time auth_time
               from app_task t
         left join app_task_user tu on t.id=tu.order_id  
         left join app_user_info i on tu.user_id=i.id    

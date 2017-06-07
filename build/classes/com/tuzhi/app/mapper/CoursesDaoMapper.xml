@@ -19,28 +19,11 @@
 	</select>
 	
 	<!-- 查询我的课程  userid＝－1查询所有课程  -->
-	<select id="getMyCourses2" parameterType="map" resultMap="resultCourses">
-	  select top (convert(int,#{rows})) temp.* from (
-		select row_number() over (order by c.create_time desc) as RowNumber,c.*,ct.name ctname,acu.cnt study_num from app_courses c
-			 left join app_courses_type ct on c.courses_type_id=ct.id
-			 inner join(
-			           select cu.courses_id,cu.type,COUNT(*) cnt from app_courses_user cu
-			           group by cu.courses_id,cu.type
-			          )acu on c.id=acu.courses_id
-			 where 1=1 
-			<if test="course_type_id =='-1'.toString() ">
-				and (acu.type='1' or acu.type='2')
-			</if>
-				 
-		) as temp where RowNumber > convert(int,#{rows})*(convert(int,#{page})-1) order by temp.create_time desc
-	</select>
-	
-	<!-- 查询我的课程  userid＝－1查询所有课程  -->
 	<select id="getMyCourses" parameterType="map" resultMap="resultCourses">
 	  select top (convert(int,#{rows})) temp.* from (
 		select row_number() over (order by c.create_time desc) as RowNumber,c.*,ct.name ctname,acu.cnt study_num from app_courses c
 			 left join app_courses_type ct on c.courses_type_id=ct.id
-			 inner join(
+			 left join(
 			           select cu.courses_id,cu.type,COUNT(*) cnt from app_courses_user cu
 			           <if test=" user_id !=null and user_id !='' ">
 			              where cu.user_id=#{user_id}
@@ -58,7 +41,7 @@
 					and c.sastutas=#{status}
 				 </if>
 				 <if test="course_type_id !=null and course_type_id !='' ">
-				    and acu.type=#{course_type_id}
+				    and c.courses_type_id=#{course_type_id}
 			     </if>
 				 
 		) as temp where RowNumber > convert(int,#{rows})*(convert(int,#{page})-1) order by temp.create_time desc

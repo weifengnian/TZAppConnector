@@ -298,13 +298,14 @@ public class StringUtil {
 			String masterSecret = "db3823ab049847e1c9c35bb1";
 			String appKey = "0a8593ed96f4032f3a67c831";
 			JPushClient jpushClient = new JPushClient(masterSecret, appKey);
-//			PushPayload payload = buildPushObject_audienceOne(alias,title,content);
+			
+			PushPayload payload = buildPushObject_audienceOne(alias,title,content);
 			
 			//安卓和ios
 //			PushPayload payload = buildPushObject_(alias,title,content);
 			
 			//安卓
-			PushPayload payload = buildPushObject_android_tag_alertWithTitle(alias,content,title);
+//			PushPayload payload = buildPushObject_android_tag_alertWithTitle(alias,content,title);
 			
 //			PushPayload payload = buildPushObject_ios(alias,title,content);
 			
@@ -320,23 +321,23 @@ public class StringUtil {
 		}
 	}
 	
-	public static PushPayload buildPushObject_audienceOne(String[] alias,String title,String content) {
-		Builder msg = Message.newBuilder();
-		msg.setMsgContent(content);
-		return PushPayload.newBuilder().setPlatform(Platform.all())
-				.setAudience(Audience.alias(alias))
-				.setMessage(Message.newBuilder().setMsgContent(content).setTitle(title).build())
-				.build();
-	}
-	
 //	public static PushPayload buildPushObject_audienceOne(String[] alias,String title,String content) {
 //		Builder msg = Message.newBuilder();
 //		msg.setMsgContent(content);
 //		return PushPayload.newBuilder().setPlatform(Platform.all())
 //				.setAudience(Audience.alias(alias))
 //				.setMessage(Message.newBuilder().setMsgContent(content).setTitle(title).build())
-//				.setNotification(Notification.alert(content)).build();
+//				.build();
 //	}
+	
+	public static PushPayload buildPushObject_audienceOne(String[] alias,String title,String content) {
+		Builder msg = Message.newBuilder();
+		msg.setMsgContent(content);
+		return PushPayload.newBuilder().setPlatform(Platform.all())
+				.setAudience(Audience.alias(alias))
+				.setMessage(Message.newBuilder().setMsgContent(content).setTitle(title).build())
+				.setNotification(Notification.alert(content)).build();
+	}
 	
 	//构建推送对象：所有平台，推送目标是别名为 "alias1"，通知内容为 ALERT。
     public static PushPayload buildPushObject_all_alias_alert(String ALERT) {
