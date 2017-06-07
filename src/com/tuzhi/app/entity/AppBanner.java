@@ -11,6 +11,10 @@ public class AppBanner {
 	
 	private int id; //
 	private String url; //图片url
+	private String title; //标题
+	private String content; //内容
+	private String from; //来源
+	private String banner_type; //广告类型：1广告   2新闻
 	private String local_url; //图片本地地址
 	private String link_url; //超链接
 	private String time; //创建时间
@@ -58,5 +62,29 @@ public class AppBanner {
 	}
 	public void setType(int type) {
 		this.type = type;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	public String getFrom() {
+		return from;
+	}
+	public void setFrom(String from) {
+		this.from = from;
+	}
+	public String getBanner_type() {
+		return banner_type;
+	}
+	public void setBanner_type(String banner_type) {
+		this.banner_type = banner_type;
 	}
 }

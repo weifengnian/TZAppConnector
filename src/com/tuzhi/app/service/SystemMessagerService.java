@@ -38,6 +38,12 @@ public class SystemMessagerService implements ISystemMessagerService {
 		// TODO Auto-generated method stub
 		return systemMessagerDao.getMessage(map);
 	}
+	
+	@Override
+	public List<AppMessage> getMessageDetail(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return systemMessagerDao.getMessageDetail(map);
+	}
 
 	@Override
 	public AppMsgReceive getMsgReceive(Map<String, String> map) {

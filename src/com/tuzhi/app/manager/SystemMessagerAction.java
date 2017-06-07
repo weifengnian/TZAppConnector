@@ -279,8 +279,8 @@ public class SystemMessagerAction extends HttpServlet {
 				status = "16";
 				retMsg = "必要参数输入有误";
 			}else{
-				//消息列表
-				lm = systemMessagerService.getMessage(map);
+				//消息详情
+				lm = systemMessagerService.getMessageDetail(map);
 				if(lm.size() <= 0){
 					status = "0";
 					retMsg = "无消息详情";
@@ -481,6 +481,10 @@ public class SystemMessagerAction extends HttpServlet {
 				map3.put("banner_id", ab.size()==0?"":ab.get(i).getId()==0?"":ab.get(i).getId());
 				map3.put("img_url", ab.size()==0?"":ab.get(i).getUrl()==null?"":ab.get(i).getUrl());
 				map3.put("link_url", ab.size()==0?"":ab.get(i).getLink_url()==null?"":ab.get(i).getLink_url());
+				map3.put("title", ab.size()==0?"":ab.get(i).getTitle()==null?"":ab.get(i).getTitle());
+				map3.put("content", ab.size()==0?"":ab.get(i).getContent()==null?"":ab.get(i).getContent());
+				map3.put("from", ab.size()==0?"":ab.get(i).getFrom()==null?"":ab.get(i).getFrom());
+				map3.put("type", ab.size()==0?"":ab.get(i).getType()==0?"":ab.get(i).getType());
 				listMap.add(map3);
 			}
 			Map<String,Object> map2 = new HashMap<String,Object>();

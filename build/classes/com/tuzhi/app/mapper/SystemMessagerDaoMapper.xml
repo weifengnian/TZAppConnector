@@ -75,6 +75,15 @@
 		) as temp where RowNumber > convert(int,#{rows})*(convert(int,#{page})-1) order by temp.sendtime desc
 	</select>
 	
+	<!-- 查询消息 -->
+	<select id="getMessageDetail" parameterType="map" resultMap="resultMessage">
+		select m.* from app_message m
+  		 where 1=1
+		 <if test="msg_id !=null and msg_id != ''">
+			and m.id = #{msg_id}
+		 </if>
+	</select>
+	
 	<!-- 获取所有领域 -->
 	<select id="getAllField" parameterType="map" resultMap="resultGoodField">
 	 select top (convert(int,#{rows})) temp.* from (

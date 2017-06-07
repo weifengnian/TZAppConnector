@@ -25,11 +25,18 @@ public interface ISystemMessagerService {
 	public Integer insertFeedback(Map<String,String> map);
 	
 	/**
-	 * 查询消息
+	 * 查询消息列表
 	 * @param map
 	 * @return
 	 */
 	public List<AppMessage> getMessage(Map<String,String> map);
+	
+	/**
+	 * 查询消息详情
+	 * @param map
+	 * @return
+	 */
+	public List<AppMessage> getMessageDetail(Map<String,String> map);
 	
 	/**
 	 * 查询消息管理人员表
