@@ -22,6 +22,13 @@ public interface ICoursesDao {
 	public List<CoursesInfo> getMyCourses(Map<String, String> map);
 	
 	/**
+	 * 获取我的课程参与人数
+	 * @param map
+	 * @return
+	 */
+	public CoursesInfo getMcCntUsr(Map<String, String> map);
+	
+	/**
 	 * 获取课程-->章节 （获取章节）
 	 * @param map
 	 * @return

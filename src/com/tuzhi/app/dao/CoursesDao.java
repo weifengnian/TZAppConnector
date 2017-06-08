@@ -38,6 +38,12 @@ public class CoursesDao extends SqlSessionDaoSupport implements ICoursesDao {
 		}
 	}
 	
+	@Override
+	public CoursesInfo getMcCntUsr(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne("CoursesDaoMapper.getMcCntUsr",map);
+	}
+	
 
 	@Override
 	public List<CoursesInfo> getChapter(Map<String, String> map) {

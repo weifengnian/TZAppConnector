@@ -166,6 +166,9 @@
 				 <if test="title !=null and title !='' ">
 					and t.title=#{title}
 				 </if>
+				 <if test="tskstatus !=null and tskstatus !='' ">
+					and t.status=#{tskstatus}
+				 </if>
 			</if>	 
 		) as temp where RowNumber > convert(int,#{rows})*(convert(int,#{page})-1) order by temp.create_time desc
 	</select>

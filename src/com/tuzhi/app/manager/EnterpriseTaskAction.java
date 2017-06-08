@@ -465,16 +465,16 @@ public class EnterpriseTaskAction extends HttpServlet {
 				mp.put("task_id", map.get("task_id"));
 				List<AppTaskInfo> at = enterpriseTaskService.getTask(mp);
 				if(at.size()>0){
-					if(2==at.get(0).getStatus()){
+					if(2==at.get(0).getStatus() && "2".equals(map.get("type"))){
 						status = "37";
 						retMsg = "任务已被接收";
-					}else if(3==at.get(0).getStatus()){
+					}else if(3==at.get(0).getStatus() && "3".equals(map.get("type"))){
 						status = "38";
 						retMsg = "任务已被完成";
-					}else if(4==at.get(0).getStatus()){
+					}else if(4==at.get(0).getStatus() && "4".equals(map.get("type"))){
 						status = "39";
 						retMsg = "企业已取消该任务";
-					}else if(at.get(0).getStatus()==5 || at.get(0).getEnd_time().compareTo(StringUtil.getDisplayYMDHMS())<0){
+					}else if((at.get(0).getStatus()==5 || at.get(0).getEnd_time().compareTo(StringUtil.getDisplayYMDHMS())<0) && "5".equals(map.get("type"))){
 						map.put("status", "5");
 						enterpriseTaskService.updateTask(map);
 						status = "40";

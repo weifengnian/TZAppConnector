@@ -90,7 +90,11 @@ public class CoursesAction extends HttpServlet {
 				Map<String,Object> map3 = new HashMap<String,Object>();
 				map3.put("course_id", ci.size()==0?"":ci.get(i).getId()==0?"":ci.get(i).getId());
 				map3.put("course_img", ci.size()==0?"":ci.get(i).getImg_url()==null?"":ci.get(i).getImg_url());
-				map3.put("study_num", ci.size()==0?"":ci.get(i).getStudy_num()==null?"":ci.get(i).getStudy_num());
+				
+				map.put("course_id", String.valueOf(ci.size()==0?"":ci.get(i).getId()==0?"":ci.get(i).getId()));
+				CoursesInfo cnt = coursesService.getMcCntUsr(map);
+				map3.put("study_num", cnt==null?"":cnt.getStudy_num()==null?"":cnt.getStudy_num());
+				
 				map3.put("course_type_id", ci.size()==0?"":ci.get(i).getCourses_type_id()==0?"":ci.get(i).getCourses_type_id());
 				map3.put("course_type", ci.size()==0?"":ci.get(i).getCtname()==null?"":ci.get(i).getCtname());
 				map3.put("course_title", ci.size()==0?"":ci.get(i).getName()==null?"":ci.get(i).getName());

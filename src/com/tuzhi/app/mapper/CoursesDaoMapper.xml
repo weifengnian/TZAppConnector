@@ -8,34 +8,27 @@
 	<!-- 查询我的课程  userid＝－1查询所有课程  -->
 	<select id="getMyCourses1" parameterType="map" resultMap="resultCourses">
 	  select top (convert(int,#{rows})) temp.* from (
-		select row_number() over (order by c.create_time desc) as RowNumber,c.*,ct.name ctname,acu.cnt study_num from app_courses c
+		select row_number() over (order by c.create_time desc) as RowNumber,c.*,ct.name ctname from app_courses c
 			 left join app_courses_type ct on c.courses_type_id=ct.id
-			 inner join(
-			           select cu.courses_id,cu.type,COUNT(*) cnt from app_courses_user cu
-			           group by cu.courses_id,cu.type
-			          )acu on c.id=acu.courses_id
 			 where 1=1 
 		) as temp where RowNumber > convert(int,#{rows})*(convert(int,#{page})-1) order by temp.create_time desc
 	</select>
 	
-	<!-- 查询我的课程  userid＝－1查询所有课程  -->
+	<!-- 查询我的课程  -->
 	<select id="getMyCourses" parameterType="map" resultMap="resultCourses">
 	  select top (convert(int,#{rows})) temp.* from (
-		select row_number() over (order by c.create_time desc) as RowNumber,c.*,ct.name ctname,acu.cnt study_num from app_courses c
+		select row_number() over (order by c.create_time desc) as RowNumber,c.*,ct.name ctname from app_courses c
 			 left join app_courses_type ct on c.courses_type_id=ct.id
-			 left join(
-			           select cu.courses_id,cu.type,COUNT(*) cnt from app_courses_user cu
-			           <if test=" user_id !=null and user_id !='' ">
-			              where cu.user_id=#{user_id}
-			           </if>
+			  <if test="type !=null and type !='' and user_id !=null and user_id !='' ">
+				left join(
+			           select cu.courses_id,cu.type from app_courses_user cu
+			              where cu.user_id=#{user_id} and cu.type=#{type}
 			           group by cu.courses_id,cu.type
-			          )acu on c.id=acu.courses_id
+			          )acu on c.id=acu.courses_id	
+			  </if>
 			 where 1=1 
 		  		 <if test="title !=null and title !='' ">
 					and c.name=#{title}
-				 </if>
-				 <if test="type !=null and type !='' ">
-					and acu.type=#{type}
 				 </if>
 				 <if test=" status !=null and status !='' ">
 					and c.sastutas=#{status}
@@ -45,6 +38,18 @@
 			     </if>
 				 
 		) as temp where RowNumber > convert(int,#{rows})*(convert(int,#{page})-1) order by temp.create_time desc
+	</select>
+	
+	<!-- 查询课程参与人员  -->
+	<select id="getMcCntUsr" parameterType="map" resultMap="resultCourses">
+	  select count(*) study_num from app_courses_user cu
+           where 1=1 
+           <if test="course_id !=null and course_id !='' ">
+				and cu.courses_id=#{course_id} 
+	 	   </if>
+           <if test="type !=null and type !='' ">
+				and cu.type=#{type}
+	 	   </if>
 	</select>
 	
 	<!-- 获取章节  -->

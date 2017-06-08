@@ -31,6 +31,12 @@ public class CoursesService implements ICoursesService {
 	}
 	
 	@Override
+	public CoursesInfo getMcCntUsr(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return coursesDao.getMcCntUsr(map);
+	}
+	
+	@Override
 	public List<CoursesInfo> getChapter(Map<String, String> map) {
 		// TODO Auto-generated method stub
 		return coursesDao.getChapter(map);
