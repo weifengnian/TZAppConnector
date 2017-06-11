@@ -23,6 +23,7 @@ import com.tuzhi.app.entity.AppEnterprisesInfo;
 import com.tuzhi.app.entity.AppGoodField;
 import com.tuzhi.app.entity.AppTaskUser;
 import com.tuzhi.app.entity.Appquestion;
+import com.tuzhi.app.entity.Appquestionreply;
 import com.tuzhi.app.pojo.AppPickPeople;
 import com.tuzhi.app.pojo.AppTaskInfo;
 import com.tuzhi.app.pojo.TaskUser;
@@ -734,12 +735,12 @@ public class EnterpriseTaskAction extends HttpServlet {
 				status = "16";
 				retMsg = "必要参数输入有误";
 			}else{
-				List<Appquestion> at = appUserInfoService.getAppquestion(map);
+				List<Appquestion> at = enterpriseTaskService.getAppquestion(map);
 				if(at.size()<=0){
 					status = "34";
 					retMsg = "问题不存在";
 				}else{
-					int num = appUserInfoService.addAppquestionreply(map);
+					int num = enterpriseTaskService.addAppquestionreply(map);
 					if(num<=0){
 						status = "35";
 						retMsg = "问题回复失败";
@@ -779,7 +780,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 			return;
 		} catch (Exception e) {
 			// TODO: handle exception
-			log.info("---feedback--Exception:"+e.getMessage());
+			log.info("---reply--Exception:"+e.getMessage());
 			try {
 				response.getWriter().write("{\"status\":\"29\",\"retMsg\":\"数据异常\"}");
 			} catch (IOException e1) {
@@ -812,23 +813,18 @@ public class EnterpriseTaskAction extends HttpServlet {
 			String retMsg = "成功";
 			
 			//验证参数
-			if(StringUtil.isBlank(map.get("question_id"))){
+			if(StringUtil.isBlank(map.get("user_id")) || StringUtil.isBlank(map.get("user_name"))
+					|| StringUtil.isBlank(map.get("content")) || StringUtil.isBlank(map.get("title"))){
 				status = "15";
 				retMsg = "必要参数缺失";
-			}else if(map.get("question_id").length()>10){
+			}else if(map.get("user_id").length()>10){
 				status = "16";
 				retMsg = "必要参数输入有误";
 			}else{
-				List<Appquestion> at = appUserInfoService.getAppquestion(map);
-				if(at.size()<=0){
-					status = "34";
-					retMsg = "问题不存在";
-				}else{
-					int num = appUserInfoService.addAppquestionreply(map);
-					if(num<=0){
-						status = "35";
-						retMsg = "问题回复失败";
-					}
+				int num = enterpriseTaskService.addQuestion(map);
+				if(num<=0){
+					status = "41";
+					retMsg = "新增问题失败";
 				}
 			}
 			
@@ -845,7 +841,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 				if(TransUtil.LOG_FLAG){
 					//添加日志信息
 					Map<String,Object> logMap = new HashMap<String,Object>();
-					logMap.put("url", TransUtil.LOG_URL+"replyTsk.action");  //请求命令Url
+					logMap.put("url", TransUtil.LOG_URL+"addQuestionTsk.action");  //请求命令Url
 					logMap.put("u_id", map.get("user_id"));  //编号(type=1指用户id、type=2指企业id) 
 					logMap.put("type", map.get("type"));  //1:个人2：企业
 					logMap.put("version", map.get("version"));  //APP版本
@@ -864,7 +860,208 @@ public class EnterpriseTaskAction extends HttpServlet {
 			return;
 		} catch (Exception e) {
 			// TODO: handle exception
-			log.info("---feedback--Exception:"+e.getMessage());
+			log.info("---addQuestion--Exception:"+e.getMessage());
+			try {
+				response.getWriter().write("{\"status\":\"29\",\"retMsg\":\"数据异常\"}");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				log.info("---IOException:"+e1.getMessage());
+			}
+		}
+	}
+	
+	/**
+	 * 问题列表
+	 */
+	public void questionList(){
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json; charset=utf-8");
+		try {
+			//读取请求内容
+			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(),"UTF-8"));
+			//定义Map
+			Map<String,String> map = new HashMap<String,String>();
+			
+			//处理JSON字符串
+			StringUtil.getJsonStr(br,map);
+			log.info("----request--map:"+map);
+			
+			String status = "0";
+			String retMsg = "成功";
+			
+			List<Appquestion> at = new ArrayList<Appquestion>();
+			//验证参数
+			if(map.get("user_id").length()>10 || map.get("courses_id").length()>10 || map.get("forum_id").length()>10){
+				status = "16";
+				retMsg = "必要参数输入有误";
+			}else{
+				at = enterpriseTaskService.getQuestion(map);
+				if(at.size()<=0){
+					status = "0";
+					retMsg = "问题列表为空";
+				}
+			}
+			
+			List<Map<String,Object>> listMap = new ArrayList<Map<String,Object>>();
+			int num = 0;
+//			if(at.size()==0){
+//				num = -1;
+//			}
+			for (int i = num; i < at.size(); i++) {
+				Map<String,Object> map2 = new HashMap<String,Object>();
+				map2.put("question_id", at.size()==0?"":at.get(i).getId()==0?"":at.get(i).getId());
+				map2.put("title", at.size()==0?"":at.get(i).getTitle()==null?"":at.get(i).getTitle());
+				map2.put("content", at.size()==0?"":at.get(i).getContent()==null?"":at.get(i).getContent());
+				map2.put("time", at.size()==0?"":at.get(i).getCreate_time()==null?"":at.get(i).getCreate_time());
+				map2.put("create_id", at.size()==0?"":at.get(i).getUser_id()==0?"":at.get(i).getUser_id());
+				map2.put("create_name", at.size()==0?"":at.get(i).getCreate_per()==null?"":at.get(i).getCreate_per());
+				
+				//查询问题最后回复人员
+				Map<String,String> map1 = new HashMap<String,String>();
+				map1.put("question_id", String.valueOf(map2.get("question_id")));
+				Appquestionreply atr = enterpriseTaskService.getAppquestionreply(map1);
+				
+				map2.put("reply_user_id", atr==null?"":atr.getUser_id()==0?"":atr.getUser_id());
+				map2.put("reply_user_name", atr==null?"":atr.getUser_name()==null?"":atr.getUser_name());
+				map2.put("reply_time", atr==null?"":atr.getUpdate_time()==null?"":atr.getUpdate_time());
+				map2.put("reply_content", atr==null?"":atr.getContent()==null?"":atr.getContent());
+				listMap.add(map2);
+			}
+			
+			Map<String,Object> resultMap = new HashMap<String,Object>();
+			resultMap.put("status", status);
+			resultMap.put("retMsg", retMsg);
+			resultMap.put("list", listMap);
+			
+			String json = JSON.encode(resultMap);
+			log.info("----response--json:"+json);
+			
+			response.getWriter().write(json);
+			
+			try {
+				if(TransUtil.LOG_FLAG){
+					//添加日志信息
+					Map<String,Object> logMap = new HashMap<String,Object>();
+					logMap.put("url", TransUtil.LOG_URL+"questionListTsk.action");  //请求命令Url
+					logMap.put("u_id", map.get("user_id"));  //编号(type=1指用户id、type=2指企业id) 
+					logMap.put("type", map.get("type"));  //1:个人2：企业
+					logMap.put("version", map.get("version"));  //APP版本
+					logMap.put("req_content", map.toString().length()>8000?map.toString().substring(0, 8000):map.toString()); //请求内容
+					logMap.put("resp_content", json.length()>8000?json.substring(0, 8000):json); //相应内容
+					logMap.put("token", map.get("token")); //系统唯一标识
+					logMap.put("result_code", status); //状态码
+					logMap.put("result_msg", retMsg); //状态码说明
+					int resultLog = appUserInfoService.insertAppLog(logMap);
+					log.info("----resultLog:"+resultLog);
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+				log.info("--------add_log:"+e.getMessage());
+			}
+			return;
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info("---questionList--Exception:"+e.getMessage());
+			try {
+				response.getWriter().write("{\"status\":\"29\",\"retMsg\":\"数据异常\"}");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				log.info("---IOException:"+e1.getMessage());
+			}
+		}
+	}
+	
+	/**
+	 * 回复问题列表
+	 */
+	public void replyQuestionList(){
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json; charset=utf-8");
+		try {
+			//读取请求内容
+			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(),"UTF-8"));
+			//定义Map
+			Map<String,String> map = new HashMap<String,String>();
+			
+			//处理JSON字符串
+			StringUtil.getJsonStr(br,map);
+			log.info("----request--map:"+map);
+			
+			String status = "0";
+			String retMsg = "成功";
+			
+			List<Appquestionreply> atr = new ArrayList<Appquestionreply>();
+			//验证参数
+			if(StringUtil.isBlank(map.get("question_id"))){
+				status = "15";
+				retMsg = "必要参数缺失";
+			}else if(map.get("question_id").length()>10){
+				status = "16";
+				retMsg = "必要参数输入有误";
+			}else{
+				atr = enterpriseTaskService.getQuestionReply(map);
+				if(atr.size()<=0){
+					status = "0";
+					retMsg = "问题回复列表为空";
+				}
+			}
+			
+			List<Map<String,Object>> listMap = new ArrayList<Map<String,Object>>();
+			int num = 0;
+//			if(at.size()==0){
+//				num = -1;
+//			}
+			for (int i = num; i < atr.size(); i++) {
+				Map<String,Object> map2 = new HashMap<String,Object>();
+				map2.put("reply_user_id", atr.size()==0?"":atr.get(i).getUser_id()==0?"":atr.get(i).getUser_id());
+				map2.put("reply_user_name", atr.size()==0?"":atr.get(i).getUser_name()==null?"":atr.get(i).getUser_name());
+				map2.put("reply_time", atr.size()==0?"":atr.get(i).getUpdate_time()==null?"":atr.get(i).getUpdate_time());
+				map2.put("reply_content", atr.size()==0?"":atr.get(i).getContent()==null?"":atr.get(i).getContent());
+				map2.put("courses_id", atr.size()==0?"":atr.get(i).getCourses_id()==0?"":atr.get(i).getCourses_id());
+				map2.put("forum_id", atr.size()==0?"":atr.get(i).getForum_id()==0?"":atr.get(i).getForum_id());
+				listMap.add(map2);
+			}
+			
+			Map<String,Object> resultMap = new HashMap<String,Object>();
+			resultMap.put("status", status);
+			resultMap.put("retMsg", retMsg);
+			resultMap.put("list", listMap);
+			
+			String json = JSON.encode(resultMap);
+			log.info("----response--json:"+json);
+			
+			response.getWriter().write(json);
+			
+			try {
+				if(TransUtil.LOG_FLAG){
+					//添加日志信息
+					Map<String,Object> logMap = new HashMap<String,Object>();
+					logMap.put("url", TransUtil.LOG_URL+"replyQuestionListTsk.action");  //请求命令Url
+					logMap.put("u_id", map.get("user_id"));  //编号(type=1指用户id、type=2指企业id) 
+					logMap.put("type", map.get("type"));  //1:个人2：企业
+					logMap.put("version", map.get("version"));  //APP版本
+					logMap.put("req_content", map.toString().length()>8000?map.toString().substring(0, 8000):map.toString()); //请求内容
+					logMap.put("resp_content", json.length()>8000?json.substring(0, 8000):json); //相应内容
+					logMap.put("token", map.get("token")); //系统唯一标识
+					logMap.put("result_code", status); //状态码
+					logMap.put("result_msg", retMsg); //状态码说明
+					int resultLog = appUserInfoService.insertAppLog(logMap);
+					log.info("----resultLog:"+resultLog);
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+				log.info("--------add_log:"+e.getMessage());
+			}
+			return;
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info("---replyQuestionList--Exception:"+e.getMessage());
 			try {
 				response.getWriter().write("{\"status\":\"29\",\"retMsg\":\"数据异常\"}");
 			} catch (IOException e1) {

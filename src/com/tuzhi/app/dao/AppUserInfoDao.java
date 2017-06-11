@@ -10,8 +10,6 @@ import com.tuzhi.app.entity.AppCard;
 import com.tuzhi.app.entity.AppCertificate;
 import com.tuzhi.app.entity.AppEnterprisesInfo;
 import com.tuzhi.app.entity.AppGoodField;
-import com.tuzhi.app.entity.Appquestion;
-import com.tuzhi.app.entity.Appquestionreply;
 import com.tuzhi.app.pojo.AppUserDetailInfo;
 
 /**
@@ -166,23 +164,6 @@ public class AppUserInfoDao extends SqlSessionDaoSupport implements IAppUserInfo
 		// TODO Auto-generated method stub
 		return getSqlSession().selectList("AppUserInfoDaoMapper.getAddressList",map);
 	}
-
-	@Override
-	public List<Appquestion> getAppquestion(Map<String, String> map) {
-		// TODO Auto-generated method stub
-		return getSqlSession().selectList("AppUserInfoDaoMapper.getAppquestion",map);
-	}
-
-	@Override
-	public Integer addAppquestionreply(Map<String, String> map) {
-		// TODO Auto-generated method stub
-		return getSqlSession().insert("AppUserInfoDaoMapper.addAppquestionreply",map);
-	}
-
-	@Override
-	public List<Appquestionreply> getAppquestionreply(Map<String, String> map) {
-		// TODO Auto-generated method stub
-		return getSqlSession().selectList("AppUserInfoDaoMapper.getAppquestionreply",map);
-	}
+	
 	
 }

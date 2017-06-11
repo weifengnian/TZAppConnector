@@ -257,7 +257,7 @@ public class UserInfoAction extends HttpServlet {
 					map3.put("phone", ud.getMobile_phone()==null?"":ud.getMobile_phone());
 					map3.put("logo_url", ud.getIcon_url()==null?"":ud.getIcon_url());
 					map3.put("type", "1");
-					map3.put("is_auth", ud.getIs_auth()==0?"":ud.getIs_auth());
+					map3.put("is_auth", ud.getIs_auth());
 					
 					map2.put("user_Info", map3);
 					
@@ -284,7 +284,7 @@ public class UserInfoAction extends HttpServlet {
 					map3.put("phone", ep==null?"":ep.getMobile_phone()==null?"":ep.getMobile_phone());
 					map3.put("logo_url", ep==null?"":ep.getEnterprise_url()==null?"":ep.getEnterprise_url());
 					map3.put("type", ep==null?"":"2");
-					map3.put("is_auth", ep==null?"":ep.getIs_auth()==0?"":ep.getIs_auth());
+					map3.put("is_auth", ep==null?"":ep.getIs_auth());
 					
 					map2.put("user_Info", map3);
 					

@@ -14,8 +14,6 @@ import com.tuzhi.app.entity.AppCard;
 import com.tuzhi.app.entity.AppCertificate;
 import com.tuzhi.app.entity.AppEnterprisesInfo;
 import com.tuzhi.app.entity.AppGoodField;
-import com.tuzhi.app.entity.Appquestion;
-import com.tuzhi.app.entity.Appquestionreply;
 import com.tuzhi.app.pojo.AppUserDetailInfo;
 import com.tuzhi.app.util.StringUtil;
 
@@ -237,21 +235,4 @@ public class AppUserInfoService implements IAppUserInfoService {
 		return appUserInfoDao.getAddressList(map);
 	}
 	
-	@Override
-	public List<Appquestion> getAppquestion(Map<String, String> map) {
-		// TODO Auto-generated method stub
-		return appUserInfoDao.getAppquestion(map);
-	}
-	
-	@Override
-	public Integer addAppquestionreply(Map<String, String> map) {
-		// TODO Auto-generated method stub
-		return appUserInfoDao.addAppquestionreply(map);
-	}
-	
-	@Override
-	public List<Appquestionreply> getAppquestionreply(Map<String, String> map) {
-		// TODO Auto-generated method stub
-		return appUserInfoDao.getAppquestionreply(map);
-	}
 }

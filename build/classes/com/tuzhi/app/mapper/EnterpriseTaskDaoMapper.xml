@@ -8,6 +8,8 @@
 	<resultMap type="com.tuzhi.app.pojo.AppPickPeople" id="resultPickPeople"/>
 	<resultMap type="com.tuzhi.app.entity.AppTaskUser" id="resultTaskUser"/>
 	<resultMap type="com.tuzhi.app.pojo.TaskUser" id="resultTUser"/>
+	<resultMap type="com.tuzhi.app.entity.Appquestion" id="appquestion"/>
+	<resultMap type="com.tuzhi.app.entity.Appquestionreply" id="appquestionreply"/>
 	
 	<!-- 企业发布任务（添加） -->
   	<insert id="insertTask" parameterType="map" >
@@ -190,7 +192,7 @@
 	    <if test="type=='2'.toString() ">
 	    	inner join app_enterprises_info us on tu.user_id=us.id
 		</if>
-	      where t.id=#{task_id} 
+	      where t.id=#{task_id} and (tu.[type]!=2 or tu.[type] is null)
 	       <if test=" status !=null and status !='' ">
 	    	 and tu.status=#{status}
 		   </if>
@@ -344,5 +346,219 @@
 		getdate()
 	  )
 	</insert>
+	
+	
+	
+	<!-- 查询问题  -->
+  	<select id="getAppquestion" parameterType="map" resultMap="appquestion">
+		select q.* from app_question q 
+		where 1=1 
+		 <if test="question_id !=null and question_id !='' ">
+             and q.id=#{question_id}
+         </if>
+		 <if test="only_id !=null and only_id !='' ">
+             and q.only_id=#{only_id}
+         </if>
+  	</select>
+  	
+  	<!-- 查询问题回复内容  -->
+  	<select id="getAppquestionreply" parameterType="map" resultMap="appquestionreply">
+		select top 1 a.* from app_question_reply a where 1=1 
+           <if test="question_id !=null and question_id !='' ">
+             and a.question_id=#{question_id}
+         </if>
+         order by a.update_time desc
+  	</select>
+  	
+  	<!-- 添加问题回复 -->
+  	<insert id="addAppquestionreply" parameterType="map" >
+		insert into app_question_reply(
+		  <if test="content !=null and content !='' ">
+             content,
+          </if>
+		  <if test="user_id !=null and user_id !='' ">
+             user_id,
+          </if>
+		  <if test="user_name !=null and user_name !='' ">
+             user_name,
+          </if>
+		  <if test="question_id !=null and question_id !='' ">
+             question_id,
+          </if>
+		  <if test="status !=null and status !='' ">
+             status,
+          </if>
+		  <if test="type !=null and type !='' ">
+             type,
+          </if>
+		  <if test="courses_id !=null and courses_id !='' ">
+             courses_id,
+          </if>
+          <if test="forum_id !=null and forum_id !='' ">
+             forum_id,
+          </if>
+		    update_time
+		)values(
+		  <if test="content !=null and content !='' ">
+             #{content},
+          </if>
+		  <if test="user_id !=null and user_id !='' ">
+             #{user_id},
+          </if>
+		  <if test="user_name !=null and user_name !='' ">
+             #{user_name},
+          </if>
+		  <if test="question_id !=null and question_id !='' ">
+             #{question_id},
+          </if>
+		  <if test="status !=null and status !='' ">
+             #{status},
+          </if>
+          <if test="type !=null and type !='' ">
+             #{type},
+          </if>
+		  <if test="courses_id !=null and courses_id !='' ">
+             #{courses_id},
+          </if>
+          <if test="forum_id !=null and forum_id !='' ">
+             #{forum_id},
+          </if>
+		     getdate()
+		  )   
+  	</insert>
+  	
+  	<!-- 添加问题 -->
+  	<insert id="addQuestion" parameterType="map" >
+		insert into app_question(
+		  <if test="title !=null and title !='' ">
+             title,
+          </if>
+		  <if test="user_id !=null and user_id !='' ">
+             user_id,
+          </if>
+		  <if test="user_name !=null and user_name !='' ">
+             create_per,
+          </if>
+		  <if test="is_selected !=null and is_selected !='' ">
+             is_selected,
+          </if>
+		  <if test="status !=null and status !='' ">
+             status,
+          </if>
+		  <if test="type !=null and type !='' ">
+             type,
+          </if>
+		  <if test="only_id !=null and only_id !='' ">
+             only_id,
+          </if>
+		  <if test="content !=null and content !='' ">
+             content,
+          </if>
+		    create_time
+		)values(
+		  <if test="title !=null and title !='' ">
+             #{title},
+          </if>
+		  <if test="user_id !=null and user_id !='' ">
+             #{user_id},
+          </if>
+		  <if test="user_name !=null and user_name !='' ">
+             #{user_name},
+          </if>
+		  <if test="is_selected !=null and is_selected !='' ">
+             #{is_selected},
+          </if>
+		  <if test="status !=null and status !='' ">
+             #{status},
+          </if>
+          <if test="type !=null and type !='' ">
+             #{type},
+          </if>
+		  <if test="only_id !=null and only_id !='' ">
+             #{only_id},
+          </if>
+          <if test="content !=null and content !='' ">
+             #{content},
+          </if>
+		     getdate()
+		  )   
+  	</insert>
+  	
+  	<!-- 添加，课程问题关联表 -->
+  	<insert id="addCoursesQuestion" parameterType="map" >
+		insert into app_courses_question(courses_id,question_id)values
+		    (#{courses_id},#{question_id})
+  	</insert>
+  	
+  	<!-- 添加，论坛问题关联表 -->
+  	<insert id="addForumQuestion" parameterType="map" >
+		insert into app_forum_question(forum_id,question_id)values
+		    (#{forum_id},#{question_id})   
+  	</insert>
+  	
+  	<!-- 查询问题列表  -->
+  	<select id="getQuestion" parameterType="map" resultMap="appquestion">
+      select top (convert(int,#{rows})) temp.* from (
+		 select row_number() over (order by q.create_time desc) as RowNumber,q.* from app_question q
+			left join app_courses_question cq on q.id=cq.question_id
+			left join app_forum_question fq on q.id=fq.question_id
+			
+			<if test="type=='1'.toString() ">
+				left join app_user_info us on q.user_id=us.id
+			</if>
+			<if test="type=='2'.toString() ">
+				left join app_enterprises_info us on q.user_id=us.id
+			</if>
+			where 1=1 
+			<if test="courses_id !=null and courses_id !='' ">
+             	and cq.courses_id=#{courses_id}
+            </if>
+			<if test="forum_id !=null and forum_id !='' ">
+             	and fq.forum_id=#{forum_id} 
+            </if>
+			<if test="user_id !=null and user_id !='' ">
+             	and q.user_id=#{user_id}
+            </if>
+			<if test="token !=null and token !='' ">
+             	and us.token=#{token}
+            </if>
+			<if test="type !=null and type !='' ">
+             	and q.type=#{type}
+            </if>
+  
+     ) as temp where RowNumber > convert(int,#{rows})*(convert(int,#{page})-1) order by temp.create_time desc
+  	</select>
+  	
+  	<!-- 查询问题关联课程所有列表  -->
+  	<select id="getCourseQuestion" parameterType="map" resultMap="appquestion">
+      select top (convert(int,#{rows})) temp.* from (
+		 select row_number() over (order by q.create_time desc) as RowNumber,q.* from app_question q
+			inner join (
+		    select c.question_id from app_courses_question c group by c.question_id 
+		    )cq on q.id=cq.question_id
+		    where 1=1
+     ) as temp where RowNumber > convert(int,#{rows})*(convert(int,#{page})-1) order by temp.create_time desc
+  	</select>
+  	
+  	<!-- 查询问题关联论坛所有列表  -->
+  	<select id="getForumQuestion" parameterType="map" resultMap="appquestion">
+      select top (convert(int,#{rows})) temp.* from (
+		 select row_number() over (order by q.create_time desc) as RowNumber,q.* from app_question q
+			inner join (
+			select f.question_id from app_forum_question f group by f.question_id 
+			)fq on q.id=fq.question_id
+			where 1=1
+     ) as temp where RowNumber > convert(int,#{rows})*(convert(int,#{page})-1) order by temp.create_time desc
+  	</select>
+  	
+  	<!-- 查询问题回复内容列表  -->
+  	<select id="getQuestionReply" parameterType="map" resultMap="appquestionreply">
+  	select top (convert(int,#{rows})) temp.* from (
+		select row_number() over (order by a.update_time desc) as RowNumber,a.* from app_question_reply a where 1=1 
+           <if test="question_id !=null and question_id !='' ">
+             and a.question_id=#{question_id}
+         </if>
+      ) as temp where RowNumber > convert(int,#{rows})*(convert(int,#{page})-1) order by temp.update_time desc   
+  	</select>
 	
 </mapper>

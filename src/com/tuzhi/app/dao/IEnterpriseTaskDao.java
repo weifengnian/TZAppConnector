@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.tuzhi.app.entity.AppTaskUser;
+import com.tuzhi.app.entity.Appquestion;
+import com.tuzhi.app.entity.Appquestionreply;
 import com.tuzhi.app.pojo.AppPickPeople;
 import com.tuzhi.app.pojo.AppTaskInfo;
 import com.tuzhi.app.pojo.TaskUser;
@@ -93,5 +95,61 @@ public interface IEnterpriseTaskDao {
 	 * @return
 	 */
 	public List<AppPickPeople> getOrderUser(Map<String,String> map);
+	
+	/**
+	 * 添加问题
+	 * @param map
+	 * @return
+	 */
+	public Integer addQuestion(Map<String,String> map);
+	
+	/**
+	 * 查询问题
+	 * @param map
+	 * @return
+	 */
+	public List<Appquestion> getAppquestion(Map<String,String> map);
+	
+	/**
+	 * 问题回复
+	 * @param map
+	 * @return
+	 */
+	public Integer addAppquestionreply(Map<String,String> map);
+	
+	/**
+	 * 查询回复内容
+	 * @param map
+	 * @return
+	 */
+	public Appquestionreply getAppquestionreply(Map<String,String> map);
+	
+	/**
+	 * 添加，课程问题关联表
+	 * @param map
+	 * @return
+	 */
+	public Integer addCoursesQuestion(Map<String,String> map);
+	
+	/**
+	 * 添加，论坛问题关联表
+	 * @param map
+	 * @return
+	 */
+	public Integer addForumQuestion(Map<String,String> map);
+	
+	/**
+	 * 查询问题列表
+	 * @param map
+	 * @return
+	 */
+	public List<Appquestion> getQuestion(Map<String,String> map);
+	
+	/**
+	 * 查询回复内容列表
+	 * @param map
+	 * @return
+	 */
+	public List<Appquestionreply> getQuestionReply(Map<String,String> map);
 	
 }

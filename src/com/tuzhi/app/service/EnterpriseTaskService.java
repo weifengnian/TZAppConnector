@@ -8,6 +8,8 @@ import com.tuzhi.app.dao.IAppUserInfoDao;
 import com.tuzhi.app.dao.IEnterpriseTaskDao;
 import com.tuzhi.app.entity.AppAddress;
 import com.tuzhi.app.entity.AppTaskUser;
+import com.tuzhi.app.entity.Appquestion;
+import com.tuzhi.app.entity.Appquestionreply;
 import com.tuzhi.app.pojo.AppPickPeople;
 import com.tuzhi.app.pojo.AppTaskInfo;
 import com.tuzhi.app.pojo.TaskUser;
@@ -157,6 +159,66 @@ public class EnterpriseTaskService implements IEnterpriseTaskService {
 	public Integer addTaskUser(Map<String, String> map) {
 		// TODO Auto-generated method stub
 		return enterpriseTaskDao.addTaskUser(map);
+	}
+	
+	@Override
+	public Integer addQuestion(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		Map<String,String> QtMap = new HashMap<String,String>();
+		
+		//添加问题
+		map.put("only_id", StringUtil.getShortUUID());
+		int num = enterpriseTaskDao.addQuestion(map);
+		if(num>0){
+			List<Appquestion> at = enterpriseTaskDao.getAppquestion(map);
+			if(at.size()>0){
+				QtMap.put("question_id", String.valueOf(at.get(0).getId()));
+			}
+		}
+		
+		@SuppressWarnings("unused")
+		int cnt = 0;
+		//添加，课程问题关联表
+		if(!StringUtil.isBlank(map.get("courses_id")) && !StringUtil.isBlank(QtMap.get("question_id"))){
+			QtMap.put("courses_id", map.get("courses_id"));
+			cnt = enterpriseTaskDao.addCoursesQuestion(QtMap);
+		}
+		
+		//添加，论坛问题关联表
+		if(!StringUtil.isBlank(map.get("forum_id")) && !StringUtil.isBlank(QtMap.get("question_id"))){
+			QtMap.put("forum_id", map.get("forum_id"));
+			cnt = enterpriseTaskDao.addForumQuestion(QtMap);
+		}
+		
+		return num;
+	}
+	
+	@Override
+	public List<Appquestion> getAppquestion(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return enterpriseTaskDao.getAppquestion(map);
+	}
+	
+	@Override
+	public Integer addAppquestionreply(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return enterpriseTaskDao.addAppquestionreply(map);
+	}
+	
+	@Override
+	public Appquestionreply getAppquestionreply(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return enterpriseTaskDao.getAppquestionreply(map);
+	}
+	@Override
+	public List<Appquestion> getQuestion(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return enterpriseTaskDao.getQuestion(map);
+	}
+	@Override
+	public List<Appquestionreply> getQuestionReply(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return enterpriseTaskDao.getQuestionReply(map);
 	}
 
 }

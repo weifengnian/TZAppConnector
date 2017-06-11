@@ -17,6 +17,8 @@ public class Appquestion {
 	private String create_per; //创建人
 	private int is_selected; //1:精选  0:no
 	private int status; //0:不显示 1:显示
+	private int type; //
+	private String only_id; //
 	
 	public int getId() {
 		return id;
@@ -65,5 +67,17 @@ public class Appquestion {
 	}
 	public void setStatus(int status) {
 		this.status = status;
+	}
+	public int getType() {
+		return type;
+	}
+	public void setType(int type) {
+		this.type = type;
+	}
+	public String getOnly_id() {
+		return only_id;
+	}
+	public void setOnly_id(String only_id) {
+		this.only_id = only_id;
 	}
 }
