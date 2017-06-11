@@ -789,6 +789,91 @@ public class EnterpriseTaskAction extends HttpServlet {
 			}
 		}
 	}
+	
+	/**
+	 * 新增问题
+	 */
+	public void addQuestion(){
+		HttpServletRequest request = ServletActionContext.getRequest(); 
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json; charset=utf-8");
+		try {
+			//读取请求内容
+			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(),"UTF-8"));
+			//定义Map
+			Map<String,String> map = new HashMap<String,String>();
+			
+			//处理JSON字符串
+			StringUtil.getJsonStr(br,map);
+			log.info("----request--map:"+map);
+			
+			String status = "0";
+			String retMsg = "成功";
+			
+			//验证参数
+			if(StringUtil.isBlank(map.get("question_id"))){
+				status = "15";
+				retMsg = "必要参数缺失";
+			}else if(map.get("question_id").length()>10){
+				status = "16";
+				retMsg = "必要参数输入有误";
+			}else{
+				List<Appquestion> at = appUserInfoService.getAppquestion(map);
+				if(at.size()<=0){
+					status = "34";
+					retMsg = "问题不存在";
+				}else{
+					int num = appUserInfoService.addAppquestionreply(map);
+					if(num<=0){
+						status = "35";
+						retMsg = "问题回复失败";
+					}
+				}
+			}
+			
+			Map<String,Object> resultMap = new HashMap<String,Object>();
+			resultMap.put("status", status);
+			resultMap.put("retMsg", retMsg);
+			
+			String json = JSON.encode(resultMap);
+			log.info("----response--json:"+json);
+			
+			response.getWriter().write(json);
+			
+			try {
+				if(TransUtil.LOG_FLAG){
+					//添加日志信息
+					Map<String,Object> logMap = new HashMap<String,Object>();
+					logMap.put("url", TransUtil.LOG_URL+"replyTsk.action");  //请求命令Url
+					logMap.put("u_id", map.get("user_id"));  //编号(type=1指用户id、type=2指企业id) 
+					logMap.put("type", map.get("type"));  //1:个人2：企业
+					logMap.put("version", map.get("version"));  //APP版本
+					logMap.put("req_content", map.toString().length()>8000?map.toString().substring(0, 8000):map.toString()); //请求内容
+					logMap.put("resp_content", json.length()>8000?json.substring(0, 8000):json); //相应内容
+					logMap.put("token", map.get("token")); //系统唯一标识
+					logMap.put("result_code", status); //状态码
+					logMap.put("result_msg", retMsg); //状态码说明
+					int resultLog = appUserInfoService.insertAppLog(logMap);
+					log.info("----resultLog:"+resultLog);
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+				log.info("--------add_log:"+e.getMessage());
+			}
+			return;
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info("---feedback--Exception:"+e.getMessage());
+			try {
+				response.getWriter().write("{\"status\":\"29\",\"retMsg\":\"数据异常\"}");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				log.info("---IOException:"+e1.getMessage());
+			}
+		}
+	}
 
 	public IEnterpriseTaskService getEnterpriseTaskService() {
 		return enterpriseTaskService;
