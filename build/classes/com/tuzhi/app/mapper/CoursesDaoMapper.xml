@@ -20,7 +20,7 @@
 		select row_number() over (order by c.create_time desc) as RowNumber,c.*,ct.name ctname from app_courses c
 			 left join app_courses_type ct on c.courses_type_id=ct.id
 			  <if test="type !=null and type !='' and user_id !=null and user_id !='' ">
-				left join(
+				inner join(
 			           select cu.courses_id,cu.type from app_courses_user cu
 			              where cu.user_id=#{user_id} and cu.type=#{type}
 			           group by cu.courses_id,cu.type

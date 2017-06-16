@@ -26,6 +26,7 @@ import com.tuzhi.app.entity.Appquestion;
 import com.tuzhi.app.entity.Appquestionreply;
 import com.tuzhi.app.pojo.AppPickPeople;
 import com.tuzhi.app.pojo.AppTaskInfo;
+import com.tuzhi.app.pojo.AppUserDetailInfo;
 import com.tuzhi.app.pojo.TaskUser;
 import com.tuzhi.app.service.IAppUserInfoService;
 import com.tuzhi.app.service.IEnterpriseTaskService;
@@ -76,7 +77,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 			String retMsg = "成功";
 			if(StringUtil.isBlank(map.get("title")) || StringUtil.isBlank(map.get("content")) || 
 					StringUtil.isBlank(map.get("start_time")) || StringUtil.isBlank(map.get("end_time")) ||
-					StringUtil.isBlank(map.get("money")) || StringUtil.isBlank(map.get("desc"))){
+					StringUtil.isBlank(map.get("money"))){
 				status = "15";
 				retMsg = "必要参数缺失";
 			}else if(map.get("e_id").length()>10 || map.get("field").length()>10){
@@ -133,7 +134,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 						taskMap.put("status", "0");
 						int num = enterpriseTaskService.addTaskUser(taskMap);
 					}
-					StringUtil.sendTask(String.valueOf(taskId),map,apl);
+					StringUtil.sendTask(String.valueOf(taskId),map,apl,"BM");
 				}
 			}
 			
@@ -191,14 +192,19 @@ public class EnterpriseTaskAction extends HttpServlet {
 			
 			String status = "0";
 			String retMsg = "成功";
+			
+			if(StringUtil.isBlank(map.get("user_id"))){
+				map.put("token", "");
+				map.put("type", "");
+			}
+			
 		
 			//验证参数     type=1指用户、type=2指企业
 			List<AppTaskInfo> at = new ArrayList<AppTaskInfo>();
-			if(StringUtil.isBlank(map.get("user_id")) || StringUtil.isBlank(map.get("page")) || StringUtil.isBlank(map.get("rows")) || 
-					StringUtil.isBlank(map.get("token")) || StringUtil.isBlank(map.get("type"))){
+			if(StringUtil.isBlank(map.get("page")) || StringUtil.isBlank(map.get("rows"))){
 				status = "15";
 				retMsg = "必要参数缺失";
-			}else if((!"1".equals(map.get("type")) && !"2".equals(map.get("type"))) || map.get("user_id").length()>10){
+			}else if(map.get("user_id").length()>10){
 				status = "16";
 				retMsg = "必要参数输入有误";
 			}else{
@@ -362,6 +368,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 				Map<String,Object> map3 = new HashMap<String,Object>();
 				map3.put("user_id", tu.size()==0?"":tu.get(i).getUser_id()==0?"":tu.get(i).getUser_id());
 				map3.put("user_name", tu.size()==0?"":tu.get(i).getUser_name()==null?"":tu.get(i).getUser_name());
+				map3.put("token", tu.size()==0?"":tu.get(i).getToken()==null?"":tu.get(i).getToken());
 				map3.put("url",  tu.size()==0?"":tu.get(i).getUrl()==null?"":tu.get(i).getUrl());
 				listMap.add(map3);
 			}
@@ -525,8 +532,13 @@ public class EnterpriseTaskAction extends HttpServlet {
 				//查询任务内容
 				AppTaskInfo taskInfo = enterpriseTaskService.getEnterpriseTask(taskMap);
 				if(taskInfo != null){
+					
+					Map<String,String> UMap = new HashMap<String,String>();
+					UMap.put("user_id", map.get("user_id"));
+					AppUserDetailInfo uf = appUserInfoService.getAppUser(UMap);
+					
 					AppPickPeople app = new AppPickPeople();
-					app.setUser_id(map.get("user_id"));
+					app.setPhoneNo(uf==null?"":uf.getMobile_phone());
 					List<AppPickPeople> apl = new ArrayList<AppPickPeople>();
 					apl.add(app);
 					
@@ -541,7 +553,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 					Pushmap.put("address", taskInfo.getAddress());
 					Pushmap.put("field", taskInfo.getFieldid());
 					
-					StringUtil.sendTask(map.get("task_id"),Pushmap,apl);
+					StringUtil.sendTask(map.get("task_id"),Pushmap,apl,"JD");
 				}
 			}
 			

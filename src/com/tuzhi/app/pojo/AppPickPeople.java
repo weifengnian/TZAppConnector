@@ -8,6 +8,7 @@ public class AppPickPeople {
 	private String url; // "头像url",
 	private String auth_time; //”认证时间”,
 	private String field; //"领域名称","
+	private String phoneNo; //电话号码
 	
 	private String id; //”接单地址编号”，
 	private String pro_id; //”省编号”，
@@ -116,5 +117,11 @@ public class AppPickPeople {
 	}
 	public void setToken(String token) {
 		this.token = token;
+	}
+	public String getPhoneNo() {
+		return phoneNo;
+	}
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
 	}
 }

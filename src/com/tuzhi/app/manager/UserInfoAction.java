@@ -609,11 +609,12 @@ public class UserInfoAction extends HttpServlet {
 			ufdMap.put("phone", uf==null?"":uf.getMobile_phone()==null?"":uf.getMobile_phone());
 			ufdMap.put("name", uf==null?"":uf.getName()==null?"":uf.getName());
 			ufdMap.put("nick_name", uf==null?"":uf.getNike_name()==null?"":uf.getNike_name());
-			ufdMap.put("sex", uf==null?"":uf.getSex()==0?"":uf.getSex());
+			ufdMap.put("sex", uf==null?1:uf.getSex());
 			ufdMap.put("logo", uf==null?"":uf.getIcon_url()==null?"":uf.getIcon_url());
 			ufdMap.put("money", uf==null?"":uf.getMoney());
 			ufdMap.put("integral", uf==null?"":uf.getIntegral());
 			ufdMap.put("is_auth", uf==null?"":uf.getIs_auth());
+			ufdMap.put("token", uf==null?"":uf.getToken()==null?"":uf.getToken());
 			ufdMap.put("auth_create_time", uf==null?"":uf.getAuth_create_time()==null?"":uf.getAuth_create_time());
 			ufdMap.put("create_time", uf==null?"":uf.getCreate_time()==null?"":uf.getCreate_time());
 			ufdMap.put("update_time", uf==null?"":uf.getUpdate_time()==null?"":uf.getUpdate_time());
@@ -815,6 +816,7 @@ public class UserInfoAction extends HttpServlet {
 			epMap.put("desc", ep==null?"":ep.getDesc()==null?"":ep.getDesc());
 			epMap.put("money", ep==null?"":ep.getMoney()==0?"":ep.getMoney());
 			epMap.put("is_auth", ep==null?"":ep.getIs_auth());
+			epMap.put("token", ep==null?"":ep.getToken()==null?"":ep.getToken());
 			epMap.put("auth_create_time", ep==null?"":ep.getAuth_create_time()==null?"":ep.getAuth_create_time());
 			
 			String json = JSON.encode(epMap);

@@ -168,6 +168,9 @@
 				 <if test="title !=null and title !='' ">
 					and t.title=#{title}
 				 </if>
+				 <if test="field !=null and field !='' ">
+					and t.field_id=#{field}
+				 </if>
 				 <if test="tskstatus !=null and tskstatus !='' ">
 					and t.status=#{tskstatus}
 				 </if>
@@ -179,10 +182,10 @@
 	<select id="getTaskUser" parameterType="map" resultMap="resultTUser">
 	  select us.id user_id,us.name user_name
 	    <if test="type=='1'.toString() ">
-	    	,us.icon_url url
+	    	,us.icon_url url,us.token
 		</if>
 	    <if test="type=='2'.toString() ">
-	    	,us.enterprise_url url
+	    	,us.enterprise_url url,us.token
 		</if>
 	   from app_task t
 	        left join app_task_user tu on t.id=tu.order_id
@@ -290,7 +293,7 @@
 	       when '4' then '虚拟化'
 	       when '5' then '云'
 	       when '6' then '视频' 
-       		 end field,i.id user_id,i.name user_name,i.icon_url url,i.auth_create_time auth_time
+       		 end field,i.id user_id,i.name user_name,i.icon_url url,i.auth_create_time auth_time,i.mobile_phone phoneNo
               from app_task t
 		left join app_enterprises_info f on t.create_user_id=f.id
 		left join app_good_field g on t.field_id=g.id

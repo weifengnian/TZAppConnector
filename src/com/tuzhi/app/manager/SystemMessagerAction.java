@@ -635,7 +635,8 @@ public class SystemMessagerAction extends HttpServlet {
 			Map<String,Object> resultMap = new HashMap<String,Object>();
 			resultMap.put("status", status);
 			resultMap.put("retMsg", retMsg);
-			resultMap.put("url", TransUtil.LOAD_PATH+load_path.toString()+directory+".jpg");
+//			resultMap.put("url", TransUtil.LOAD_PATH+load_path.toString()+directory+".jpg");
+			resultMap.put("url", load_path.toString()+directory+".jpg");
 			resultMap.put("local_url", local_Directory+directory+".jpg");
 			
 			log.info("----upload_path:"+filepath);

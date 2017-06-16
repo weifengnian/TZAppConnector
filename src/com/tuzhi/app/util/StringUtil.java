@@ -228,8 +228,44 @@ public class StringUtil {
 		return field;
 	}
 	
-	public static void sendTask(String taskId,Map<String, String> map,List<AppPickPeople> apl){
+//	public static void sendTask(String taskId,Map<String, String> map,List<AppPickPeople> apl){
+//		try {
+//			Map<String, String> sendMap = new HashMap<String, String>();
+//			sendMap.put("task_id",  taskId);
+//			sendMap.put("task_start_date",  map.get("start_time")==null?"":map.get("start_time"));
+//			sendMap.put("task_end_date",  map.get("end_time")==null?"":map.get("end_time"));
+//			sendMap.put("sender",  map.get("create_per")==null?"":map.get("create_per"));
+//			sendMap.put("release_time",  map.get("create_time")==null?"":map.get("create_time"));
+//			sendMap.put("title",  map.get("title")==null?"":map.get("title"));
+//			sendMap.put("money",  map.get("money")==null?"":map.get("money"));
+//			sendMap.put("address", map.get("address")==null?"":map.get("address"));
+//			sendMap.put("field", goodField(map.get("field")==null?"":map.get("field")));
+//			String json = JSON.encode(sendMap);
+//			
+//			StringBuffer bf = new StringBuffer();
+//			for (int i = 0; i < apl.size(); i++) {
+//				bf.append(","+apl.get(i).getUser_id()+"");
+//			}
+//			
+//			String[] alias =  bf.toString().substring(1).split(",");
+//			sendPush(alias,sendMap.get("title"),json);
+//
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//			log.info("----------sendTask--Exception:"+e.getMessage());
+//		}
+//	}
+	
+	public static void sendTask(String taskId,Map<String, String> map,List<AppPickPeople> apl,String type){
 		try {
+			
+			StringBuffer sb = new StringBuffer();
+			if("BM".equals(type)){
+				sb.append("新的任务："+map.get("title")+" 编号"+taskId+" 正在报名中");
+			}else{
+				sb.append("工作邀请："+map.get("title")+" 编号"+taskId+" 邀请您工作");
+			}
+			
 			Map<String, String> sendMap = new HashMap<String, String>();
 			sendMap.put("task_id",  taskId);
 			sendMap.put("task_start_date",  map.get("start_time")==null?"":map.get("start_time"));
@@ -244,11 +280,11 @@ public class StringUtil {
 			
 			StringBuffer bf = new StringBuffer();
 			for (int i = 0; i < apl.size(); i++) {
-				bf.append(","+apl.get(i).getUser_id()+"");
+				bf.append(","+apl.get(i).getPhoneNo()+"");
 			}
 			
 			String[] alias =  bf.toString().substring(1).split(",");
-			sendPush(alias,sendMap.get("title"),json);
+			sendPush(alias,sendMap.get("title"),sb.toString());
 
 		} catch (Exception e) {
 			// TODO: handle exception
