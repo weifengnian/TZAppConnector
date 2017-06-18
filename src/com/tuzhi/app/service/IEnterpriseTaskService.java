@@ -34,6 +34,13 @@ public interface IEnterpriseTaskService {
 	public List<AppTaskInfo> getTask(Map<String,String> map);
 	
 	/**
+	 * 查询任务详细
+	 * @param map
+	 * @return
+	 */
+	public AppTaskInfo getTaskDetail(Map<String,String> map);
+	
+	/**
 	 * 查询企业发布单条任务
 	 * @param map
 	 * @return

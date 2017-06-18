@@ -34,6 +34,13 @@ public interface IEnterpriseTaskDao {
 	public List<AppTaskInfo> getTask(Map<String,String> map);
 	
 	/**
+	 * 查询任务详细
+	 * @param map
+	 * @return
+	 */
+	public AppTaskInfo getTaskDetail(Map<String,String> map);
+	
+	/**
 	 * 查询任务参与人员
 	 * @param map
 	 * @return

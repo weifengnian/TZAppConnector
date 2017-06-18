@@ -104,6 +104,12 @@ public class EnterpriseTaskService implements IEnterpriseTaskService {
 	}
 	
 	@Override
+	public AppTaskInfo getTaskDetail(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return enterpriseTaskDao.getTaskDetail(map);
+	}
+	
+	@Override
 	public List<TaskUser> getTaskUser(Map<String, String> map) {
 		// TODO Auto-generated method stub
 		return enterpriseTaskDao.getTaskUser(map);

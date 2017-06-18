@@ -308,7 +308,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 			String retMsg = "成功";
 			
 			//验证参数 
-			List<AppTaskInfo> at = new ArrayList<AppTaskInfo>();
+			AppTaskInfo at = null;
 			if(StringUtil.isBlank(map.get("task_id"))){
 				status = "15";
 				retMsg = "必要参数缺失";
@@ -319,54 +319,30 @@ public class EnterpriseTaskAction extends HttpServlet {
 				//查任务状态，根据任务状态来判断，任务详情获取那些人
 				Map<String,String> mp = new HashMap<String,String>();
 				mp.put("task_id", map.get("task_id"));
-				List<AppTaskInfo> atf = enterpriseTaskService.getTask(mp);
-				if(atf.size()>0){
-					map.put("status", String.valueOf(atf.get(0).getStatus()));
+				AppTaskInfo atf = enterpriseTaskService.getTaskDetail(mp);
+				if(atf != null ){
+					map.put("status", String.valueOf(atf.getStatus()));
 				}
-				//任务详细 （注意这里要去掉token）
-				map.remove("token");
-				at = enterpriseTaskService.getTask(map);
-				if(at.size() <= 0){
+				
+				at = enterpriseTaskService.getTaskDetail(map);
+				if(at == null){
 					status = "0";
 					retMsg = "无任务详情";
 				}
-				List<Map<String,Object>> listMap = new ArrayList<Map<String,Object>>();
-				int num = 0;
-//				if(at.size()==0){
-//					num = -1;
-//				}
-				for (int i = num; i < at.size(); i++) {
-					Map<String,Object> map3 = new HashMap<String,Object>();
-					map3.put("task_id", at.size()==0?"":at.get(i).getId()==0?"":at.get(i).getId());
-					map3.put("task_start_date", at.size()==0?"":at.get(i).getStart_time()==null?"":at.get(i).getStart_time());
-					map3.put("task_end_date", at.size()==0?"":at.get(i).getEnd_time()==null?"":at.get(i).getEnd_time());
-					map3.put("sender", at.size()==0?"":at.get(i).getCreate_per()==null?"":at.get(i).getCreate_per());
-					map3.put("release_time", at.size()==0?"":at.get(i).getCreate_time()==null?"":at.get(i).getCreate_time());
-					map3.put("title", at.size()==0?"":at.get(i).getTitle()==null?"":at.get(i).getTitle());
-					map3.put("money", at.size()==0?"":at.get(i).getMoney()==0?"":at.get(i).getMoney());
-					map3.put("province", at.size()==0?"":at.get(i).getProvince()==null?"":at.get(i).getProvince());
-					map3.put("city", at.size()==0?"":at.get(i).getCity()==null?"":at.get(i).getCity());
-					map3.put("district", at.size()==0?"":at.get(i).getDistrict()==null?"":at.get(i).getDistrict());
-					map3.put("address", at.size()==0?"":at.get(i).getAddress()==null?"":at.get(i).getAddress());
-					map3.put("field", at.size()==0?"":at.get(i).getName()==null?"":at.get(i).getName());
-					listMap.add(map3);
-				}
-				Map<String,Object> map2 = new HashMap<String,Object>();
-				map2.put("list", listMap);
 			}
 			
 			List<TaskUser> tu = new ArrayList<TaskUser>();
 			tu = enterpriseTaskService.getTaskUser(map);
 			List<Map<String,Object>> listMap = new ArrayList<Map<String,Object>>();
-			int actor_num = 0; //订单参与人数
+//			int actor_num = 0; //订单参与人数
 			int num = 0;
 //			if(tu.size()==0){
 //			num = -1;
 //		}
 			for (int i = num; i < tu.size(); i++) {
-				actor_num++;
+//				actor_num++;
 				Map<String,Object> map3 = new HashMap<String,Object>();
-				map3.put("user_id", tu.size()==0?"":tu.get(i).getUser_id()==0?"":tu.get(i).getUser_id());
+				map3.put("user_id", tu.size()==0?"":tu.get(i).getUser_id());
 				map3.put("user_name", tu.size()==0?"":tu.get(i).getUser_name()==null?"":tu.get(i).getUser_name());
 				map3.put("token", tu.size()==0?"":tu.get(i).getToken()==null?"":tu.get(i).getToken());
 				map3.put("url",  tu.size()==0?"":tu.get(i).getUrl()==null?"":tu.get(i).getUrl());
@@ -376,11 +352,10 @@ public class EnterpriseTaskAction extends HttpServlet {
 			map4.put("list", listMap);
 				
 			Map<String,Object> map2 = new HashMap<String,Object>();
-			map2.put("title", at.size()==0?"":at.get(0).getTitle()==null?"":at.get(0).getTitle());
-			map2.put("content", at.size()==0?"":at.get(0).getContent()==null?"":at.get(0).getContent());
-			map2.put("order_id", at.size()==0?"":at.get(0).getId()==0?"":at.get(0).getId());
-			map2.put("order_state", at.size()==0?"0":at.get(0).getStatus()==0?"0":at.get(0).getStatus());
-			map2.put("actor_num", actor_num);
+			map2.put("title", at.getTitle()==null?"":at.getTitle());
+			map2.put("content", at.getContent()==null?"":at.getContent());
+			map2.put("order_id", at.getId()==0?"":at.getId());
+			map2.put("order_state", at.getStatus());
 			map2.put("people", map4);
 			
 			Map<String,Object> map1 = new HashMap<String,Object>();
