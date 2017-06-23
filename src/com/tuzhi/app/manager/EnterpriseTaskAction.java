@@ -911,10 +911,27 @@ public class EnterpriseTaskAction extends HttpServlet {
 				map1.put("question_id", String.valueOf(map2.get("question_id")));
 				Appquestionreply atr = enterpriseTaskService.getAppquestionreply(map1);
 				
+				String logo = "";
+				//获取最后回复人图像url
+				Map<String,String> uMap = new HashMap<String,String>();
+				uMap.put("user_id", String.valueOf(atr==null?"-100":atr.getUser_id()==0?"-100":atr.getUser_id()));
+				//获取用户信息
+				AppUserDetailInfo uf = null;
+				//查询企业信息
+				AppEnterprisesInfo ep = null;
+				if("1".equals(atr==null?"-100":atr.getType()==null?"-100":atr.getType())){
+					uf = appUserInfoService.getAppUser(uMap);
+					logo = uf==null?"":uf.getIcon_url()==null?"":uf.getIcon_url();
+				}else if("2".equals(atr==null?"-100":atr.getType()==null?"-100":atr.getType())){
+					ep = appUserInfoService.getEnterprises(uMap);
+					logo = ep==null?"":ep.getEnterprise_url()==null?"":ep.getEnterprise_url();
+				}
+				
 				map2.put("reply_user_id", atr==null?"":atr.getUser_id()==0?"":atr.getUser_id());
 				map2.put("reply_user_name", atr==null?"":atr.getUser_name()==null?"":atr.getUser_name());
 				map2.put("reply_time", atr==null?"":atr.getUpdate_time()==null?"":atr.getUpdate_time());
 				map2.put("reply_content", atr==null?"":atr.getContent()==null?"":atr.getContent());
+				map2.put("logo", logo);
 				listMap.add(map2);
 			}
 			
@@ -1005,6 +1022,23 @@ public class EnterpriseTaskAction extends HttpServlet {
 //				num = -1;
 //			}
 			for (int i = num; i < atr.size(); i++) {
+				
+				String logo = "";
+				//获取最后回复人图像url
+				Map<String,String> uMap = new HashMap<String,String>();
+				uMap.put("user_id", String.valueOf(atr.size()==0?"-100":atr.get(i).getUser_id()==0?"-100":atr.get(i).getUser_id()));
+				//获取用户信息
+				AppUserDetailInfo uf = null;
+				//查询企业信息
+				AppEnterprisesInfo ep = null;
+				if("1".equals(atr.size()==0?"-100":atr.get(i).getType()==null?"-100":atr.get(i).getType())){
+					uf = appUserInfoService.getAppUser(uMap);
+					logo = uf==null?"":uf.getIcon_url()==null?"":uf.getIcon_url();
+				}else if("2".equals(atr.size()==0?"-100":atr.get(i).getType()==null?"-100":atr.get(i).getType())){
+					ep = appUserInfoService.getEnterprises(uMap);
+					logo = ep==null?"":ep.getEnterprise_url()==null?"":ep.getEnterprise_url();
+				}
+				
 				Map<String,Object> map2 = new HashMap<String,Object>();
 				map2.put("reply_user_id", atr.size()==0?"":atr.get(i).getUser_id()==0?"":atr.get(i).getUser_id());
 				map2.put("reply_user_name", atr.size()==0?"":atr.get(i).getUser_name()==null?"":atr.get(i).getUser_name());
@@ -1012,6 +1046,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 				map2.put("reply_content", atr.size()==0?"":atr.get(i).getContent()==null?"":atr.get(i).getContent());
 				map2.put("courses_id", atr.size()==0?"":atr.get(i).getCourses_id()==0?"":atr.get(i).getCourses_id());
 				map2.put("forum_id", atr.size()==0?"":atr.get(i).getForum_id()==0?"":atr.get(i).getForum_id());
+				map2.put("logo", logo);
 				listMap.add(map2);
 			}
 			
