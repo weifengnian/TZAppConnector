@@ -1016,25 +1016,33 @@ public class UserInfoAction extends HttpServlet {
 			if(StringUtil.isBlank(map.get("phone")) || StringUtil.isBlank(map.get("password"))){
 				status = "15";
 				retMsg = "必要参数缺失";
+			}else if(!"1".equals(map.get("type")) && !"2".equals(map.get("type"))){
+				status = "16";
+				retMsg = "必要参数输入有误";
 			}else{
 				//企业信息
 				AppEnterprisesInfo enterInfo = null;
 				//查询人员信息
-				AppUserDetailInfo userInfo = appUserInfoService.getAppUser(map);
-				if(userInfo != null){
-					int resultStatus = appUserInfoService.updateAppUser(map);
-					if(resultStatus<=0){
-						status = "28";
-						retMsg = "密码重置失败";
-					}
-				}else{
-					//查询企业信息
-					enterInfo = appUserInfoService.getEnterprises(map);
-					if(enterInfo != null){
-						int resultStatus = appUserInfoService.updateEnterprises(map);
+				AppUserDetailInfo userInfo = null;
+				
+				//企业(2),个人(1)
+				if("1".equals(map.get("type"))){
+					userInfo = appUserInfoService.getAppUser(map);
+					if(userInfo != null){
+						int resultStatus = appUserInfoService.updateAppUser(map);
 						if(resultStatus<=0){
 							status = "28";
 							retMsg = "密码重置失败";
+						}
+					}else{
+						//查询企业信息
+						enterInfo = appUserInfoService.getEnterprises(map);
+						if(enterInfo != null){
+							int resultStatus = appUserInfoService.updateEnterprises(map);
+							if(resultStatus<=0){
+								status = "28";
+								retMsg = "密码重置失败";
+							}
 						}
 					}
 				}
