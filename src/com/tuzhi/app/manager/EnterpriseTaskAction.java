@@ -546,6 +546,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 					
 					AppPickPeople app = new AppPickPeople();
 					app.setPhoneNo(uf==null?"":uf.getMobile_phone());
+					app.setUser_id(uf==null?"":String.valueOf(uf.getId()));
 					List<AppPickPeople> apl = new ArrayList<AppPickPeople>();
 					apl.add(app);
 					

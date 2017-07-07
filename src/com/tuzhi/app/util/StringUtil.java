@@ -280,7 +280,7 @@ public class StringUtil {
 			
 			StringBuffer bf = new StringBuffer();
 			for (int i = 0; i < apl.size(); i++) {
-				bf.append(","+apl.get(i).getPhoneNo()+"");
+				bf.append(","+"1"+apl.get(i).getPhoneNo()+apl.get(i).getUser_id()+"");
 			}
 			
 			String[] alias =  bf.toString().substring(1).split(",");
