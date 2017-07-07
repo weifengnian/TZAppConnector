@@ -54,7 +54,6 @@ public class EnterpriseTaskAction extends HttpServlet {
 	/**
 	 * 企业发布任务（添加）
 	 */
-	@SuppressWarnings("unused")
 	public void addTask(){
 		HttpServletRequest request = ServletActionContext.getRequest(); 
 		HttpServletResponse response = ServletActionContext.getResponse();
@@ -120,7 +119,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 			
 			response.getWriter().write(json);
 			
-			//推送消息(推送给当前任务领域的所有人员，并且是实名制人员)
+			/*//推送消息(推送给当前任务领域的所有人员，并且是实名制人员)
 			if("0".equals(status)){
 				Map<String,String> umap = new HashMap<String,String>();
 				umap.put("task_id", String.valueOf(taskId));
@@ -136,7 +135,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 					}
 					StringUtil.sendTask(String.valueOf(taskId),map,apl,"BM");
 				}
-			}
+			}*/
 			
 			try {
 				if(TransUtil.LOG_FLAG){
@@ -448,20 +447,53 @@ public class EnterpriseTaskAction extends HttpServlet {
 				mp.put("task_id", map.get("task_id"));
 				List<AppTaskInfo> at = enterpriseTaskService.getTask(mp);
 				if(at.size()>0){
-					if(2==at.get(0).getStatus() && "2".equals(map.get("type"))){
+//					if(2==at.get(0).getStatus() && "2".equals(map.get("type"))){
+					if(2==at.get(0).getStatus()){
 						status = "37";
 						retMsg = "任务已被接收";
-					}else if(3==at.get(0).getStatus() && "3".equals(map.get("type"))){
+//					}else if(3==at.get(0).getStatus() && "3".equals(map.get("type"))){
+					}else if(3==at.get(0).getStatus()){
 						status = "38";
 						retMsg = "任务已被完成";
-					}else if(4==at.get(0).getStatus() && "4".equals(map.get("type"))){
+//					}else if(4==at.get(0).getStatus() && "4".equals(map.get("type"))){
+					}else if(4==at.get(0).getStatus()){
 						status = "39";
 						retMsg = "企业已取消该任务";
-					}else if((at.get(0).getStatus()==5 || at.get(0).getEnd_time().compareTo(StringUtil.getDisplayYMDHMS())<0) && "5".equals(map.get("type"))){
+//					}else if((at.get(0).getStatus()==5 || at.get(0).getEnd_time().compareTo(StringUtil.getDisplayYMDHMS())<0) && "5".equals(map.get("type"))){
+					}else if(5==at.get(0).getStatus() || at.get(0).getTime().compareTo(StringUtil.getDisplayYMDHMS())<0){
 						map.put("status", "5");
 						enterpriseTaskService.updateTask(map);
 						status = "40";
 						retMsg = "任务已过期";
+					}else if(0==at.get(0).getStatus() && "100".equals(map.get("type"))){
+						map.put("status", "1");
+						int num = enterpriseTaskService.updateTask(map);
+						status = "0";
+						retMsg = "任务已付款，火热报名中";
+						
+						//推送消息(推送给当前任务领域的所有人员，并且是实名制人员)
+						if(num>0){
+							Map<String,String> umap = new HashMap<String,String>();
+							umap.put("task_id", map.get("task_id"));
+							List<AppPickPeople> apl = enterpriseTaskService.getOrderUser(umap);
+							log.info("--sendTask--apl:"+apl.size());
+							if(apl.size()>0){
+								for (int i = 0; i < apl.size(); i++) {
+									Map<String,String> taskMap = new HashMap<String,String>();
+									taskMap.put("order_id", map.get("task_id"));
+									taskMap.put("user_id", apl.get(i).getUser_id());
+									taskMap.put("status", "0");
+									enterpriseTaskService.addTaskUser(taskMap);
+								}
+								Map<String,String> sendMap = new HashMap<String,String>();
+								sendMap.put("title", at.get(0).getTitle());
+								StringUtil.sendTask(map.get("task_id"),sendMap,apl,"BM");
+							}
+						}
+						
+					}else if(0==at.get(0).getStatus()){
+						status = "42";
+						retMsg = "任务未付款";
 					}else{
 						//查询该用户是否报名或者接单
 						List<AppTaskUser> tu = enterpriseTaskService.getOrders(map);
@@ -906,13 +938,34 @@ public class EnterpriseTaskAction extends HttpServlet {
 				map2.put("create_id", at.size()==0?"":at.get(i).getUser_id()==0?"":at.get(i).getUser_id());
 				map2.put("create_name", at.size()==0?"":at.get(i).getCreate_per()==null?"":at.get(i).getCreate_per());
 				
+				/*****************获取发布问题人图像url  开始*************************/
+				String create_Logo = "";
+				Map<String,String> cMap = new HashMap<String,String>();
+				cMap.put("user_id", String.valueOf(at.size()==0?"-100":at.get(i).getUser_id()==0?"-100":at.get(i).getUser_id()));
+				//获取用户信息
+				AppUserDetailInfo ad = null;
+				//查询企业信息
+				AppEnterprisesInfo ae = null;
+				if(1==(at.size()==0?-100:at.get(i).getType()==0?-100:at.get(i).getType())){
+					ad = appUserInfoService.getAppUser(cMap);
+					create_Logo = ad==null?"":ad.getIcon_url()==null?"":ad.getIcon_url();
+				}else if(2==(at.size()==0?-100:at.get(i).getType()==0?-100:at.get(i).getType())){
+					ae = appUserInfoService.getEnterprises(cMap);
+					create_Logo = ae==null?"":ae.getEnterprise_url()==null?"":ae.getEnterprise_url();
+				}
+				map2.put("create_Logo", create_Logo);
+				/*****************获取发布问题人图像url  开始*************************/
+				
+				
+				
 				//查询问题最后回复人员
 				Map<String,String> map1 = new HashMap<String,String>();
 				map1.put("question_id", String.valueOf(map2.get("question_id")));
 				Appquestionreply atr = enterpriseTaskService.getAppquestionreply(map1);
 				
+				
+				/*****************获取最后回复人图像url  开始*************************/
 				String logo = "";
-				//获取最后回复人图像url
 				Map<String,String> uMap = new HashMap<String,String>();
 				uMap.put("user_id", String.valueOf(atr==null?"-100":atr.getUser_id()==0?"-100":atr.getUser_id()));
 				//获取用户信息
@@ -926,6 +979,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 					ep = appUserInfoService.getEnterprises(uMap);
 					logo = ep==null?"":ep.getEnterprise_url()==null?"":ep.getEnterprise_url();
 				}
+				/*****************获取最后回复人图像url  结束*************************/
 				
 				map2.put("reply_user_id", atr==null?"":atr.getUser_id()==0?"":atr.getUser_id());
 				map2.put("reply_user_name", atr==null?"":atr.getUser_name()==null?"":atr.getUser_name());

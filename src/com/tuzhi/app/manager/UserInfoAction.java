@@ -231,7 +231,7 @@ public class UserInfoAction extends HttpServlet {
 				
 				map3.put("user_id", "");
 				map3.put("user_name", "");
-				map3.put("nick_name", "");
+				map3.put("nickName", "");
 				map3.put("phone", "");
 				map3.put("logo_url", "");
 				map3.put("is_auth","");
@@ -253,7 +253,7 @@ public class UserInfoAction extends HttpServlet {
 					}
 					map3.put("user_id", ud.getId()==0?"":ud.getId());
 					map3.put("user_name", ud.getName()==null?"":ud.getName());
-					map3.put("nick_name", ud.getNike_name()==null?"":ud.getNike_name());
+					map3.put("nickName", ud.getNike_name()==null?"余热帮会员 "+ud.getId():ud.getNike_name());
 					map3.put("phone", ud.getMobile_phone()==null?"":ud.getMobile_phone());
 					map3.put("logo_url", ud.getIcon_url()==null?"":ud.getIcon_url());
 					map3.put("type", "1");
@@ -280,7 +280,7 @@ public class UserInfoAction extends HttpServlet {
 					}
 					map3.put("user_id", ep==null?"":ep.getId()==0?"":ep.getId());
 					map3.put("user_name", ep==null?"":ep.getName()==null?"":ep.getName());
-					map3.put("nick_name", ep==null?"":ep.getLogin_name()==null?"":ep.getLogin_name());
+					map3.put("nickName", ep==null?"":ep.getLogin_name()==null?"余热帮会员 "+ep.getId():ep.getLogin_name());
 					map3.put("phone", ep==null?"":ep.getMobile_phone()==null?"":ep.getMobile_phone());
 					map3.put("logo_url", ep==null?"":ep.getEnterprise_url()==null?"":ep.getEnterprise_url());
 					map3.put("type", ep==null?"":"2");
@@ -784,7 +784,7 @@ public class UserInfoAction extends HttpServlet {
 			AppEnterprisesInfo ep = null;
 			
 			//验证参数
-			if(StringUtil.isBlank(map.get("e_id")) || StringUtil.isBlank(map.get("token"))){
+			if(StringUtil.isBlank(map.get("e_id"))){
 				status = "15";
 				retMsg = "必要参数缺失";
 			}else if(map.get("e_id").length()>10){
