@@ -327,19 +327,19 @@ public class UserInfoAction extends HttpServlet {
 						}
 					}
 					
-					map3.put("user_id", ud.getId()==0?"":ud.getId());
-					map3.put("user_name", ud.getName()==null?"":ud.getName());
-					map3.put("nickName", ud.getNike_name()==null?"余热帮会员 "+ud.getId():ud.getNike_name());
-					map3.put("phone", ud.getMobile_phone()==null?"":ud.getMobile_phone());
-					map3.put("logo_url", ud.getIcon_url()==null?"":ud.getIcon_url());
-					map3.put("type", "1");
-					map3.put("is_auth", ud.getIs_auth());
+					map3.put("user_id", ud==null?"":ud.getId()==0?"":ud.getId());
+					map3.put("user_name", ud==null?"":ud.getName()==null?"":ud.getName());
+					map3.put("nickName", ud==null?"":ud.getNike_name()==null?"余热帮会员 "+ud.getId():ud.getNike_name());
+					map3.put("phone", ud==null?"":ud.getMobile_phone()==null?"":ud.getMobile_phone());
+					map3.put("logo_url", ud==null?"":ud.getIcon_url()==null?"":ud.getIcon_url());
+					map3.put("type", ud==null?"":"1");
+					map3.put("is_auth", ud==null?"":ud.getIs_auth());
 					
 					map2.put("user_Info", map3);
 					
 					map1.put("status", status);
 					map1.put("retMsg", retMsg);
-					map1.put("token", ud.getToken()==null?"":ud.getToken());
+					map1.put("token", ud==null?"":ud.getToken()==null?"":ud.getToken());
 					map1.put("data", map2);
 					
 				}else{
@@ -1034,15 +1034,15 @@ public class UserInfoAction extends HttpServlet {
 							status = "28";
 							retMsg = "密码重置失败";
 						}
-					}else{
-						//查询企业信息
-						enterInfo = appUserInfoService.getEnterprises(map);
-						if(enterInfo != null){
-							int resultStatus = appUserInfoService.updateEnterprises(map);
-							if(resultStatus<=0){
-								status = "28";
-								retMsg = "密码重置失败";
-							}
+					}
+				}else{
+					//查询企业信息
+					enterInfo = appUserInfoService.getEnterprises(map);
+					if(enterInfo != null){
+						int resultStatus = appUserInfoService.updateEnterprises(map);
+						if(resultStatus<=0){
+							status = "28";
+							retMsg = "密码重置失败";
 						}
 					}
 				}
