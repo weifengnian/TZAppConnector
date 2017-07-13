@@ -320,6 +320,11 @@ public class UserInfoAction extends HttpServlet {
 						status = "04";
 						retMsg = "个人用户不存在或输入错误";
 					}else{
+						if(-1==ud.getStatus()){
+							ud = new AppUserDetailInfo();
+							status = "43";
+							retMsg = "已被拉入黑名单";
+						}
 						if(!map.get("password").equals(ud.getPassword())){
 							ud = new AppUserDetailInfo();
 							status = "05"; //密码输入错误
@@ -349,6 +354,11 @@ public class UserInfoAction extends HttpServlet {
 						status = "06";
 						retMsg = "企业用户不存在或输入错误";
 					}else{
+						if(-1==ep.getStatus()){
+							ep = new AppEnterprisesInfo();
+							status = "43";
+							retMsg = "已被拉入黑名单";
+						}
 						if(!map.get("password").equals(ep.getPassword())){
 							ep = new AppEnterprisesInfo();
 							status = "05"; //密码输入错误
@@ -713,7 +723,8 @@ public class UserInfoAction extends HttpServlet {
 					retMsg = "该用户已不存在";
 				}else{
 					//完善企业信息
-					if(1!=ep.getIs_auth() && -1!=ep.getIs_auth() && -2!=ep.getIs_auth()){
+//					if(1!=ep.getIs_auth() && -1!=ep.getIs_auth() && -2!=ep.getIs_auth()){
+					if(1!=ep.getIs_auth()){
 						map.put("is_auth", "10");  //用户状态（0:未提交1:已认证 10:认证中/待实名-1:认证未通过(人工)-2:认证未通过(机器)
 					}
 					int resultStatus = appUserInfoService.updateEnterprises(map);
