@@ -612,7 +612,7 @@ public class SystemMessagerAction extends HttpServlet {
 			//http访问目标文件
 			String targetDirectory = TransUtil.UPLOAD_PATH+upload_path.toString();
 			//本地目标文件
-			String local_Directory = "C:"+upload_path.toString();
+			String local_Directory = "D:"+upload_path.toString();
 			
 			//建立http可访问文件夹
 			StringUtil.createDirectory(targetDirectory);

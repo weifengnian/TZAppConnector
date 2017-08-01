@@ -14,7 +14,7 @@ public class TransUtil {
 	//本地
 //	public static final String UPLOAD_PATH = "D:\\Program Files\\apache-tomcat-7.0.55\\webapps"; //上传路径路径
 	//生产
-	public static final String UPLOAD_PATH = "C:\\tomcat\\apache-tomcat-7.0.55\\webapps"; //上传路径路径
+	public static final String UPLOAD_PATH = "D:\\tomcat\\apache-tomcat-7.0.55\\webapps"; //上传路径路径
 	
 	//本地
 //	public static final String LOAD_PATH = "http://localhost:8080"; //查看路径
