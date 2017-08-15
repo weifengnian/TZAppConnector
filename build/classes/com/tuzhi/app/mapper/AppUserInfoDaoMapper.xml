@@ -10,6 +10,7 @@
 	<resultMap type="com.tuzhi.app.entity.AppCertificate" id="certificate"/>
 	<resultMap type="com.tuzhi.app.entity.AppCard" id="cardInfo"/>
 	<resultMap type="com.tuzhi.app.entity.AppAddress" id="addressInfo"/>
+	<resultMap type="com.tuzhi.app.entity.AppUserOrderAddress" id="orderAddress"/>
 	
 	<!-- 查询个人用户详细信息 -->
 	<select id="getAppUser" parameterType="map" resultMap="detailInfo">
@@ -345,9 +346,9 @@
 	<!-- 查询地址id是否存在  -->
   	<select id="getAddress" parameterType="map" resultMap="addressInfo">
 		select a.* from app_address a where 1=1
-		 <if test="id !=null and id !='' ">
+		 <!-- <if test="id !=null and id !='' ">
 		 	and a.id=#{id}
-		 </if>
+		 </if> -->
 		 <if test="only_id !=null and only_id !='' ">
 		 	and a.only_id=#{only_id}
 		 </if>
@@ -381,8 +382,8 @@
 		 <if test="dis_name !=null and dis_name !='' ">
 		 	dis_name=#{dis_name},
 		 </if>
-		 <if test="stree_id !=null and stree_id !='' ">
-		 	stree_id=#{stree_id},
+		 <if test="street_id !=null and street_id !='' ">
+		 	street_id=#{street_id},
 		 </if>
 		 <if test="street_name !=null and street_name !='' ">
 		 	street_name=#{street_name},
@@ -421,8 +422,8 @@
 			 <if test="dis_name !=null and dis_name !='' ">
 			 	a.dis_name,
 			 </if>
-			 <if test="stree_id !=null and stree_id !='' ">
-			 	a.stree_id,
+			 <if test="street_id !=null and street_id !='' ">
+			 	a.street_id,
 			 </if>
 			 <if test="street_name !=null and street_name !='' ">
 			 	a.street_name,
@@ -456,8 +457,8 @@
 			 <if test="dis_name !=null and dis_name !='' ">
 			 	#{dis_name},
 			 </if>
-			 <if test="stree_id !=null and stree_id !='' ">
-			 	#{stree_id},
+			 <if test="street_id !=null and street_id !='' ">
+			 	#{street_id},
 			 </if>
 			 <if test="street_name !=null and street_name !='' ">
 			 	#{street_name},
@@ -542,5 +543,20 @@
 		     getdate()
 		  )   
   	</insert>
+  	
+  	<!-- 查询用户接单地址 数据表“AppUserOrderAddress”的address_Id  -->
+  	<select id="getOrderAddress" parameterType="map" resultMap="orderAddress">
+  	    select a.* from app_user_order_address a where a.user_id=#{user_id}
+  	</select>
+  	
+  	<!-- 删除用户接单地址关联表 -->
+  	<delete id="deleteOrderAddress" parameterType="map" >
+		delete from app_user_order_address where user_id=#{user_id}
+  	</delete>
+  	
+  	<!-- 删除用户接单地址 -->
+  	<delete id="deleteAddress" parameterType="map" >
+		delete from app_address where id=#{addressId}
+  	</delete> 
   	
 </mapper>

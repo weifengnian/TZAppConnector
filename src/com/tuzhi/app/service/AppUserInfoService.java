@@ -4,16 +4,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
 import com.tuzhi.app.dao.IAppUserInfoDao;
 import com.tuzhi.app.entity.AppAddress;
 import com.tuzhi.app.entity.AppCard;
 import com.tuzhi.app.entity.AppCertificate;
 import com.tuzhi.app.entity.AppEnterprisesInfo;
 import com.tuzhi.app.entity.AppGoodField;
+import com.tuzhi.app.entity.AppUserOrderAddress;
 import com.tuzhi.app.pojo.AppUserDetailInfo;
 import com.tuzhi.app.util.StringUtil;
 
@@ -25,7 +24,7 @@ import com.tuzhi.app.util.StringUtil;
  * @Copyright:
  */
 public class AppUserInfoService implements IAppUserInfoService {
-
+	
 	private IAppUserInfoDao appUserInfoDao;
 
 	public IAppUserInfoDao getAppUserInfoDao() {
@@ -166,6 +165,20 @@ public class AppUserInfoService implements IAppUserInfoService {
 		
 		//修改用户接单地址（注意，这里使用先通过id查询,存在就修改，否则添加）
 		if(!StringUtil.isBlank(map.get("order_address"))){
+			
+			//删除放在最外层，（先删除，后添加）
+			Map<String,String> getOrAd = new HashMap<String,String>();
+			getOrAd.put("user_id", map.get("user_id"));
+			List<AppUserOrderAddress> adr = appUserInfoDao.getOrderAddress(getOrAd);
+			if(adr.size()>0){
+				int cnt = appUserInfoDao.deleteOrderAddress(getOrAd);
+				for (int k = 0; k < adr.size(); k++) {
+					Map<String,String> da = new HashMap<String,String>();
+					da.put("addressId", adr.get(k).getAddress_id());
+					cnt = appUserInfoDao.deleteAddress(da);
+				}
+			}
+			
 			//获取地址集合
 			String address = map.get("order_address");
 			JSONObject jsonAddress = JSONObject.fromObject(address);
@@ -184,7 +197,7 @@ public class AppUserInfoService implements IAppUserInfoService {
 			        maps.put(key, value);
 			    }
 				
-				AppAddress ads = null;
+				/*AppAddress ads = null;
 				//判断接单地址id为空,直接做添加，否则查询
 				if(!StringUtil.isBlank(maps.get("id"))){
 					//查询地址id是否存在
@@ -209,6 +222,23 @@ public class AppUserInfoService implements IAppUserInfoService {
 							//添加用户接单关联地址表
 							num = appUserInfoDao.addUserOrdAds(adsMap);
 						}
+					}
+				}*/
+				
+				//---2017-08-09 修改
+				AppAddress ads = null;
+				maps.put("only_id", StringUtil.getShortUUID());
+				//添加地址
+				int num = appUserInfoDao.addAddress(maps);
+				if(num>0){
+					//获取地址id
+					ads = appUserInfoDao.getAddress(maps);
+					if(ads!=null){
+						Map<String,String> adsMap = new HashMap<String,String>();
+						adsMap.put("address_id", String.valueOf(ads.getId()));
+						adsMap.put("user_id", map.get("user_id"));
+						//添加用户接单关联地址表
+						num = appUserInfoDao.addUserOrdAds(adsMap);
 					}
 				}
 			}

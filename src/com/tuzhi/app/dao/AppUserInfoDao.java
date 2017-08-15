@@ -10,6 +10,7 @@ import com.tuzhi.app.entity.AppCard;
 import com.tuzhi.app.entity.AppCertificate;
 import com.tuzhi.app.entity.AppEnterprisesInfo;
 import com.tuzhi.app.entity.AppGoodField;
+import com.tuzhi.app.entity.AppUserOrderAddress;
 import com.tuzhi.app.pojo.AppUserDetailInfo;
 
 /**
@@ -165,5 +166,37 @@ public class AppUserInfoDao extends SqlSessionDaoSupport implements IAppUserInfo
 		return getSqlSession().selectList("AppUserInfoDaoMapper.getAddressList",map);
 	}
 	
+	/**
+	 * 查询用户接单地址 数据表“AppUserOrderAddress”的address_Id
+	 * @param map
+	 * @return
+	 */
+	@Override
+	public List<AppUserOrderAddress> getOrderAddress(Map<String,String> map){
+		// TODO Auto-generated method stub
+		return getSqlSession().selectList("AppUserInfoDaoMapper.getOrderAddress",map);
+	}
+	
+	/**
+	 * 删除用户接单地址关联表
+	 * @param map
+	 * @return
+	 */
+	@Override
+	public Integer deleteOrderAddress(Map<String, String> map){
+		// TODO Auto-generated method stub
+		return getSqlSession().delete("AppUserInfoDaoMapper.deleteOrderAddress",map);
+	}
+	
+	/**
+	 * 删除用户接单地址
+	 * @param map
+	 * @return
+	 */
+	@Override
+	public Integer deleteAddress(Map<String,String> map){
+		// TODO Auto-generated method stub
+		return getSqlSession().delete("AppUserInfoDaoMapper.deleteAddress",map);
+	}
 	
 }

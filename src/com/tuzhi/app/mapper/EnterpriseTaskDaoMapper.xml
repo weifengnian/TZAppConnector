@@ -311,7 +311,14 @@
 		left join app_good_field g on t.field_id=g.id
         left join app_user_field uf on g.id=uf.field_id
         left join app_user_info i on uf.user_id=i.id
+        
+        left join app_address a on t.address_id=a.id
+        left join app_user_order_address od on i.id=od.user_id
+        left join app_address ad on od.address_id=ad.id
+        
           where 1=1 and i.is_auth='1'
+                and a.dis_name=ad.dis_name
+                and a.pro_name=ad.pro_name
           <if test="e_id != null and e_id != ''">
 			 and t.create_user_id=#{e_id}
 		  </if>

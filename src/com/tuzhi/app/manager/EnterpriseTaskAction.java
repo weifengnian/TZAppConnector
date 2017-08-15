@@ -119,7 +119,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 			
 			response.getWriter().write(json);
 			
-			/*//推送消息(推送给当前任务领域的所有人员，并且是实名制人员)
+			//推送消息(推送给当前任务领域的所有人员，并且是实名制人员)
 			if("0".equals(status)){
 				Map<String,String> umap = new HashMap<String,String>();
 				umap.put("task_id", String.valueOf(taskId));
@@ -131,11 +131,11 @@ public class EnterpriseTaskAction extends HttpServlet {
 						taskMap.put("order_id", String.valueOf(taskId));
 						taskMap.put("user_id", apl.get(i).getUser_id());
 						taskMap.put("status", "0");
-						int num = enterpriseTaskService.addTaskUser(taskMap);
+						enterpriseTaskService.addTaskUser(taskMap);
 					}
 					StringUtil.sendTask(String.valueOf(taskId),map,apl,"BM");
 				}
-			}*/
+			}
 			
 			try {
 				if(TransUtil.LOG_FLAG){
@@ -465,7 +465,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 						enterpriseTaskService.updateTask(map);
 						status = "40";
 						retMsg = "任务已过期";
-					}else if(0==at.get(0).getStatus() && "100".equals(map.get("type"))){
+					}/*else if(0==at.get(0).getStatus() && "100".equals(map.get("type"))){
 						map.put("status", "1");
 						int num = enterpriseTaskService.updateTask(map);
 						status = "0";
@@ -494,7 +494,7 @@ public class EnterpriseTaskAction extends HttpServlet {
 					}else if(0==at.get(0).getStatus()){
 						status = "42";
 						retMsg = "任务未付款";
-					}else{
+					}*/else{
 						//查询该用户是否报名或者接单
 						List<AppTaskUser> tu = enterpriseTaskService.getOrders(map);
 						if(tu.size()<=0){

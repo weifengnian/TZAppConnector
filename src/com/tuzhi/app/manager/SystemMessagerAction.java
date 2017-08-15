@@ -46,6 +46,19 @@ public class SystemMessagerAction extends HttpServlet {
 	private ISystemMessagerService systemMessagerService;
 	private IAppUserInfoService appUserInfoService;
 	
+	public static void main(String[] args) {
+		String str = "abcdef";
+//		StringBuffer sb = new StringBuffer("abcdef");
+//		System.out.println(sb.reverse());
+		StringBuffer s = new StringBuffer();
+		for (int i = str.length(); i >=0 ; i--) {
+			System.out.println(str.length()+"----"+i);
+			System.out.println(str.charAt(i));
+			s.append(str.charAt(i));
+		}
+		System.out.println(s.toString());
+	}
+	
 	/**
 	 * 添加反馈意见
 	 */

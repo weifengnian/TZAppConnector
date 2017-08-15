@@ -68,10 +68,10 @@ public class EnterpriseTaskService implements IEnterpriseTaskService {
 		
 		//任务编号
 		map.put("order_code", "BH"+String.valueOf(System.currentTimeMillis()));
-		/*//任务状态（添加任务状态默认为1，  5任务过期，4任务取消，3任务完成，2接单(工作种)，1报名中(报名)）
-		map.put("status", "1");*/
-		//任务状态（添加任务状态默认为0，  5任务过期，4任务取消，3任务完成，2接单(工作种)，1报名中(报名), 0任务未付款）
-		map.put("status", "0");
+		//任务状态（添加任务状态默认为1，  5任务过期，4任务取消，3任务完成，2接单(工作种)，1报名中(报名)）
+		map.put("status", "1");
+		/*//任务状态（添加任务状态默认为0，  5任务过期，4任务取消，3任务完成，2接单(工作种)，1报名中(报名), 0任务未付款）
+		map.put("status", "0");*/
 		
 		//任务id
 		int taskId = 0;
